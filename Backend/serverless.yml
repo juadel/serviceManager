@@ -22,13 +22,98 @@ provider:
   region: ${opt:region, 'ca-central-1'}
   apiGateway:
     minimumCompressionSize: 1024 # Enable gzip compression for responses > 1 KB
+  
   environment:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
+    SERVICE_TABLE: ServiceManager-${self:provider.stage} 
+    CUSTOMER_TABLE: Customer-ServiceManager-${self:provider.stage}
+    ATOMIC_TABLE: Atomic-ServiceManager-${self:provider.stage}
+
+  
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+          - "xray:PutTraceSegments"
+          - "xray:PutTelemetryRecords"
+      Resource:
+          - "*"
+ 
 
 functions:
-  hello:
-    handler: handler.hello
+  #Auth:
+  #  handler: src/lambda/authorizer/auth.handler
+  
+  CreateService:
+    handler: src/lambda/http/CreateService.handler
     events:
       - http:
-          method: get
-          path: hello
+          method: post
+          path: create
+          cors: true
+    iamRoleStatementsInherit: true
+    iamRoleStatementsName: ${self:service.name}-CreateService-Role-${self:provider.stage}
+    iamRoleStatements:
+      - Effect: Allow
+        Action: 
+          - dynamodb:PutItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.SERVICE_TABLE}
+
+resources:
+  Resources:
+    ServiceManager_table:
+      Type: AWS::DynamoDB::Table 
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: ServiceID
+            AttributeType: S
+          - AttributeName: CustomerID
+            AttributeType: S
+          - AttributeType: createdAt
+            AttributeType: S  
+        KeySchema:
+          - AttributeName: ServiceID
+            KeyType: HASH
+          - AttributeName: CustomerID
+            KeyType: RANGE
+        BillingMode: PAY_PER_REQUEST
+        TableName: ${self:provider.environment.SERVICE_TABLE}
+        GlobalSecondaryIndexes:
+          - IndexName: CustomerID-${self:provider.stage}
+            KeySchema:
+              - AttributeName: CustomerID
+                KeyType: HASH
+              - AttributeName: createdAt
+                KeySchema: RANGE
+            Projection:
+              ProjectionType: ALL 
+
+    Customer_table:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: CustomerID
+            AttributeType: S 
+          - AttributeName: Name 
+            AttributeType: S 
+        KeySchema:
+          - AttributeName: CustomerID
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+        TableName: ${self:provider.environment.CUSTOMER_TABLE}
+
+    AtomicCounters:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: id 
+            AttributeType: S
+          - AttributeName: lastValue
+            AttributeType: S 
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+        TableName: ${self:provider.environment.ATOMIC_TABLE}
+          
+
+
