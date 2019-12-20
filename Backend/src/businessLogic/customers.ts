@@ -1,19 +1,23 @@
 import * as uuid from "uuid";
 import { APIGatewayProxyEvent } from "aws-lambda";
+import { CustomerItem } from "../models/customer"
+import { CustomerRequest } from "../requests/customerRequest"
+import { Customer } from "../dataLogic/customerLogic"
 
+const CustomerItem = new Customer();
 
-export async function createCustomer( event: APIGatewayProxyEvent ): Promise<TodoItem> {
-    const itemId = uuid.v4();
-    const userId = getUserId(event);
-    const newTodo: CreateTodoRequest = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
-    const createdTodo = await todos.createTodo(
+export async function createCustomer( event: APIGatewayProxyEvent ): Promise<CustomerItem> {
+    const customerId = uuid.v4();
+    //const userId = getUserId(event);
+    const newCustomer: CustomerRequest = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
+    const createdCustomer = await CustomerItem.createCustomer(
       { 
-        userId: userId,
-        todoId: itemId,
-        createdAt: new Date().toISOString(),
-        done: false,
-        ...newTodo
+        //userId: userId,
+        CustomerID: customerId,
+        //createdAt: new Date().toISOString(),
+        //done: false,
+        ...newCustomer
       }
     );
-  return createdTodo;
+  return createdCustomer;
 }

@@ -5,7 +5,7 @@ export interface Service {
     Title: string
     Description: string
     dueDate: string
-    done: boolean
+    Status: boolean
     attachmentUrl?: string
   }
   
