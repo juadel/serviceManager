@@ -1,5 +1,5 @@
-export interface Service {
-    serviceID: string
+export interface ServiceItem {
+    ServiceID: string
     CustomerID: string
     createdAt: string
     Title: string
