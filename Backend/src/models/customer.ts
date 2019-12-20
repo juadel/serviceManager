@@ -6,7 +6,7 @@ export interface CustomerItem {
     Province: string
     PostalCode: string
     Phone: string
-    Contact_Name: string
+    ContactName: string
     attachmentUrl?: string   
 }
   

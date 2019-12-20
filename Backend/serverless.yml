@@ -44,24 +44,24 @@ functions:
   #Auth:
   #  handler: src/lambda/authorizer/auth.handler
   
-  CreateService:
-    handler: src/lambda/http/CreateService.handler
+  CreateCustomer:
+    handler: src/lambda/http/createCustomer.handler
     events:
       - http:
           method: post
-          path: create
+          path: createcustomer
           cors: true
     iamRoleStatementsInherit: true
-    iamRoleStatementsName: ${self:service.name}-CreateService-Role-${self:provider.stage}
+    iamRoleStatementsName: ${self:service.name}-CreateCustomer-Role-${self:provider.stage}
     iamRoleStatements:
       - Effect: Allow
         Action: 
           - dynamodb:PutItem
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.SERVICE_TABLE}
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CUSTOMER_TABLE}
 
 resources:
   Resources:
-    ServiceManager_table:
+    ServiceManagertable:
       Type: AWS::DynamoDB::Table 
       Properties:
         AttributeDefinitions:
@@ -69,7 +69,7 @@ resources:
             AttributeType: S
           - AttributeName: CustomerID
             AttributeType: S
-          - AttributeType: createdAt
+          - AttributeName: createdAt
             AttributeType: S  
         KeySchema:
           - AttributeName: ServiceID
@@ -84,11 +84,11 @@ resources:
               - AttributeName: CustomerID
                 KeyType: HASH
               - AttributeName: createdAt
-                KeySchema: RANGE
+                KeyType: RANGE
             Projection:
               ProjectionType: ALL 
 
-    Customer_table:
+    Customertable:
       Type: AWS::DynamoDB::Table
       Properties:
         AttributeDefinitions:
@@ -103,7 +103,7 @@ resources:
         TableName: ${self:provider.environment.CUSTOMER_TABLE}
         GlobalSecondaryIndexes:
           - IndexName: ${self:provider.environment.SUB_INDEX}
-            KeyType:
+            KeySchema:
               - AttributeName: Name
                 KeyType: HASH
             Projection:
@@ -120,6 +120,8 @@ resources:
         KeySchema:
           - AttributeName: id
             KeyType: HASH
+          - AttributeName: lastValue
+            KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
         TableName: ${self:provider.environment.ATOMIC_TABLE}
           

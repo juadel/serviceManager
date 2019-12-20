@@ -1,5 +1,5 @@
 /**
- * Fields in a request to create a single TODO item.
+ * Fields in a request to create a single Customer item.
  */
 export interface CustomerRequest {
     Name: string
@@ -8,7 +8,6 @@ export interface CustomerRequest {
     Province: string
     PostalCode: string
     Phone: string
-    Contact_Name: string
-
+    ContactName: string
   }
   
