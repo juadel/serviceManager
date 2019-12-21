@@ -27,8 +27,11 @@ provider:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
     SERVICE_TABLE: ServiceManager-${self:provider.stage} 
     CUSTOMER_TABLE: Customer-ServiceManager-${self:provider.stage}
-    ATOMIC_TABLE: Atomic-ServiceManager-${self:provider.stage}
+    ATOMIC_TABLE: Atomic-ServiceManager
+    ATOMIC_ID: companyName-$self:provider.stage}
     SUB_INDEX: companyName-${self:provider.stage}
+    REGION: ${self:provider.region}
+
 
   
   iamRoleStatements:
@@ -58,6 +61,27 @@ functions:
         Action: 
           - dynamodb:PutItem
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CUSTOMER_TABLE}
+
+  CreateService:
+    handler: src/lambda/http/createService.handler
+    events:
+      - http:
+          method: post
+          path: createservice
+          cors: true
+    iamRoleStatementsInherit: true
+    iamRoleStatementsName: ${self:service.name}-CreateService-Role-${self:provider.stage}
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:PutItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.SERVICE_TABLE} 
+      - Effect: Allow
+        Action:
+          - dynamodb:PutItem
+          - dynamodb:Query
+          - dynamodb:UpdateItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.ATOMIC_TABLE}
 
 resources:
   Resources:
@@ -113,15 +137,13 @@ resources:
       Type: AWS::DynamoDB::Table
       Properties:
         AttributeDefinitions:
-          - AttributeName: id 
+          - AttributeName: companyName
             AttributeType: S
-          - AttributeName: lastValue
+          - AttributeName: ticket
             AttributeType: S 
         KeySchema:
-          - AttributeName: id
+          - AttributeName: companyName
             KeyType: HASH
-          - AttributeName: lastValue
-            KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
         TableName: ${self:provider.environment.ATOMIC_TABLE}
           

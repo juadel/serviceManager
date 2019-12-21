@@ -36,3 +36,4 @@ function createDynamoDBClient() {
   }
   return new XAWS.DynamoDB.DocumentClient();
 }
+
