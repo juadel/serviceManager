@@ -1,9 +1,11 @@
-import * as AWSXRay from "aws-xray-sdk";
-import * as AWS from "aws-sdk";
-import { DocumentClient } from "aws-sdk/clients/dynamodb";
-import { counterItem } from "../models/counter"
 
-const XAWS = AWSXRay.captureAWS(AWS);
+//import * as AWS from "aws-sdk";
+//import * as AWSXRay from "aws-xray-sdk";
+import { DocumentClient } from "aws-sdk/clients/dynamodb";
+import { counterItem } from "../models/counter";
+
+const AWSXRay = require('aws-xray-sdk-core');
+const AWS = AWSXRay.captureAWS(require('aws-sdk'));
 
 
 
@@ -29,14 +31,17 @@ async createCounter(counter: counterItem): Promise<counterItem>{
 async updatecount(companyName : string){
     const updatedCount = await this.docClient.update({
         TableName: this.table,
-        Key: {companyName},
-        UpdateExpression: "add ticket = ticket + :val",
+        Key: { companyName },
+        UpdateExpression: "ADD #ticket :val",
+        ExpressionAttributeNames:{
+            "#ticket":"ticket"
+        },
         ExpressionAttributeValues:{
             ":val":1
         } ,
         ReturnValues: "UPDATED_NEW"
     }).promise();
-    return { Updated: updatedCount}
+    return  {updatedCount: updatedCount};
     
 
 }
@@ -61,15 +66,15 @@ async isActiveCounter(companyName: string){
       
 }
 
-}
+
 
 function createDynamoDBClient() {
     if (process.env.IS_OFFLINE) {
       console.log("Creating a local DynamoDB instance");
-    return new XAWS.DynamoDB.DocumentClient({
+    return new AWS.DynamoDB.DocumentClient({
         region: "localhost",
         endpoint: "http://localhost:8000"
     });
   }
-  return new XAWS.DynamoDB.DocumentClient();
+  return new AWS.DynamoDB.DocumentClient();
 }

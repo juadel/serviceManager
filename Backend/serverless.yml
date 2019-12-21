@@ -28,7 +28,7 @@ provider:
     SERVICE_TABLE: ServiceManager-${self:provider.stage} 
     CUSTOMER_TABLE: Customer-ServiceManager-${self:provider.stage}
     ATOMIC_TABLE: Atomic-ServiceManager
-    ATOMIC_ID: companyName-$self:provider.stage}
+    ATOMIC_ID: companyName-${self:provider.stage}
     SUB_INDEX: companyName-${self:provider.stage}
     REGION: ${self:provider.region}
 
@@ -81,6 +81,7 @@ functions:
           - dynamodb:PutItem
           - dynamodb:Query
           - dynamodb:UpdateItem
+          - dynamodb:GetItem
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.ATOMIC_TABLE}
 
 resources:
@@ -139,8 +140,6 @@ resources:
         AttributeDefinitions:
           - AttributeName: companyName
             AttributeType: S
-          - AttributeName: ticket
-            AttributeType: S 
         KeySchema:
           - AttributeName: companyName
             KeyType: HASH

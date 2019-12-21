@@ -1,4 +1,4 @@
 export interface CounterRequest {
-    tracker: string 
+    ticket: Number
   }
   

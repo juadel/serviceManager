@@ -7,7 +7,7 @@ const counter = new Counter();
 export async function createCounter(companyName: string): Promise<counterItem>{
     
     const ticket = 0 ;
-    const createdCounter = await counter.createCounter(
+    const createdCounter= await counter.createCounter(
         { 
             companyName: companyName,
             ticket: ticket
@@ -18,6 +18,7 @@ export async function createCounter(companyName: string): Promise<counterItem>{
     
 }
 export async function increaseCounter(companyName: string){
+    
     const newCount = await counter.updatecount(companyName);
     return newCount
 

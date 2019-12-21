@@ -1,5 +1,5 @@
 export interface counterItem {
     companyName: string
-    ticket: Number 
+    ticket: number 
 }
   
