@@ -51,7 +51,7 @@ async isActiveCounter(companyName: string){
         TableName: this.table, 
         Key:
         {
-            ':hkey': companyName
+            companyName
         }
     }
 
