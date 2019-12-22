@@ -1,4 +1,4 @@
-import * as uuid from "uuid";
+
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { ServiceItem } from "../models/service";
 
@@ -21,10 +21,10 @@ export async function createService( event: APIGatewayProxyEvent ): Promise<Serv
         await createCounter(process.env.ATOMIC_ID);
       }
   
-  const count = await increaseCounter(process.env.ATOMIC_ID);
-    
+  const count = JSON.stringify((await increaseCounter(process.env.ATOMIC_ID)).Attributes.ticket);
+   
 
-  const serviceId = uuid.v4();
+  const serviceId =count;
   const newService: ServiceRequest = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
   const createdService = await serviceItem.createService(
       { 

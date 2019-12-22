@@ -41,7 +41,7 @@ async updatecount(companyName : string){
         } ,
         ReturnValues: "UPDATED_NEW"
     }).promise();
-    return  {updatedCount: updatedCount};
+    return  updatedCount;
     
 
 }
