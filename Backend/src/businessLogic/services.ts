@@ -23,6 +23,7 @@ export async function createService( event: APIGatewayProxyEvent ): Promise<Serv
    
 
   const serviceId =count;
+  const comments = [];
   const newService: ServiceRequest = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
   const createdService = await serviceItem.createService(
       { 
@@ -30,6 +31,7 @@ export async function createService( event: APIGatewayProxyEvent ): Promise<Serv
         ServiceID: serviceId,
         createdAt: new Date().toISOString(),
         Status: false,
+        Comments: comments,
         ...newService
       }
     );

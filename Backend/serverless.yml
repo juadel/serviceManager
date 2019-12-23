@@ -78,12 +78,12 @@ functions:
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CUSTOMER_TABLE}
   
   GetCustomerbyID:
-    handler: src/lambda/http/GetCustomerbyID.handler
-      events:
-        - http:
-            method: get
-            path: getcustomerbyid/{CustomerID}
-            cors: true
+    handler: src/lambda/http/getCustomerbyID.handler
+    events:
+      - http:
+          method: get
+          path: getcustomerbyid/{CustomerID}
+          cors: true
     iamRoleStatementsInherit: true
     iamRoleStatementsName: ${self:service.name}-GetcustomerID-Role-${self:provider.stage}
     iamRoleStatements:
