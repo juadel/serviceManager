@@ -5,6 +5,7 @@ import { CustomerRequest } from "../requests/customerRequests"
 import { Customer } from "../dataLogic/customerLogic"
 
 
+
 const CustomerItem = new Customer();
 
 export async function createCustomer( event: APIGatewayProxyEvent ): Promise<CustomerItem> {
@@ -28,5 +29,10 @@ export async function updateCustomer(event: APIGatewayProxyEvent ){
   const newCustomer= await CustomerItem.updateCustomer(customerID, updatedCustomer);
   return newCustomer;
 
+}
 
+export async function getCustomerbyID(event: APIGatewayProxyEvent):Promise<CustomerItem[]>{
+  const CustomerID= event.pathParameters.CustomerID;
+  const queryCustomer = await CustomerItem.getCustomer_byID(CustomerID);
+  return queryCustomer as CustomerItem[];  
 }

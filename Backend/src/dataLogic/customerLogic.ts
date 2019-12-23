@@ -48,6 +48,17 @@ async updateCustomer(CustomerID : string, updatedCustomer:CustomerRequest){
     return updateCustomer
 }
 
+async getCustomer_byID(CustomerID: string):Promise<CustomerRequest[]>{
+    const customer= await this.docClient.query({
+        TableName: this.customerTable,
+        KeyConditionExpression: "CustomerID = :CustomerID",
+        ExpressionAttributeValues: {
+            ":CustomerID": CustomerID
+        }
+    }).promise();
+    const cust = customer.Items;
+    return cust as CustomerRequest[];
+}
 
 }
 
