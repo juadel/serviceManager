@@ -14,7 +14,7 @@ export class Service
     private serviceTable = process.env.SERVICE_TABLE,
     //private bucket = 
     //private urlExp = 
-    private index = process.env.SUB_INDEX
+    //private index = process.env.SUB_INDEX
 ){}
 
 async createService(service: ServiceItem ) : Promise<ServiceItem>{

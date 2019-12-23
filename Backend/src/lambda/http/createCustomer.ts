@@ -16,5 +16,5 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
     body: JSON.stringify({msg:"customer created successfully",
       item
     })
-  }
-}
+  };
+};

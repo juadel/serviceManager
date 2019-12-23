@@ -1,8 +1,9 @@
 import * as uuid from "uuid";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { CustomerItem } from "../models/customer"
-import { CustomerRequest } from "../requests/customerRequest"
+import { CustomerRequest } from "../requests/customerRequests"
 import { Customer } from "../dataLogic/customerLogic"
+
 
 const CustomerItem = new Customer();
 
@@ -12,12 +13,20 @@ export async function createCustomer( event: APIGatewayProxyEvent ): Promise<Cus
     const newCustomer: CustomerRequest = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
     const createdCustomer = await CustomerItem.createCustomer(
       { 
-        //userId: userId,
+        
         CustomerID: customerId,
-        //createdAt: new Date().toISOString(),
-        //done: false,
+        
         ...newCustomer
       }
     );
   return createdCustomer;
+}
+
+export async function updateCustomer(event: APIGatewayProxyEvent ){
+  const customerID = event.pathParameters.CustomerID;
+  const updatedCustomer : CustomerRequest = typeof event.body === "string" ? JSON.parse(event.body) : event.body; 
+  const newCustomer= await CustomerItem.updateCustomer(customerID, updatedCustomer);
+  return newCustomer;
+
+
 }

@@ -13,8 +13,6 @@ import { increaseCounter} from "../businessLogic/counter"
 const serviceItem= new Service();
 
 
-
-
 export async function createService( event: APIGatewayProxyEvent ): Promise<ServiceItem> {
     
   if (!isActiveCounter(process.env.ATOMIC_ID)){

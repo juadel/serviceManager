@@ -1,10 +1,11 @@
 import 'source-map-support/register';
 import { APIGatewayProxyEvent, APIGatewayProxyHandler, APIGatewayProxyResult } from 'aws-lambda';
-import { createService } from "../../businessLogic/services"
+
+import {updateCustomer} from '../../businessLogic/customers';
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-    // creating a customer
-    const item = await createService(event)
+    // updating a customer
+    const item = await updateCustomer(event)
   
     return {
       statusCode: 200,
@@ -12,7 +13,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
           'Access-Control-Allow-Origin': '*',
           'Access-Control-Allow-Credentials': true
         },
-      body: JSON.stringify({msg:"Service created successfully",
+      body: JSON.stringify({msg:"customer updated successfully",
         item
       })
     };

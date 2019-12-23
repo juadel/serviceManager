@@ -61,7 +61,22 @@ functions:
         Action: 
           - dynamodb:PutItem
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CUSTOMER_TABLE}
-
+  
+  UpdateCustomer:
+    handler: src/lambda/http/updateCustomer.handler
+    events:
+      - http:
+          method: patch
+          path: updatecustomer
+          cors: true 
+    iamRoleStatementsInherit: true
+    iamRoleStatementsName: ${self:service.name}-updatecustomer-Role-${self:provider.stage}
+    iamRoleStatements:
+      - Effect: Allow
+        Action: 
+          - dynamodb:UpdateItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CUSTOMER_TABLE}
+          
   CreateService:
     handler: src/lambda/http/createService.handler
     events:

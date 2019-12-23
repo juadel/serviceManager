@@ -1,6 +1,3 @@
-/**
- * Fields in a request to create a single Customer item.
- */
 export interface CustomerRequest {
     Name: string
     Address: string
@@ -10,4 +7,3 @@ export interface CustomerRequest {
     Phone: string
     ContactName: string
   }
-  
