@@ -67,7 +67,7 @@ functions:
     events:
       - http:
           method: patch
-          path: updatecustomer
+          path: updatecustomer/{CustomerID}
           cors: true 
     iamRoleStatementsInherit: true
     iamRoleStatementsName: ${self:service.name}-updatecustomer-Role-${self:provider.stage}

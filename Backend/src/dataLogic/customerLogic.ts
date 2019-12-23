@@ -26,13 +26,14 @@ async createCustomer(customer: CustomerItem ) : Promise<CustomerItem>{
     return customer
     }
 
-async updateCustomer(customerID : string, updatedCustomer:CustomerRequest){
+    //CLIENT MUST PROVIDE ALL Attributes, HAS to make sure to provide actual values on client when updating.
+async updateCustomer(CustomerID : string, updatedCustomer:CustomerRequest){
     const updateCustomer = await this.docClient.update({
         TableName: this.customerTable,
-        Key: { customerID },
-        ExpressionAttributeNames: {"#N": "name", "#A":"Address", "#C":"City", "#P":"PostalCode", "#Pr":"Province", "#Ph":"Phone", "#CN":"ContactName" },
-        ConditionExpression: '#N NE :name OR #A NE :address OR #C NE :city OR #P NE :postal OR #Pr NE :province OR #ph NE :phone OR #CN NE :contact',
-        UpdateExpression: 'set #N=:name, #A=:address, #C=:city, #P=:postal, #Pr=:province, #Ph=:phone, #CN =#contact',
+        Key: { CustomerID },
+        ExpressionAttributeNames: {"#N": "Name", "#A":"Address", "#C":"City", "#P":"PostalCode", "#Pr":"Province", "#Ph":"Phone", "#CN":"ContactName" },
+        //ConditionExpression: '#N NE :name', //OR #A NE :address OR #C NE :city OR #P NE :postal OR #Pr NE :province OR #ph NE :phone OR #CN NE :contact',
+        UpdateExpression: 'set #N=:name, #A=:address, #C=:city, #P=:postal, #Pr=:province, #Ph=:phone, #CN =:contact',
         ExpressionAttributeValues:{
             ':name':updatedCustomer.Name,
             ':address': updatedCustomer.Address,
