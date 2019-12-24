@@ -5,6 +5,7 @@ const AWS = AWSXRay.captureAWS(require('aws-sdk'));
 
 
 import { ServiceItem } from "../models/service"
+import { commentRequest } from "../requests/commentRequest";
 //import { } from 
 
 export class Service
@@ -24,6 +25,23 @@ async createService(service: ServiceItem ) : Promise<ServiceItem>{
     }).promise();
     return service
     }
+    
+async addComment(serviceID: string , comment: commentRequest){
+        const commenttoadd =await this.docClient.update({
+            TableName: this.serviceTable,
+            Key: { serviceID },
+            UpdateExpression: 'set Comments = List_append(Comments, :newComment)',
+            ExpressionAttributeValues:{
+                ':newComment':comment,
+            },
+            ReturnValues: "UPDATED_NEW"
+        }).promise();
+        return commenttoadd;
+    }
+    
+
+
+
 }
 
 function createDynamoDBClient() {
