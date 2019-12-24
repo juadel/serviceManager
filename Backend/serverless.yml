@@ -127,7 +127,8 @@ functions:
     iamRoleStatements:
       - Effect: Allow
         Action:
-            -dynamodb:PutItem
+          - dynamodb:PutItem
+          - dynamodb:UpdateItem
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.SERVICE_TABLE} 
 
 

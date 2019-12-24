@@ -1,4 +1,4 @@
 export interface commentRequest {
-    Comments: []
+    Comments:String
     
   }
