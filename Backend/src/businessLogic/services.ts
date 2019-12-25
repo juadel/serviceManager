@@ -46,4 +46,15 @@ export async function addcomment(event: APIGatewayProxyEvent) {
   return result;
 }
 
+export async function addUploadUrl(event: APIGatewayProxyEvent ): Promise<string> {
+  if (event.pathParameters.table == "service"){
+      const table = process.env.SERVICE_TABLE
+  }else {
+    const table = process.env.CUSTOMER_TABLE 
+  };
+  const id = event.pathParameters.ID;
+  const generatedUrl= await serviceItem.
+  
+}
+
 
