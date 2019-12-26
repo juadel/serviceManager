@@ -11,10 +11,10 @@ import { commentRequest } from "../requests/commentRequest";
 export class Service
 { constructor(
     private docClient: DocumentClient = createDynamoDBClient(),
-    //private S3 = createS3Bucket(),
+    private S3 = createS3Bucket(),
     private serviceTable = process.env.SERVICE_TABLE,
-    //private bucket = 
-    //private urlExp = 
+    private bucket = process.env.BUCKET,
+    private urlExp = process.env.EXPIRES,
     //private index = process.env.SUB_INDEX
 ){}
 
@@ -39,9 +39,25 @@ async addComment(ServiceID: string , comment: commentRequest){
         }).promise();
         return commenttoadd;
     }
-    
+ 
+async signedUrl(table: string, id: string): Promise<string>{
+    const uploadUrl = this.S3.getSignedUrl("PutObject", {
+        Bucket: this.bucket,
+        Key: id,
+        Expires: this.urlExp 
+    });
+    await this.docClient.update({
+        TableName: table,
+        Key: {id},
+        UpdateExpression: "set attachmentUrl=:URL",
+        ExpressionAttributeValues: {
+            ":URL": uploadUrl.split("?")[0]
+        },
+        ReturnValues: "UPDATED_NEW"
+    }).promise();
+    return uploadUrl;
 
-
+ }
 
 }
 
@@ -56,3 +72,8 @@ function createDynamoDBClient() {
   return new AWS.DynamoDB.DocumentClient();
 }
 
+function createS3Bucket(){
+    return new AWS.S3({
+        signatureVersion: "v4"
+    });
+}

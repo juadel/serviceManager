@@ -47,13 +47,15 @@ export async function addcomment(event: APIGatewayProxyEvent) {
 }
 
 export async function addUploadUrl(event: APIGatewayProxyEvent ): Promise<string> {
+  // const table : string 
   if (event.pathParameters.table == "service"){
-      const table = process.env.SERVICE_TABLE
+      var table = process.env.SERVICE_TABLE;
   }else {
-    const table = process.env.CUSTOMER_TABLE 
+     var table = process.env.CUSTOMER_TABLE ;
   };
   const id = event.pathParameters.ID;
-  const generatedUrl= await serviceItem.
+  const generatedUrl= await serviceItem.signedUrl(table, id);
+  return generatedUrl
   
 }
 

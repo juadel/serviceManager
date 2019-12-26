@@ -32,7 +32,8 @@ provider:
     SUB_INDEX: companyName-${self:provider.stage}
     USER_POOL: companyName-${self:provider.stage}
     REGION: ${self:provider.region}
-    BUCKET: companyName-${self:provider.stage}
+    BUCKET: companyname-${self:provider.stage}
+    EXPIRES: 300
 
 
   
@@ -89,13 +90,13 @@ functions:
     handler: src/lambda/http/adduploadurl.handler
     events:
       - http:
-        method: post
-        path: files/{table,ID}/attachment
-        cors: true
-        authorizer:
-          type: COGNITO_USER_POOLS
-          authorizerId:
-            Ref: ApiGatewayAuthorizer 
+          method: post
+          path: files/{table}/{ID}/attachment
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ApiGatewayAuthorizer 
     iamRoleStatementsInherit: true
     iamRoleStatementsName: ${self:service.name}-AddUploadUrl-Role-${self:provider.stage}
     iamRoleStatements:
@@ -104,7 +105,7 @@ functions:
           - dynamodb:UpdateItem
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CUSTOMER_TABLE}
       - Effect: Allow
-          Action:
+        Action:
             - dynamodb:UpdateItem
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.SERVICE_TABLE}
       - Effect: Allow
@@ -307,7 +308,7 @@ resources:
               Effect: Allow
               Principal: "*"
               Action: "s3:GetObject"
-              Resource: "arn:aws:s3:::${self:provider.environment.S3_BUCKET}/*"
+              Resource: "arn:aws:s3:::${self:provider.environment.BUCKET}/*"
         Bucket: !Ref AttachementBucket
 
 
