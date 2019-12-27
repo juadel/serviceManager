@@ -120,7 +120,7 @@ functions:
       - http:
           method: get
           path: getcustomerbyid/{CustomerID}
-          cors: true
+          cors: False
           authorizer:
             type: COGNITO_USER_POOLS
             authorizerId:
@@ -271,7 +271,7 @@ resources:
         - ApiGatewayRestApi
       Type: AWS::ApiGateway::Authorizer
       Properties:
-        Name: coginto-authorizer
+        Name: cognito-authorizer
         IdentitySource: method.request.header.Authorization
         RestApiId:
           Ref: ApiGatewayRestApi

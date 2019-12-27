@@ -14,7 +14,7 @@ export class Service
     private S3 = createS3Bucket(),
     private serviceTable = process.env.SERVICE_TABLE,
     private bucket = process.env.BUCKET,
-    private urlExp = process.env.EXPIRES,
+    private urlExp = 300,
     //private index = process.env.SUB_INDEX
 ){}
 

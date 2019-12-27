@@ -1,0 +1,4 @@
+{
+  "serviceURL":"https://b64podknhj.execute-api.ca-central-1.amazonaws.com/dev/customer/af775400-5af1-468d-9e30-aabbd1f70817",
+  "authenticationURL": "https://servicemanager.auth.ca-central-1.amazoncognito.com/login?response_type=token&client_id=6ugno1vbv0smirkd9s31lf15a0&redirect_uri=http://localhost:3000"
+}

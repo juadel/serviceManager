@@ -1,4 +1,5 @@
 export interface ServiceItem {
+    userId: string
     ServiceID: string
     CustomerID: string
     createdAt: string
