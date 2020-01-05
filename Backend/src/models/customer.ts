@@ -1,7 +1,8 @@
 export interface CustomerItem {
-    userId: string,
+    
     CustomerID: string
     Name: string
+    SiteNumber: number
     Address: string
     City: string
     Province: string

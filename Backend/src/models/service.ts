@@ -1,5 +1,4 @@
 export interface ServiceItem {
-    userId: string
     ServiceID: string
     CustomerID: string
     createdAt: string
@@ -8,6 +7,6 @@ export interface ServiceItem {
     dueDate: string
     Status: boolean
     Comments: Array<string>
-    attachmentUrl?: string
+    attachmentUrl?: Array<string>
   }
   

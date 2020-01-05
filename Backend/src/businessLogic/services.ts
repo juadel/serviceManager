@@ -5,9 +5,10 @@ import { ServiceItem } from "../models/service";
 import { ServiceRequest } from "../requests/serviceRequest";
 import { commentRequest } from "../requests/commentRequest"
 import { Service } from "../dataLogic/serviceLogic";
-import { createCounter } from "../businessLogic/counter";
-import { isActiveCounter } from "../businessLogic/counter"
-import { increaseCounter} from "../businessLogic/counter"
+import { createCounter } from "./counterLogic";
+import { isActiveCounter } from "./counterLogic"
+import { increaseCounter} from "./counterLogic"
+
 
 
 
@@ -25,12 +26,16 @@ export async function createService( event: APIGatewayProxyEvent ): Promise<Serv
 
   const serviceId =count;
   const comments = [];
+  const today = new Date();
+  const dueDay= new Date();
+  dueDay.setDate(dueDay.getDate()+5);
   const newService: ServiceRequest = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
   const createdService = await serviceItem.createService(
       { 
-        //userId: userId,
+        
         ServiceID: serviceId,
-        createdAt: new Date().toISOString(),
+        createdAt: today.toISOString(),
+        dueDate: dueDay.toISOString(),
         Status: false,
         Comments: comments,
         ...newService

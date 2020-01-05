@@ -6,7 +6,7 @@ const AWS = AWSXRay.captureAWS(require('aws-sdk'));
 
 import { CustomerItem } from "../models/customer"
 import { CustomerRequest } from "../requests/customerRequests";
-//import { } from 
+
 
 export class Customer
 { constructor(

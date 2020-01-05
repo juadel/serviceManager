@@ -8,20 +8,34 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   </head>
   <body>
+    
     <div class="container-fluid">
-        <h1>My First Bootstrap Page</h1>
-        <p>This is some text.</p>
+        <h1>Service Manager</h1>
+        <p>please log in to proceed.</p>
       </div>
       <div class="row">
-        <div class="col-sm-4" style="background-color:lavender;">.col-sm-4</div>
+        <div class="col-sm-4" style="background-color:lavender;">.col-sm-8</div>
         <div class="col-sm-4" style="background-color:lavender;">.col-sm-4</div>
       </div>
-      <div class="row">
-        <div class="col-*-*"></div>
-        <div class="col-*-*"></div>
-        <div class="col-*-*"></div>
-      </div>
-      </body>
-      </html>
+      <div class="container-fluid">
+              <a  role="button" aria-pressed="true" class="btn btn-danger" href="https://servicemanager.auth.ca-central-1.amazoncognito.com/login?client_id=2f42j5bhspgmkqte73ccrqb96d&response_type=token&scope=aws.cognito.signin.user.admin+email+openid+phone+profile&redirect_uri=http://localhost:8000"> Login </a>
+      </div>  
+  </div>
+  <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Company name</a>
+    <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+    <ul class="navbar-nav px-3">
+      <li class="nav-item text-nowrap">
+        <a class="nav-link" href="#">Sign out</a>
+      </li>
+    </ul>
+  </nav>
+  
+  
+  
+
+
+      
+      
   </body>
 </html>

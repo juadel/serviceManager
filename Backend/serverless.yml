@@ -1,5 +1,7 @@
 service:
   name: ServiceManager
+  customer: test
+
 # app and org for use with dashboard.serverless.com
 #app: your-app-name
 #org: your-org-name
@@ -24,8 +26,8 @@ provider:
     minimumCompressionSize: 1024 # Enable gzip compression for responses > 1 KB
   
   environment:
-    AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
-    SERVICE_TABLE: ServiceManager-${self:provider.stage} 
+    
+    SERVICE_TABLE: ${self:service.name}-${self:service.customer} 
     CUSTOMER_TABLE: Customer-ServiceManager-${self:provider.stage}
     ATOMIC_TABLE: Atomic-ServiceManager
     ATOMIC_ID: companyName-${self:provider.stage}
