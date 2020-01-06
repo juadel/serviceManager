@@ -1,6 +1,6 @@
 service:
-  name: ServiceManager
-  customer: test
+  name: service-manager
+  org: companyxz
 
 # app and org for use with dashboard.serverless.com
 #app: your-app-name
@@ -27,14 +27,14 @@ provider:
   
   environment:
     
-    SERVICE_TABLE: ${self:service.name}-${self:service.customer} 
-    CUSTOMER_TABLE: Customer-ServiceManager-${self:provider.stage}
-    ATOMIC_TABLE: Atomic-ServiceManager
-    ATOMIC_ID: companyName-${self:provider.stage}
-    SUB_INDEX: companyName-${self:provider.stage}
-    USER_POOL: companyName-${self:provider.stage}
+    SERVICE_TABLE: Services-${self:service.name}-${self:service.org}-${self:provider.stage}
+    CUSTOMER_TABLE: Customer-${self:service.name}-${self:service.org}-${self:provider.stage}
+    ATOMIC_TABLE: Atomic-${self:service.name}-${self:service.org}-${self:provider.stage}
+    ATOMIC_ID: AtomicID-${self:service.org}-${self:provider.stage}
+    SUB_INDEX: Index-${self:service.org}-${self:provider.stage}
+    USER_POOL: Users-${self:service.org}-${self:provider.stage}
     REGION: ${self:provider.region}
-    BUCKET: companyname-${self:provider.stage}
+    BUCKET: ${self:service.name}-${self:service.org}-${self:provider.stage}
     EXPIRES: 300
 
 
@@ -49,111 +49,29 @@ provider:
  
 
 functions:
-    
-  CreateCustomer:
-    handler: src/lambda/http/createCustomer.handler
-    events:
-      - http:
-          method: post
-          path: createcustomer
-          cors: true
-          authorizer:
-            type: COGNITO_USER_POOLS
-            authorizerId:
-              Ref: ApiGatewayAuthorizer
-    iamRoleStatementsInherit: true
-    iamRoleStatementsName: ${self:service.name}-CreateCustomer-Role-${self:provider.stage}
-    iamRoleStatements:
-      - Effect: Allow
-        Action: 
-          - dynamodb:PutItem
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CUSTOMER_TABLE}
-  
-  UpdateCustomer:
-    handler: src/lambda/http/updateCustomer.handler
-    events:
-      - http:
-          method: patch
-          path: updatecustomer/{CustomerID}
-          cors: true
-          authorizer:
-            type: COGNITO_USER_POOLS
-            authorizerId:
-              Ref: ApiGatewayAuthorizer 
-    iamRoleStatementsInherit: true
-    iamRoleStatementsName: ${self:service.name}-updatecustomer-Role-${self:provider.stage}
-    iamRoleStatements:
-      - Effect: Allow
-        Action: 
-          - dynamodb:UpdateItem
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CUSTOMER_TABLE}
-  
-  AddUploadUrl:
-    handler: src/lambda/http/adduploadurl.handler
-    events:
-      - http:
-          method: post
-          path: files/{table}/{ID}/attachment
-          cors: true
-          authorizer:
-            type: COGNITO_USER_POOLS
-            authorizerId:
-              Ref: ApiGatewayAuthorizer 
-    iamRoleStatementsInherit: true
-    iamRoleStatementsName: ${self:service.name}-AddUploadUrl-Role-${self:provider.stage}
-    iamRoleStatements:
-      - Effect: Allow
-        Action:
-          - dynamodb:UpdateItem
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CUSTOMER_TABLE}
-      - Effect: Allow
-        Action:
-            - dynamodb:UpdateItem
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.SERVICE_TABLE}
-      - Effect: Allow
-        Action:
-          - s3:PutObject
-          - s3:GetObject
-        Resource: arn:aws:s3:::${self:provider.environment.BUCKET}/*
 
-  GetCustomerbyID:
-    handler: src/lambda/http/getCustomerbyID.handler
-    events:
-      - http:
-          method: get
-          path: getcustomerbyid/{CustomerID}
-          cors: False
-          authorizer:
-            type: COGNITO_USER_POOLS
-            authorizerId:
-              Ref: ApiGatewayAuthorizer
-    iamRoleStatementsInherit: true
-    iamRoleStatementsName: ${self:service.name}-GetcustomerID-Role-${self:provider.stage}
-    iamRoleStatements:
-      - Effect: Allow
-        Action: 
-          - dynamodb:Query
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CUSTOMER_TABLE}
-              
-              
-  CreateService:
-    handler: src/lambda/http/createService.handler
+  CreateItem:
+    handler: src/lambda/http/createitem.handler
     events:
       - http:
           method: post
-          path: createservice
+          path: item
           cors: true
           authorizer:
             type: COGNITO_USER_POOLS
             authorizerId:
               Ref: ApiGatewayAuthorizer
     iamRoleStatementsInherit: true
-    iamRoleStatementsName: ${self:service.name}-CreateService-Role-${self:provider.stage}
+    iamRoleStatementsName: ${self:service.name}-CreateItem-Role-${self:service.org}-${self:provider.stage}
     iamRoleStatements:
       - Effect: Allow
-        Action:
+        Action: 
           - dynamodb:PutItem
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.SERVICE_TABLE} 
+        Resource:  arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CUSTOMER_TABLE}
+      - Effect: Allow
+        Action: 
+          - dynamodb:PutItem
+        Resource:  arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.SERVICE_TABLE}
       - Effect: Allow
         Action:
           - dynamodb:PutItem
@@ -161,26 +79,139 @@ functions:
           - dynamodb:UpdateItem
           - dynamodb:GetItem
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.ATOMIC_TABLE}
+
+    
+  # CreateCustomer:
+  #   handler: src/lambda/http/createCustomer.handler
+  #   events:
+  #     - http:
+  #         method: post
+  #         path: createcustomer
+  #         cors: true
+  #         authorizer:
+  #           type: COGNITO_USER_POOLS
+  #           authorizerId:
+  #             Ref: ApiGatewayAuthorizer
+  #   iamRoleStatementsInherit: true
+  #   iamRoleStatementsName: ${self:service.name}-CreateCustomer-Role-${self:provider.stage}
+  #   iamRoleStatements:
+  #     - Effect: Allow
+  #       Action: 
+  #         - dynamodb:PutItem
+  #       Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CUSTOMER_TABLE}
   
-  AddComment:
-    handler: src/lambda/http/addComment.handler
-    events:
-      - http:
-          method: post
-          path: addcomment/{serviceID}
-          cors: true
-          authorizer:
-            type: COGNITO_USER_POOLS
-            authorizerId:
-              Ref: ApiGatewayAuthorizer
-    iamRoleStatementsInherit: true
-    iamRoleStatementsName: ${self:service.name}-addComment-Role-${self:provider.stage}
-    iamRoleStatements:
-      - Effect: Allow
-        Action:
-          - dynamodb:PutItem
-          - dynamodb:UpdateItem
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.SERVICE_TABLE} 
+  # UpdateCustomer:
+  #   handler: src/lambda/http/updateCustomer.handler
+  #   events:
+  #     - http:
+  #         method: patch
+  #         path: updatecustomer/{CustomerID}
+  #         cors: true
+  #         authorizer:
+  #           type: COGNITO_USER_POOLS
+  #           authorizerId:
+  #             Ref: ApiGatewayAuthorizer 
+  #   iamRoleStatementsInherit: true
+  #   iamRoleStatementsName: ${self:service.name}-updatecustomer-Role-${self:provider.stage}
+  #   iamRoleStatements:
+  #     - Effect: Allow
+  #       Action: 
+  #         - dynamodb:UpdateItem
+  #       Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CUSTOMER_TABLE}
+  
+  # AddUploadUrl:
+  #   handler: src/lambda/http/adduploadurl.handler
+  #   events:
+  #     - http:
+  #         method: post
+  #         path: files/{table}/{ID}/attachment
+  #         cors: true
+  #         authorizer:
+  #           type: COGNITO_USER_POOLS
+  #           authorizerId:
+  #             Ref: ApiGatewayAuthorizer 
+  #   iamRoleStatementsInherit: true
+  #   iamRoleStatementsName: ${self:service.name}-AddUploadUrl-Role-${self:provider.stage}
+  #   iamRoleStatements:
+  #     - Effect: Allow
+  #       Action:
+  #         - dynamodb:UpdateItem
+  #       Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CUSTOMER_TABLE}
+  #     - Effect: Allow
+  #       Action:
+  #           - dynamodb:UpdateItem
+  #       Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.SERVICE_TABLE}
+  #     - Effect: Allow
+  #       Action:
+  #         - s3:PutObject
+  #         - s3:GetObject
+  #       Resource: arn:aws:s3:::${self:provider.environment.BUCKET}/*
+
+  # GetCustomerbyID:
+  #   handler: src/lambda/http/getCustomerbyID.handler
+  #   events:
+  #     - http:
+  #         method: get
+  #         path: getcustomerbyid/{CustomerID}
+  #         cors: False
+  #         authorizer:
+  #           type: COGNITO_USER_POOLS
+  #           authorizerId:
+  #             Ref: ApiGatewayAuthorizer
+  #   iamRoleStatementsInherit: true
+  #   iamRoleStatementsName: ${self:service.name}-GetcustomerID-Role-${self:provider.stage}
+  #   iamRoleStatements:
+  #     - Effect: Allow
+  #       Action: 
+  #         - dynamodb:Query
+  #       Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CUSTOMER_TABLE}
+              
+              
+  # CreateService:
+  #   handler: src/lambda/http/createService.handler
+  #   events:
+  #     - http:
+  #         method: post
+  #         path: createservice
+  #         cors: true
+  #         authorizer:
+  #           type: COGNITO_USER_POOLS
+  #           authorizerId:
+  #             Ref: ApiGatewayAuthorizer
+  #   iamRoleStatementsInherit: true
+  #   iamRoleStatementsName: ${self:service.name}-CreateService-Role-${self:provider.stage}
+  #   iamRoleStatements:
+  #     - Effect: Allow
+  #       Action:
+  #         - dynamodb:PutItem
+  #       Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.SERVICE_TABLE} 
+  #     - Effect: Allow
+  #       Action:
+  #         - dynamodb:PutItem
+  #         - dynamodb:Query
+  #         - dynamodb:UpdateItem
+  #         - dynamodb:GetItem
+  #       Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.ATOMIC_TABLE}
+  
+  # AddComment:
+  #   handler: src/lambda/http/addComment.handler
+  #   events:
+  #     - http:
+  #         method: post
+  #         path: addcomment/{serviceID}
+  #         cors: true
+  #         authorizer:
+  #           type: COGNITO_USER_POOLS
+  #           authorizerId:
+  #             Ref: ApiGatewayAuthorizer
+  #   iamRoleStatementsInherit: true
+  #   iamRoleStatementsName: ${self:service.name}-addComment-Role-${self:provider.stage}
+  #   iamRoleStatements:
+  #     - Effect: Allow
+  #       Action:
+  #         - dynamodb:PutItem
+  #         - dynamodb:UpdateItem
+  #       Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.SERVICE_TABLE} 
 
 
 resources:
@@ -237,10 +268,10 @@ resources:
       Type: AWS::DynamoDB::Table
       Properties:
         AttributeDefinitions:
-          - AttributeName: companyName
+          - AttributeName: CompanyName
             AttributeType: S
         KeySchema:
-          - AttributeName: companyName
+          - AttributeName: CompanyName 
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
         TableName: ${self:provider.environment.ATOMIC_TABLE}
@@ -254,7 +285,7 @@ resources:
           - email
         Policies:
           PasswordPolicy:
-            MinimumLength: 6
+            MinimumLength: 8
             RequireLowercase: False
             RequireNumbers: True
             RequireSymbols: False 

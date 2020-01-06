@@ -1,6 +1,6 @@
 export interface CustomerRequest {
     Name: string
-    SiteNumber: number
+    SiteNumber: string
     Address: string
     City: string
     Province: string

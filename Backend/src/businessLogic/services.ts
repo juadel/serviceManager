@@ -3,11 +3,11 @@ import { APIGatewayProxyEvent } from "aws-lambda";
 import { ServiceItem } from "../models/service";
 
 import { ServiceRequest } from "../requests/serviceRequest";
-import { commentRequest } from "../requests/commentRequest"
+import { commentRequest } from "../requests/commentRequest";
 import { Service } from "../dataLogic/serviceLogic";
 import { createCounter } from "./counterLogic";
-import { isActiveCounter } from "./counterLogic"
-import { increaseCounter} from "./counterLogic"
+import { isActiveCounter } from "./counterLogic";
+import { increaseCounter} from "./counterLogic";
 
 
 

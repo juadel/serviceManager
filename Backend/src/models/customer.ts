@@ -2,13 +2,13 @@ export interface CustomerItem {
     
     CustomerID: string
     Name: string
-    SiteNumber: number
+    SiteNumber: string
     Address: string
     City: string
     Province: string
     PostalCode: string
     Phone: string
     ContactName: string
-    attachmentUrl?: string   
+    attachmentUrl?: Array<string>   
 }
   
