@@ -13,8 +13,10 @@ export async function createCustomer( event: APIGatewayProxyEvent ): Promise<Cus
   
   const customerId = uuid.v4();
     
-    const newCustomer: CustomerRequest = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
-    const createdCustomer = await CustomerItem.createCustomer(
+  const newCustomer: CustomerRequest = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
+  
+
+  const createdCustomer = await CustomerItem.createCustomer(
       { 
         
         CustomerID: customerId,
