@@ -47,3 +47,10 @@ export async function customerExist(event: APIGatewayProxyEvent): Promise<Boolea
   return exist;
 
 }
+
+export async function customerUrl(event: APIGatewayProxyEvent): Promise<string>{
+  const id = event.pathParameters.id;
+  const filename = event.queryStringParameters.filename;
+  const url = await customerItem.customerUrl(id, filename);
+  return url;
+}
