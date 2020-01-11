@@ -51,22 +51,17 @@ export async function addcomment(event: APIGatewayProxyEvent) {
   return result;
 }
 
-export async function addUploadUrl(event: APIGatewayProxyEvent ): Promise<string> {
-  let table : string 
-  if (event.pathParameters.table == "service"){
-      table = process.env.SERVICE_TABLE;
-  }else {
-     table = process.env.CUSTOMER_TABLE ;
-  };
-  const id = event.pathParameters.ID;
-  const generatedUrl= await serviceItem.signedUrl(table, id);
+export async function serviceUrl(event: APIGatewayProxyEvent ): Promise<string> { 
+  const id :string = event.pathParameters.id;
+  const filename: string = event.queryStringParameters.filename;
+  const generatedUrl= await serviceItem.serviceUrl(id, filename);
   return generatedUrl
   
 }
 
-export async function ticketExist(event: APIGatewayProxyEvent) : Promise<Boolean>{
+export async function serviceExist(event: APIGatewayProxyEvent) : Promise<Boolean>{
   const ticketId :string = event.pathParameters.id;
-  let exist : Boolean = await serviceItem.ticketExist(ticketId);
+  let exist : Boolean = await serviceItem.serviceExist(ticketId);
   return exist;
 }
 

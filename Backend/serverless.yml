@@ -51,11 +51,12 @@ provider:
 functions:
 
   CreateItem:
+    # Query String Parameters: "item" = service or customer
     handler: src/lambda/http/createItem.handler
     events:
       - http:
           method: post
-          path: item
+          path: item/{id}
           cors: true
           authorizer:
             type: COGNITO_USER_POOLS
@@ -104,11 +105,12 @@ functions:
         Resource:  arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.SERVICE_TABLE}
   
   AddUploadUrl:
+    # Query String Parameters : item = service or customer, filename ="string"
     handler: src/lambda/http/addUploadUrl.handler
     events:
       - http:
           method: post
-          path: item/{id}/{filename}
+          path: item/{id}
           cors: true
           authorizer:
             type: COGNITO_USER_POOLS

@@ -40,15 +40,15 @@ async addComment(ServiceID: string , comment: commentRequest){
         return commenttoadd;
     }
  
-async signedUrl(table: string, id: string): Promise<string>{
+async serviceUrl(id: string, filename: string): Promise<string>{
     const uploadUrl = this.S3.getSignedUrl("PutObject", {
         Bucket: this.bucket,
-        Key: id,
+        Key: filename,
         Expires: this.urlExp 
     });
     await this.docClient.update({
-        TableName: table,
-        Key: {id},
+        TableName: this.serviceTable,
+        Key: {ServiceID: id},
         UpdateExpression: "set attachmentUrl=:URL",
         ExpressionAttributeValues: {
             ":URL": uploadUrl.split("?")[0]
@@ -58,7 +58,7 @@ async signedUrl(table: string, id: string): Promise<string>{
     return uploadUrl;
   }
 
-async ticketExist(ticketId: string): Promise<Boolean>{
+async serviceExist(ticketId: string): Promise<Boolean>{
     const params = {
         ExpressionAttributeValues: {':id':ticketId},
         TableName: this.serviceTable,
