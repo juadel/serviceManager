@@ -27,10 +27,10 @@ async createService(service: ServiceItem ) : Promise<ServiceItem>{
     }
     
 async addComment(ServiceID: string , comment: commentRequest){
-    const CustomerID = "30";
+    
     const commenttoadd =await this.docClient.update({
             TableName: this.serviceTable,
-            Key: { ServiceID, CustomerID },
+            Key: {ServiceID: ServiceID},
             UpdateExpression: 'set Comments = list_append(Comments, :newComment)',
             ExpressionAttributeValues:{
                 ':newComment':[comment],

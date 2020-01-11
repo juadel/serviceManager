@@ -45,7 +45,7 @@ export async function createService( event: APIGatewayProxyEvent ): Promise<Serv
 }
 
 export async function addcomment(event: APIGatewayProxyEvent) {
-  const serviceID :string = event.pathParameters.serviceID;
+  const serviceID :string = event.pathParameters.id;
   const newcomment : commentRequest = typeof event.body === "string" ? JSON.parse(event.body) : event.body; 
   const result= await serviceItem.addComment(serviceID, newcomment);
   return result;
