@@ -48,18 +48,31 @@ async updateCustomer(CustomerID : string, updatedCustomer:CustomerRequest){
     return updateCustomer
 }
 
-async getCustomer_byID(CustomerID: string):Promise<CustomerRequest[]>{
-    const customer= await this.docClient.query({
+async getCustomerbyID(CustomerID: string):Promise<CustomerItem[]>{
+    const params ={
         TableName: this.customerTable,
         KeyConditionExpression: "CustomerID = :CustomerID",
-        ExpressionAttributeValues: {
-            ":CustomerID": CustomerID
-        }
-    }).promise();
+        ExpressionAttributeValues: {":CustomerID": CustomerID}
+    }
+    const customer= await this.docClient.query(params).promise();
     const cust = customer.Items;
-    return cust as CustomerRequest[];
+    return cust as CustomerItem[];
 }
 
+async customerExist(customerId: string) : Promise<Boolean>{
+    const params = {
+        ExpressionAttributeValues: {':id':customerId},
+        TableName: this.customerTable,
+        KeyConditionExpression: 'CustomerID = :id'
+    };
+    let exist: Boolean = false;
+    const result = await this.docClient.query(params).promise();
+
+    if (result.Count > 0){
+        exist = true;
+    }
+    return exist;
+  } 
 }
 
 

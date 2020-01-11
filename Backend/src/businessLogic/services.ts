@@ -1,13 +1,13 @@
 
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { ServiceItem } from "../models/service";
-
 import { ServiceRequest } from "../requests/serviceRequest";
 import { commentRequest } from "../requests/commentRequest";
 import { Service } from "../dataLogic/serviceLogic";
 import { createCounter } from "./counterLogic";
 import { isActiveCounter } from "./counterLogic";
 import { increaseCounter} from "./counterLogic";
+
 
 
 
@@ -64,4 +64,15 @@ export async function addUploadUrl(event: APIGatewayProxyEvent ): Promise<string
   
 }
 
+export async function ticketExist(event: APIGatewayProxyEvent) : Promise<Boolean>{
+  const ticketId :string = event.pathParameters.id;
+  let exist : Boolean = await serviceItem.ticketExist(ticketId);
+  return exist;
+}
 
+export async function getServicebyID(event: APIGatewayProxyEvent) : Promise<ServiceItem[]>{
+  const id : string = event.pathParameters.id;
+  const queryService = await serviceItem.getServicebyID(id);
+  return queryService as ServiceItem[];
+
+}

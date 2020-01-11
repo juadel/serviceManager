@@ -6,7 +6,7 @@ const AWS = AWSXRay.captureAWS(require('aws-sdk'));
 
 import { ServiceItem } from "../models/service"
 import { commentRequest } from "../requests/commentRequest";
-//import { } from 
+
 
 export class Service
 { constructor(
@@ -56,9 +56,33 @@ async signedUrl(table: string, id: string): Promise<string>{
         ReturnValues: "UPDATED_NEW"
     }).promise();
     return uploadUrl;
+  }
 
+async ticketExist(ticketId: string): Promise<Boolean>{
+    const params = {
+        ExpressionAttributeValues: {':id':ticketId},
+        TableName: this.serviceTable,
+        KeyConditionExpression: 'ServiceID = :id'
+    };
+    let exist: Boolean = false;
+    const result = await this.docClient.query(params).promise();
+
+    if (result.Count > 0){
+        exist = true;
+    }
+    return exist;
+  } 
+
+async getServicebyID(serviceId: string) : Promise<ServiceItem[]> {
+    const params = {
+        ExpressionAttributeValues: {':id': serviceId},
+        TableName: this.serviceTable,
+        KeyConditionExpression: 'ServiceID = :id'
+     };
+    const result = await this.docClient.query(params).promise();
+    const service = result.Items;
+    return service as ServiceItem[];
  }
-
 }
 
 function createDynamoDBClient() {
