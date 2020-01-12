@@ -31,11 +31,12 @@ async updateCustomer(CustomerID : string, updatedCustomer:CustomerRequest){
     const updateCustomer = await this.docClient.update({
         TableName: this.customerTable,
         Key: { CustomerID },
-        ExpressionAttributeNames: {"#N": "Name", "#A":"Address", "#C":"City", "#P":"PostalCode", "#Pr":"Province", "#Ph":"Phone", "#CN":"ContactName" },
+        ExpressionAttributeNames: {"#N": "Name","#S":"SiteNumber", "#A":"Address", "#C":"City", "#P":"PostalCode", "#Pr":"Province", "#Ph":"Phone", "#CN":"ContactName" },
         //ConditionExpression: '#N NE :name', //OR #A NE :address OR #C NE :city OR #P NE :postal OR #Pr NE :province OR #ph NE :phone OR #CN NE :contact',
-        UpdateExpression: 'set #N=:name, #A=:address, #C=:city, #P=:postal, #Pr=:province, #Ph=:phone, #CN =:contact',
+        UpdateExpression: 'set #N=:name, #S=:site, #A=:address, #C=:city, #P=:postal, #Pr=:province, #Ph=:phone, #CN =:contact',
         ExpressionAttributeValues:{
             ':name':updatedCustomer.Name,
+            ':site' :updatedCustomer.SiteNumber,
             ':address': updatedCustomer.Address,
             ':city': updatedCustomer.City,
             ':postal': updatedCustomer.PostalCode ,
