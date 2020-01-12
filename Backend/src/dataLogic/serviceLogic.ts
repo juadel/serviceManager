@@ -37,14 +37,14 @@ async addComment(ServiceID: string , comment: commentRequest){
         return commenttoadd;
     }
  
-async serviceUrl(id:string, filename: string): Promise<string>{
+async serviceUrl(ServiceID:string, filename: string): Promise<string>{
     const params ={Bucket: this.bucket, Key: filename, Expires: 60};
     const S3 = new AWS.S3({signatureVersion: 'v4'});
     const signedURL = S3.getSignedUrl('putObject', params);
       
     await this.docClient.update({
         TableName: this.serviceTable,
-        Key: {ServiceID: id},
+        Key: {ServiceID: ServiceID},
         UpdateExpression: "set attachmentUrl=:URL",
         ExpressionAttributeValues: {
             ":URL": signedURL.split("?")[0]
