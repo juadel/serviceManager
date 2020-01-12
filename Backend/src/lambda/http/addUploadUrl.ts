@@ -8,34 +8,34 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
      let exist : Boolean = await serviceExist(event);
      if (exist){
       
-      const Url = await serviceUrl(event);
-      return {
-          statusCode: 200,
-          headers: {
-              'Access-Control-Allow-Origin': '*',
-              'Access-Control-Allow-Credentials': true
-            },
-          body: JSON.stringify({msg:"Signed Url created",
-            Url
-          })
-        };
+        const Url = await serviceUrl(event);
+        return {
+            statusCode: 200,
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Credentials': true
+              },
+            body: JSON.stringify({msg:"Signed Url created", Url
+              
+            })
+          };
       }
   } else if (event.queryStringParameters.item == "customer"){
-    let exist : Boolean = await customerExist(event);
-     if (exist){
-      
-      const Url = await customerUrl(event);
-      return {
-          statusCode: 200,
-          headers: {
-              'Access-Control-Allow-Origin': '*',
-              'Access-Control-Allow-Credentials': true
-            },
-          body: JSON.stringify({msg:"Signed Url created",
-            Url
-          })
-        };
-      }
-  }
+      let exist : Boolean = await customerExist(event);
+      if (exist){
+        
+        const Url = await customerUrl(event);
+        return {
+            statusCode: 200,
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Credentials': true
+              },
+            body: JSON.stringify({msg:"Signed Url created",
+              Url
+            })
+          };
+        }
+    }
 
 }

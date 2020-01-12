@@ -1,10 +1,10 @@
 {
-  "name": "ServiceManager-backend",
+  "name": "service-manager-backend",
   "version": "1.0.0",
   "description": "Serverless webpack example using Typescript",
   "dependencies": {
     "@types/axios": "^0.14.0",
-    "aws-xray-sdk": "^2.5.0",
+    "aws-xray-sdk": "^2.2.0",
     "http-errors": "^1.7.2",
     "jsonwebtoken": "^8.5.1",
     "source-map-support": "^0.5.11",
