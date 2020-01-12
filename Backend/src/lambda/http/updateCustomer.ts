@@ -1,6 +1,6 @@
 import 'source-map-support/register';
 import { APIGatewayProxyEvent, APIGatewayProxyHandler, APIGatewayProxyResult } from 'aws-lambda';
-import {updateCustomer, customerExist} from '../../businessLogic/customers';
+import { updateCustomer, customerExist} from '../../businessLogic/customers';
 
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {

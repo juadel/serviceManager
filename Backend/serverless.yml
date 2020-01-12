@@ -98,11 +98,9 @@ functions:
       - Effect: Allow
         Action: 
           - dynamodb:UpdateItem
+          - dynamodb:Query
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CUSTOMER_TABLE}
-      - Effect: Allow
-        Action: 
-          - dynamodb:PutItem
-        Resource:  arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.SERVICE_TABLE}
+      
   
   AddUploadUrl:
     # Query String Parameters : item = service or customer, filename ="string"

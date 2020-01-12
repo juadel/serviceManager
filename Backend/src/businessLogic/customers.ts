@@ -28,7 +28,7 @@ export async function createCustomer( event: APIGatewayProxyEvent ): Promise<Cus
 }
 
 export async function updateCustomer(event: APIGatewayProxyEvent ){
-  const customerID = event.pathParameters.CustomerID;
+  const customerID = event.pathParameters.id;
   const updatedCustomer : CustomerRequest = typeof event.body === "string" ? JSON.parse(event.body) : event.body; 
   const newCustomer= await customerItem.updateCustomer(customerID, updatedCustomer);
   return newCustomer;

@@ -30,9 +30,8 @@ async createCustomer(customer: CustomerItem ) : Promise<CustomerItem>{
 async updateCustomer(CustomerID : string, updatedCustomer:CustomerRequest){
     const updateCustomer = await this.docClient.update({
         TableName: this.customerTable,
-        Key: { CustomerID },
+        Key: { CustomerID: CustomerID },
         ExpressionAttributeNames: {"#N": "Name","#S":"SiteNumber", "#A":"Address", "#C":"City", "#P":"PostalCode", "#Pr":"Province", "#Ph":"Phone", "#CN":"ContactName" },
-        //ConditionExpression: '#N NE :name', //OR #A NE :address OR #C NE :city OR #P NE :postal OR #Pr NE :province OR #ph NE :phone OR #CN NE :contact',
         UpdateExpression: 'set #N=:name, #S=:site, #A=:address, #C=:city, #P=:postal, #Pr=:province, #Ph=:phone, #CN =:contact',
         ExpressionAttributeValues:{
             ':name':updatedCustomer.Name,
@@ -62,9 +61,9 @@ async getCustomerbyID(CustomerID: string):Promise<CustomerItem[]>{
 
 async customerExist(customerId: string) : Promise<Boolean>{
     const params = {
-        ExpressionAttributeValues: {':id':customerId},
+        ExpressionAttributeValues: {":id" :customerId},
         TableName: this.customerTable,
-        KeyConditionExpression: 'CustomerID = :id'
+        KeyConditionExpression: "CustomerID = :id"
     };
     let exist: Boolean = false;
     const result = await this.docClient.query(params).promise();
