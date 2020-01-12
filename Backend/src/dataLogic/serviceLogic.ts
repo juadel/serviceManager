@@ -1,15 +1,14 @@
 import * as AWS from "aws-sdk";
-//import * as AWSXRay from "aws-xray-sdk";
 import { DocumentClient } from "aws-sdk/clients/dynamodb";
 import { ServiceItem } from "../models/service";
 import { commentRequest } from "../requests/commentRequest";
 
-//const XAWS = AWSXRay.captureAWS(AWS);
+
+
 
 export class Service
 { constructor(
     private docClient: DocumentClient = createDynamoDBClient(),
-    private S3 = createS3Bucket(),
     private serviceTable = process.env.SERVICE_TABLE,
     private bucket = process.env.BUCKET,
     //private urlExp = 300,
@@ -38,21 +37,22 @@ async addComment(ServiceID: string , comment: commentRequest){
         return commenttoadd;
     }
  
-async serviceUrl(id: string, filename: string): Promise<string>{
-    let params ={Bucket: this.bucket, Key: filename};
-    const uploadUrl = this.S3.getSignedUrl("PutObject", params);
-    
+async serviceUrl(id:string, filename: string): Promise<string>{
+    const params ={Bucket: this.bucket, Key: filename, Expires: 60};
+    const S3 = new AWS.S3({signatureVersion: 'v4'});
+    const signedURL = S3.getSignedUrl('putObject', params);
+      
     await this.docClient.update({
         TableName: this.serviceTable,
         Key: {ServiceID: id},
         UpdateExpression: "set attachmentUrl=:URL",
         ExpressionAttributeValues: {
-            ":URL": uploadUrl.split("?")[0]
+            ":URL": signedURL.split("?")[0]
         },
         ReturnValues: "UPDATED_NEW"
     }).promise();
-    return uploadUrl;
-  }
+       return signedURL;
+} 
 
 async serviceExist(ticketId: string): Promise<Boolean>{
     const params = {
@@ -90,10 +90,4 @@ function createDynamoDBClient() {
     });
   }
   return new AWS.DynamoDB.DocumentClient();
-}
-
-function createS3Bucket(){
-    return new AWS.S3({
-        signatureVersion: "v4"
-    });
 }

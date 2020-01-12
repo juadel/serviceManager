@@ -14,7 +14,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Credentials': true
             }, 
-            body: JSON.stringify({msg:" The Ticket requested is: ", ticket})
+            body: JSON.stringify({msg:" The Service requested is: ", ticket})
         }
 
     } else if (event.queryStringParameters.item == "customer"){
@@ -26,7 +26,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Credentials': true
             }, 
-            body: JSON.stringify({msg:" The Ticket requested is: ", customer})
+            body: JSON.stringify({msg:" The Customer requested is: ", customer})
         }
     } else {
         return {

@@ -53,17 +53,16 @@ export async function addcomment(event: APIGatewayProxyEvent) {
 
 export async function serviceUrl(event: APIGatewayProxyEvent ): Promise<string> { 
   
-  if (event.queryStringParameters !== null && event.queryStringParameters !== undefined) {
     if (event.queryStringParameters.filename !== undefined &&
         event.queryStringParameters.filename !== null &&
         event.queryStringParameters.filename !== "") {
   
         const filename: string = event.queryStringParameters.filename;
         const id :string = event.pathParameters.id;
-        //const generatedUrl= await serviceItem.serviceUrl(id, filename);
-        return JSON.stringify({msg:"The request could not be completed, File Name not provided",filename, id})
+        const generatedUrl= await serviceItem.serviceUrl(id, filename);
+        return generatedUrl
         }
-    } else{
+     else{
       return JSON.stringify({msg:"The request could not be completed, File Name not provided"})
     };
  }
