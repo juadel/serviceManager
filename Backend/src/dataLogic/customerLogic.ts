@@ -83,9 +83,9 @@ async customerUrl(id:string, filename: string) : Promise<string>{
     await this.docClient.update({
         TableName: this.customerTable,
         Key: {CustomerID: id},
-        UpdateExpression: "set attachmentUrl= list_append(attachmentUrl, :URL",
+        UpdateExpression: "set attachmentUrl= list_append(attachmentUrl, :URL)",
         ExpressionAttributeValues: {
-            ":URL": uploadUrl.split("?")[0]
+            ":URL": [uploadUrl.split("?")[0]]
         },
         ReturnValues: "UPDATED_NEW"
         }).promise();

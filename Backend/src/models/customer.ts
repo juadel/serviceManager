@@ -9,6 +9,6 @@ export interface CustomerItem {
     PostalCode: string
     Phone: string
     ContactName: string
-    attachmentUrl?: Array<string>   
+    attachmentUrl: Array<string>   
 }
   

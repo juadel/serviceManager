@@ -12,7 +12,7 @@ const customerItem = new Customer();
 export async function createCustomer( event: APIGatewayProxyEvent ): Promise<CustomerItem> {  
   
   const customerId = uuid.v4();
-    
+  const attachmentUrl =[];  
   const newCustomer: CustomerRequest = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
   
 
@@ -20,7 +20,7 @@ export async function createCustomer( event: APIGatewayProxyEvent ): Promise<Cus
       { 
         
         CustomerID: customerId,
-        
+        attachmentUrl: attachmentUrl,
         ...newCustomer
       }
     );

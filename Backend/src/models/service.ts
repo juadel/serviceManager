@@ -7,6 +7,6 @@ export interface ServiceItem {
     dueDate: string
     Status: boolean
     Comments: Array<string>
-    attachmentUrl?: Array<string>
+    attachmentUrl: Array<string>
   }
   

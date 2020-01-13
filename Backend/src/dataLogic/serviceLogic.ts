@@ -45,9 +45,9 @@ async serviceUrl(ServiceID:string, filename: string): Promise<string>{
     await this.docClient.update({
         TableName: this.serviceTable,
         Key: {ServiceID: ServiceID},
-        UpdateExpression: "set attachmentUrl= list_append(attachmentUrl, :URL",
+        UpdateExpression: "set attachmentUrl= list_append(attachmentUrl, :URL)",
         ExpressionAttributeValues: {
-            ":URL": signedURL.split("?")[0]
+            ":URL": [signedURL.split("?")[0]]
         },
         ReturnValues: "UPDATED_NEW"
     }).promise();

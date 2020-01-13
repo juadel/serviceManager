@@ -26,6 +26,7 @@ export async function createService( event: APIGatewayProxyEvent ): Promise<Serv
 
   const serviceId =count;
   const comments = [];
+  const attachmentUrl =[];
   const today = new Date();
   const dueDay= new Date();
   dueDay.setDate(dueDay.getDate()+5);
@@ -38,6 +39,7 @@ export async function createService( event: APIGatewayProxyEvent ): Promise<Serv
         dueDate: dueDay.toISOString(),
         Status: false,
         Comments: comments,
+        attachmentUrl: attachmentUrl,
         ...newService
       }
     );
