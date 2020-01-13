@@ -75,7 +75,7 @@ async customerExist(customerId: string) : Promise<Boolean>{
   } 
 
 async customerUrl(id:string, filename: string) : Promise<string>{
-    const uploadUrl = this.S3.getSignedUrl("PutObject", {
+    const uploadUrl = this.S3.getSignedUrl("putObject", {
         Bucket: this.bucket,
         Key: filename,
         Expires: this.urlExp 
