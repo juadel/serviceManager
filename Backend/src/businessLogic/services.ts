@@ -2,11 +2,11 @@
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { ServiceItem } from "../models/service";
 import { ServiceRequest } from "../requests/serviceRequest";
-import { commentRequest } from "../requests/commentRequest";
 import { Service } from "../dataLogic/serviceLogic";
 import { createCounter } from "./counterLogic";
 import { isActiveCounter } from "./counterLogic";
 import { increaseCounter} from "./counterLogic";
+import { brotliDecompressSync } from "zlib";
 
 
 
@@ -48,7 +48,12 @@ export async function createService( event: APIGatewayProxyEvent ): Promise<Serv
 
 export async function addcomment(event: APIGatewayProxyEvent) {
   const serviceID :string = event.pathParameters.id;
-  const newcomment : commentRequest = typeof event.body === "string" ? JSON.parse(event.body) : event.body; 
+  
+  const comment = JSON.parse(event.body)
+  let newcomment = "";
+  if(comment.Comments) newcomment=comment.Comments;
+  
+  
   const result= await serviceItem.addComment(serviceID, newcomment);
   return result;
 }

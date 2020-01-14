@@ -1,7 +1,7 @@
 import * as AWS from "aws-sdk";
 import { DocumentClient } from "aws-sdk/clients/dynamodb";
 import { ServiceItem } from "../models/service";
-import { commentRequest } from "../requests/commentRequest";
+
 
 
 
@@ -23,7 +23,7 @@ async createService(service: ServiceItem ) : Promise<ServiceItem>{
     return service
     }
     
-async addComment(ServiceID: string , comment: commentRequest){
+async addComment(ServiceID: string , comment: string){
     
     const commenttoadd =await this.docClient.update({
             TableName: this.serviceTable,
