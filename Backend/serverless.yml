@@ -87,7 +87,7 @@ functions:
       - http:
           method: patch
           path: customer/{id}
-          cors: true
+          cors: true      
           authorizer:
             type: COGNITO_USER_POOLS
             authorizerId:
@@ -109,7 +109,7 @@ functions:
       - http:
           method: patch
           path: item/{id}
-          cors: true
+          cors: true      
           authorizer:
             type: COGNITO_USER_POOLS
             authorizerId:
@@ -140,7 +140,7 @@ functions:
       - http:
           method: get
           path: item/{id}
-          cors: False
+          cors: true
           authorizer:
             type: COGNITO_USER_POOLS
             authorizerId:
@@ -182,6 +182,16 @@ functions:
 
 resources:
   Resources:
+    GatewayResponseDefault4XX:
+      Type: 'AWS::ApiGateway::GatewayResponse'
+      Properties: 
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: DEFAULT_4XX
+        RestApiId:
+          Ref: 'ApiGatewayRestApi'
+
     ServiceManagertable:
       Type: AWS::DynamoDB::Table 
       Properties:
