@@ -7,7 +7,7 @@ import Amplify from 'aws-amplify';
 import cognito from './Auth/Cognito';
 import { withAuthenticator, Authenticator, Greetings } from 'aws-amplify-react';
 import './App.css';
-import styled from 'styled-components';
+
 
 Amplify.configure(cognito);
 
@@ -20,19 +20,25 @@ class App extends Component {
   return (
     <div>
       
-      <Authenticator hideDefault={true}>
-        <Greetings 
-        inGreeting={(username) => 'Hello ' + username}
-        outGreeting="Welcome to Service Manager, Please sign in or Register..."
-        />
-        
-      </Authenticator>
-
-      <div clasName="App"> <Sidebar >
       
-      </Sidebar>
+
+      <div className="App">
+      
+          <div className="grid-container">
+          <Sidebar clasName="grid-sidebar" />
+            
+          
+          <div class="header" >
+            <Authenticator hideDefault={true}>
+                <Greetings inGreeting={(username) => 'Hello ' + username} outGreeting="Welcome to Service Manager, Please sign in or Register..."/>
+            </Authenticator>
+          </div>
+          
+          <div class="content"><Service serviceid="1"/></div>
+        </div>
+       
       </div>
-      <Service serviceid="1"/>
+      
         
       
       

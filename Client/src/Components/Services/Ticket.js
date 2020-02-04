@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components';
 
 const Styled = styled.div`
-    width: 40%;
+    width: 95%;
     margin: 16px ;
     border: 1px solid #eee;
     box-shadow: 0 2px 3px #ccc;
@@ -10,13 +10,12 @@ const Styled = styled.div`
     text-align: left;
    `;
 const IdNumber = styled.h1`
-    font-size: 0.5em;
+    font-size: 1em;
     text-align: right;
     color: black;
     `;
 const Wrapper = styled.section`
-    font-size: 0.5em;
-    background : lightgray;
+    font-size: 1em;
 
     `;
 
@@ -27,11 +26,11 @@ const ticket = (props) => {
        <Styled>
            
            <IdNumber>
-               <p>Ticket Number: {props.ServiceID}</p>
+               <p> Ticket Number: {props.ServiceID}</p>
             </IdNumber>
             <Wrapper>
-           <p>Title: {props.Title} </p>
-           <p>Description: {props.Description}</p>
+           <p> Title: {props.Title} </p>
+           <p> Description: {props.Description}</p>
            </Wrapper>
        </Styled>
    )
