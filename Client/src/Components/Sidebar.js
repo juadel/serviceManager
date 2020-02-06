@@ -12,13 +12,13 @@ const SidebarContainer = styled.div`
     height: 100vh;
     background-color: #252529;
     color: #fff;
-    @media (max-width: 375px) {
+    @media (max-width: 275px) {
         display: none;
      }
     `;
 const SidebarMenu = styled.ul`
     display: flex;
-    align-items: left;
+    align-items: center;
     flex-direction: column;
     list-style: none;
     width: 100%;
@@ -44,7 +44,7 @@ const Icon = styled.svg`
 const SidebarMenuItemLabel = styled.p`
         font-family: "Roboto", sans-serif;
         color: #fff;
-        font-size: 14px;
+        font-size: 20px;
         font-weight: 600;
         line-height: 1.3;
         text-align: center;
@@ -58,7 +58,7 @@ const MenuLogo = styled.div`
         align-items: center;
         justify-content: start;
         gap: 16px;
-        font-size: 18px;
+        font-size: 24px;
         line-height: 1.5;
         font-weight: 600;
         height: 45px;

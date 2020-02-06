@@ -34,7 +34,7 @@ class App extends Component {
             </Authenticator>
           </div>
           
-          <div class="content"><Service serviceid="1"/></div>
+          <div class="content"><Service serviceid="6"/></div>
         </div>
        
       </div>
