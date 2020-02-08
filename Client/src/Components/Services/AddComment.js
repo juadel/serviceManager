@@ -46,7 +46,10 @@ class NewComments extends Component{
 
     handleChange = event => {
         this.handleAuth();
-        this.setState({newComment : new Date() + 'by:' +this.state.user +event.target.value });
+        
+        const userlog = this.state.user;
+        console.log(this.state.user);
+        this.setState({newComment : {date: new Date(), By: userlog , text: event.target.value }});
 
     }
     handleSubmit = event => {

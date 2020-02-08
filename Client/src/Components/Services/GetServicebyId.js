@@ -8,13 +8,16 @@ import styled from 'styled-components';
 // import { Media, Form, FormGroup, FormControl, Button} from 'react-bootstrap';
 
 const CommentStyle = styled.div` 
-                    width: 690px;
-                    height: 100px;
-                    margin: 16px ;
-                    border: 1px solid #252525;
-                    box-shadow: 0 2px 3px #ccc;
-                    padding: 10px;
-                    text-align: left;
+        display: block;            
+        width: 690px;
+        height: 100px;
+        margin: 16px ;
+        border: 1px solid #252525;
+        box-shadow: 0 2px 3px #ccc;
+        padding: 10px;
+        text-align: left;
+        word-wrap: break-word;
+        overflow: auto;                    
                    
                 `;
 
@@ -54,7 +57,18 @@ class Service extends Component {
      const CommentsArray = this.state.Comments;
      const lstComments = CommentsArray.map((comment) =>  
             
-        <div key={new Date()}> <CommentStyle>{comment}</CommentStyle></div>
+        <div key={new Date()}> 
+        <CommentStyle>
+            <div>
+                Date: {comment['date']}
+            </div>
+            <div>
+                By: {comment['By']}
+            </div>
+            <p> {comment['text']} </p>
+            
+        </CommentStyle>
+        </div>
      ); 
      
        
