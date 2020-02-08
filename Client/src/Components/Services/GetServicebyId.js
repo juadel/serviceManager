@@ -18,7 +18,7 @@ class Service extends Component {
            ticket:[],
            Comments: []
        };
-       this.getService(this.props.serviceid);
+       this.getService(this.props.ServiceID);
        
    }
    

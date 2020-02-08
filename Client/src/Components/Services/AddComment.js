@@ -9,9 +9,11 @@ class NewComments extends Component{
         super(props);
         this.state ={
             isLoading: true,
-            newComment: '',
+            newComment: ''
+            
             
         };
+        this.handleSubmit = this.handleSubmit.bind(this);
         this.addComment = this.addComment.bind(this);
         this.handleChange =this.handleChange.bind(this);
     }
@@ -24,11 +26,18 @@ class NewComments extends Component{
                         'Authorization': `Bearer ${token.state.jwtToken}`}}
                         ).then(res => {})
                         .catch(e => console.log(e))
+        window.location ="/retrieve"
             
     }
 
-    handleChange(event){
+    handleChange = event => {
         this.setState({newComment : event.target.value});
+
+    }
+    handleSubmit = event => {
+        event.preventDefault();
+        this.addComment(this.props.ServiceID);
+        
 
     }
 
@@ -37,12 +46,12 @@ class NewComments extends Component{
                 
            return (
            <div>
-            <form onSubmit={this.addComment(this.props.ServiceID)}>
+            <form onSubmit={this.handleSubmit}>
                     <label>
-                        Add a Comment:
-                        <input type="text" name="Comment" onChange={this.handleChange}/>
+                        <div>Add a Comment:</div>
+                        <textarea rows="5" cols="50" type="text" name="Comment" onChange={this.handleChange}/>
                     </label>
-                    <input type = "Submit" value="Submit"/>
+                    <div><input type = "Submit" value="Submit"/></div>
             </form>
                 
            </div>        
