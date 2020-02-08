@@ -2,10 +2,21 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import getToken from '../../Auth/getToken'
 import Ticket from '../Services/Ticket'
+import styled from 'styled-components';
 // import { Auth } from 'aws-amplify';
 // import ReactLoading from 'react-loading'
 // import { Media, Form, FormGroup, FormControl, Button} from 'react-bootstrap';
 
+const CommentStyle = styled.div` 
+                    width: 690px;
+                    height: 100px;
+                    margin: 16px ;
+                    border: 1px solid #252525;
+                    box-shadow: 0 2px 3px #ccc;
+                    padding: 10px;
+                    text-align: left;
+                   
+                `;
 
 class Service extends Component {
 
@@ -41,9 +52,11 @@ class Service extends Component {
    
     render() {
      const CommentsArray = this.state.Comments;
-     const lstComments = CommentsArray.map((comment) => <li key={comment.toString()}> {comment}</li>
+     const lstComments = CommentsArray.map((comment) =>  
+            
+        <div key={new Date()}> <CommentStyle>{comment}</CommentStyle></div>
      ); 
-     console.log(CommentsArray)
+     
        
         return (
         <div>

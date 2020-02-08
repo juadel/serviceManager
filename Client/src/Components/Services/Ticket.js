@@ -46,7 +46,8 @@ const Customer = styled.div`
     position: absolute;
     bottom: 200px;
     right: 700px;
-    font-size: 1.5em;
+    font-size: 1em;
+    overflow: auto;
  `;
 
  const Attach = styled.div`
@@ -66,7 +67,8 @@ const Customer = styled.div`
     position: absolute;
     bottom: 15px;
     right: 900px;
-    font-size: 1em;
+    font-size: 14px;
+    
  `;
 
 const ticket = (props) => {

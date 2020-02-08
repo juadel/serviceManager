@@ -7,15 +7,19 @@ class getToken extends Component {
         super();
         this.state ={
             jwtToken :"",
+            user :""
                     };
         this.token();
     }
     async token(){
         
         await Auth.currentSession()
-                  .then(data => {this.state.jwtToken = data.idToken.jwtToken })
-                  .catch(e => console.log(e))
-        //console.log(this.state.jwtToken)
+                .then(data => {this.state.jwtToken = data.idToken.jwtToken })
+                .catch(e => console.log(e))
+        await Auth.currentAuthenticatedUser()
+                .then(user => {this.state.user = user.username})
+                .catch(e => console.log(e))
+                  //console.log(this.state.jwtToken)
         
         
     }
