@@ -28,13 +28,13 @@ class App extends Component {
           <Sidebar clasName="grid-sidebar" />
             
           
-          <div class="header" >
+          <div className="header" >
             <Authenticator hideDefault={true}>
                 <Greetings inGreeting={(username) => 'Hello ' + username} outGreeting="Welcome to Service Manager, Please sign in or Register..."/>
             </Authenticator>
           </div>
           
-          <div class="content"><Service serviceid="6"/></div>
+          <div className="content"><Service serviceid="6"/></div>
         </div>
        
       </div>

@@ -1,5 +1,7 @@
 import React from 'react'
 import styled from 'styled-components';
+import NewComment from './AddComment';
+import {Formik, Form, Field, ErrorMessage} from 'formik';
 
 const Styled = styled.div`
     width: 1500px;
@@ -61,8 +63,7 @@ const Customer = styled.div`
  `;
 
 const ticket = (props) => {
-
-
+   
    return (
        <Styled>
            
@@ -74,7 +75,11 @@ const ticket = (props) => {
             <p> Description: {props.Description}</p>
             
            </Wrapper>   
-           <Comments>Ticket Comments: {props.Comments} </Comments>
+           <Comments>Ticket Comments: {props.Comments} <NewComment ServiceID={props.ServiceID} />
+           
+                
+            
+            </Comments>
            <Attach>Ticket Files:</Attach>
        </Styled>
        
