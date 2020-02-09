@@ -22,14 +22,14 @@ class NewComments extends Component{
 
     async addComment(ServiceID){
         
-        await axios.post('https://b1h983jr2c.execute-api.ca-central-1.amazonaws.com/dev/service/'+ServiceID, {Comments: this.state.newComment },{headers: 
+        await axios.post('https://clnvbo2s2h.execute-api.ca-central-1.amazonaws.com/dev/service/'+ServiceID, {Comments: this.state.newComment },{headers: 
                         { 'Content-Type': 'application/json',
                         'Authorization': `Bearer ${this.state.jwtToken}`}}
                         ).then(res => {})
                         .catch(e => console.log(e));
         
         console.log(this.state.user)
-        window.location ="/retrieve";
+        window.location ="/results";
             
     }
     async handleAuth (){

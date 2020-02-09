@@ -1,27 +1,97 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import getToken from '../../Auth/getToken'
-import Ticket from '../Services/Ticket'
 import styled from 'styled-components';
+import NewComment from './AddComment';
 // import { Auth } from 'aws-amplify';
 // import ReactLoading from 'react-loading'
 // import { Media, Form, FormGroup, FormControl, Button} from 'react-bootstrap';
 
 const CommentStyle = styled.div` 
-        display: block;            
-        width: 690px;
-        height: 100px;
-        margin: 16px ;
-        border: 1px solid #252525;
-        box-shadow: 0 2px 3px #ccc;
-        padding: 10px;
-        text-align: left;
-        word-wrap: break-word;
-        overflow: auto;                    
-                   
-                `;
+    display: block;            
+    width: 690px;
+    height: 100px;
+    margin: 16px ;
+    border: 1px solid #252525;
+    box-shadow: 0 2px 3px #ccc;
+    padding: 10px;
+    text-align: left;
+    word-wrap: break-word;
+    overflow: auto;                    
+                  
+    `;
+const Styled = styled.div`
+    width: 1500px;
+    height: 900px;
+    margin: 16px ;
+    border: 1px solid #252529;
+    box-shadow: 0 2px 3px #252529;
+    padding: 10px;
+    text-align: left;
+    position: relative;
+   `;
+const IdNumber = styled.h1`
+    font-size: 1.2em;
+    text-align: right;
+    color: black;
+    `;
+const Wrapper = styled.section`
+    font-size: 1.5em;
+    font-family: 'Roboto', 'sans-serif';
+    color: black;
+    `;
+const Customer = styled.div`
+    width: 400px;
+    height: 200px;
+    margin: 16px ;
+    border: 1px solid #252529;
+    box-shadow: 0 2px 3px #ccc;
+    padding: 10px;
+    text-align: left;
+    position: absolute;
+    bottom: 645px;
+    right: 30px;
+    font-size: 1.5em;  
+    `;
+ const Comments = styled.div`
+    width: 750px;
+    height: 400px;
+    margin: 16px ;
+    border: 1px solid #252529;
+    box-shadow: 0 2px 3px #ccc;
+    padding: 10px;
+    text-align: left;
+    position: absolute;
+    bottom: 200px;
+    right: 700px;
+    font-size: 1em;
+    overflow: auto;
+ `;
 
-class Service extends Component {
+ const Attach = styled.div`
+    width: 650px;
+    height: 400px;
+    margin: 16px ;
+    border: 1px solid #252529;
+    box-shadow: 0 2px 3px #ccc;
+    padding: 10px;
+    text-align: left;
+    position: absolute;
+    bottom: 200px;
+    right: 20px;
+ `;
+
+ const NewCommentpos = styled.div`
+    position: absolute;
+    bottom: 25px;
+    right: 900px;
+    font-size: 14px;
+
+    
+ `;
+
+
+class GetServicebyID extends Component {
 
 
    
@@ -29,27 +99,44 @@ class Service extends Component {
        super(props);
        this.state ={
            isLoading: true,
+           searchText:"",
            ticket:[],
            Comments: []
        };
-       this.getService(this.props.ServiceID);
+       this.getService();
        
    }
-   
-   async getService(serviceid){
+
+   handleSearch = () => {
+    let searchText = this.props.location.state.searchText;
+    this.setState({
+      isLoading: false,
+      searchText: searchText
+    });
+  };
+
+  componentDidMount() {
+    this.handleSearch();
+  }
+
+  componentDidUpdate(prevProps) {
+    let prevSearch = prevProps.location.state.searchText;
+    let newSearch = this.props.location.state.searchText;
+    if (prevSearch !== newSearch) {
+      this.handleSearch();
+    }
+  }
+   async getService(){
        
         const token = new getToken();
         await token.token()
         console.log(token.state)
-        
-        await axios.get('https://b1h983jr2c.execute-api.ca-central-1.amazonaws.com/dev/item/'+serviceid+'?item=service', {headers: 
+        const searchID= this.state.searchText;
+        await axios.get('https://clnvbo2s2h.execute-api.ca-central-1.amazonaws.com/dev/item/'+searchID+'?item=service', {headers: 
                     { 'Content-Type': 'application/json',
                       'Authorization': `Bearer ${token.state.jwtToken}`}}
                       ).then(res => {this.setState({isLoading: false, ticket :res.data.ticket[0], Comments: res.data.ticket[0]['Comments']})})
-                      .catch(e => console.log(e))
-        
-        
-                      
+                      .catch(e => console.log(e))            
                                                                                
         }
    
@@ -74,12 +161,21 @@ class Service extends Component {
        
         return (
         <div>
-        <Ticket 
-            ServiceID = {this.state.ticket.ServiceID}
-            Title = {this.state.ticket.Title}
-            Description = {this.state.ticket.Description} 
-            CustomerID = {this.state.ticket.CustomerID}
-            Comments =  {lstComments} />
+    
+        <Styled>
+           
+           <IdNumber><p> Ticket Number: {this.state.ticket.ServiceID}</p></IdNumber>
+            <Customer> Customer : {this.state.ticket.CustomerID}</Customer>
+            <Wrapper>
+                
+            <p> Title: {this.state.ticket.Title} </p>
+            <p> Description: {this.state.ticket.Description}</p>
+            
+           </Wrapper>   
+           <Comments>Ticket Comments: {lstComments}</Comments>
+           <Attach>Ticket Files:</Attach>
+           <NewCommentpos><NewComment ServiceID ={this.state.ticket.ServiceID} /></NewCommentpos>
+        </Styled>
           
         </div>        
         )
@@ -89,4 +185,4 @@ class Service extends Component {
 
     
    
-export default Service;
+export default GetServicebyID;

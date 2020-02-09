@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import getToken from '../../Auth/getToken'
-import Ticket from '../Services/Ticket'
 import styled from 'styled-components';
 
 class Services extends Component{
