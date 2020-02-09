@@ -4,6 +4,7 @@ import {Ticket} from "styled-icons/remix-fill/Ticket";
 import {Dashboard} from 'styled-icons/remix-line/Dashboard';
 import {Clipboard} from 'styled-icons/fa-solid/Clipboard';
 import {Office} from 'styled-icons/icomoon/Office';
+import Services from './Services/Services';
 
 const SidebarContainer = styled.div`
     display: flex;
@@ -42,7 +43,7 @@ const Icon = styled.svg`
         height: 20px;
     `;
 const SidebarMenuItemLabel = styled.p`
-        font-family: "Roboto", sans-serif;
+        font-family: 'Roboto', 'sans-serif';
         color: #fff;
         font-size: 20px;
         font-weight: 600;
@@ -95,7 +96,7 @@ class Sidebar extends Component {
                               <Icon> <DashboardICon/></Icon>
                               <SidebarMenuItemLabel>Dashboard</SidebarMenuItemLabel>
                               </SidebarMenuItem>
-                              <SidebarMenuItem>
+                              <SidebarMenuItem >
                               <Icon><TicketICon/></Icon>
                               <SidebarMenuItemLabel>Services</SidebarMenuItemLabel>
                               </SidebarMenuItem>

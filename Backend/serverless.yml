@@ -257,8 +257,13 @@ resources:
       Properties: 
         MfaConfiguration: OFF
         UserPoolName: ${self:provider.environment.USER_POOL}
-        UsernameAttributes:
+        AliasAttributes:
+          - preferred_username
           - email
+        
+        AutoVerifiedAttributes:
+          - email
+          
         Policies:
           PasswordPolicy:
             MinimumLength: 8

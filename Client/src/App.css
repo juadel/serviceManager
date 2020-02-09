@@ -42,3 +42,16 @@
   background-color: rgb(179, 179, 184);
 }
 
+.btn-search{
+  color: #eb7f1b;
+  
+  background-color: rgb(255, 255, 255);
+  
+  border-color: rgb(247, 134, 6);
+    
+}
+
+.btn-search:hover{
+  background-color: #eb7f1b;
+  border-color: rgb(255, 255, 255);
+}

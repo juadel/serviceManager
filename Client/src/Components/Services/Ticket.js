@@ -20,6 +20,8 @@ const IdNumber = styled.h1`
     `;
 const Wrapper = styled.section`
     font-size: 1.5em;
+    font-family: 'Roboto', 'sans-serif';
+    color: black;
     `;
 const Customer = styled.div`
     width: 400px;
@@ -33,8 +35,7 @@ const Customer = styled.div`
     bottom: 645px;
     right: 30px;
     font-size: 1.5em;  
-
-        `;
+    `;
  const Comments = styled.div`
     width: 750px;
     height: 400px;
@@ -65,9 +66,10 @@ const Customer = styled.div`
 
  const NewCommentpos = styled.div`
     position: absolute;
-    bottom: 15px;
+    bottom: 25px;
     right: 900px;
     font-size: 14px;
+
     
  `;
 
