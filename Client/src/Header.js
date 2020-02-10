@@ -33,7 +33,7 @@ class Header extends React.Component{
           }
         });
       } else {
-        alert("Please enter some search text!");
+        alert("Please enter a Ticket Number");
       }
     };
 
@@ -60,7 +60,7 @@ class Header extends React.Component{
               <Nav.Link onClick={this.handleRoute("/Customers")}>Customers</Nav.Link>
             </Nav>
             <Form inline  >
-              <FormControl type="text" placeholder="Search" className="mr-sm-2" onChange={this.handleSearchInput}/>
+              <FormControl type="text" placeholder="Search" className="mr-sm-2" value={this.state.searchText} onChange={this.handleSearchInput}/>
               <Button className="btn-search" variant="outline-info" onClick={this.handleSearchSubmit} >Search</Button>
             </Form>
             </Navbar.Collapse>

@@ -39,10 +39,10 @@ class GetCustomerbyID extends Component {
 
         return(
             <div>
-               <p>{this.state.customer.Name} Site: {this.state.customer.SiteNumber}</p>
+               <p>{this.state.customer.Name}  / Site: {this.state.customer.SiteNumber}</p>
                <p>{this.state.customer.Address},  {this.state.customer.City}, {this.state.customer.Province} </p>
                <p>{this.state.customer.PostalCode}</p>
-               <p> Contact: {this.state.customer.ContactName}, Phone : {this.state.customer.Phone}</p>
+               <p> Contact: {this.state.customer.ContactName}, / Phone : {this.state.customer.Phone}</p>
                
 
             </div>

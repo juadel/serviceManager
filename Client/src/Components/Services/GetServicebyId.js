@@ -92,7 +92,7 @@ const Customer = styled.div`
  `;
 
 
-class GetServicebyID extends Component {
+class GetServicebyID extends React.Component {
 
 
    
@@ -102,9 +102,10 @@ class GetServicebyID extends Component {
            isLoading: true,
            searchText:"",
            ticket:[],
-           Comments: []
+           Comments: [],
+           
        };
-       this.getService();
+       
        
    }
 
@@ -114,6 +115,7 @@ class GetServicebyID extends Component {
       isLoading: false,
       searchText: searchText
     });
+    this.getService();
   };
 
   componentDidMount() {
@@ -147,7 +149,7 @@ class GetServicebyID extends Component {
      const CommentsArray = this.state.Comments;
      const lstComments = CommentsArray.map((comment) =>  
             
-        <div key={new Date()}> 
+        <div key={CommentsArray.indexOf[comment]}> 
         <CommentStyle>
             <div>
                 Date: {comment['date']}
