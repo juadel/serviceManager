@@ -171,6 +171,10 @@ class GetServicebyID extends React.Component {
         </CommentStyle>
         </div>
      ); 
+     let id= null;
+     if (this.state.CustomerId){
+         id = <GetCustomerbyID searchID={this.state.CustomerId}/>
+     }
      
        
         return (
@@ -179,7 +183,7 @@ class GetServicebyID extends React.Component {
         <Styled>
            
            <IdNumber><p> Ticket Number: {this.state.ticket.ServiceID}</p></IdNumber>
-            <Customer> Customer : <GetCustomerbyID searchID={this.state.CustomerId}/></Customer>
+            <Customer> Customer {id}:</Customer>
             <Wrapper>
                 
             <p> Title: {this.state.ticket.Title} </p>
