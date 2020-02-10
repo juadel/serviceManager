@@ -52,7 +52,7 @@ const Customer = styled.div`
     position: absolute;
     bottom: 645px;
     right: 30px;
-    font-size: 1.5em;  
+    font-size: 1em;  
     `;
  const Comments = styled.div`
     width: 750px;

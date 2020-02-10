@@ -10,25 +10,28 @@ class GetCustomerbyID extends Component {
     super(props);
     this.state ={
         isLoading: true,
-        customer :[]
+        CustomerID :"c18200e2-e410-4725-837f-12dbb82369de",
+        customer :[],
     };
-    this.getCustomer(this.props.searchID);
+    this.getCustomer();
     
     
 }
-    async getCustomer(searchID){
-       
+    async getCustomer(){
+        
+        
+        console.log(this.state.CustomerID)
         const token = new getToken();
         await token.token()
         console.log(token.state)
-        console.log(searchID)
         
-        await axios.get('https://clnvbo2s2h.execute-api.ca-central-1.amazonaws.com/dev/item/'+searchID+'?item=customer', {headers: 
+        
+        await axios.get('https://clnvbo2s2h.execute-api.ca-central-1.amazonaws.com/dev/item/'+this.state.CustomerID+'?item=customer', {headers: 
                     { 'Content-Type': 'application/json',
                       'Authorization': `Bearer ${token.state.jwtToken}`}}
-                      ).then(res => {this.setState({isLoading: false, customer :res.data.Customer})})
-                      .catch(e => console.log(e))            
-                                                                               
+                    ).then(res => {this.setState({customer : res.data.customer[0]})})
+                    .catch(e => console.log(e))            
+        console.log(this.state.customer)                                                                       
         }
     
     render (){
@@ -36,7 +39,12 @@ class GetCustomerbyID extends Component {
 
         return(
             <div>
-                {this.state.customer}
+               <p>{this.state.customer.Name} Site: {this.state.customer.SiteNumber}</p>
+               <p>{this.state.customer.Address},  {this.state.customer.City}, {this.state.customer.Province} </p>
+               <p>{this.state.customer.PostalCode}</p>
+               <p> Contact: {this.state.customer.ContactName}, Phone : {this.state.customer.Phone}</p>
+               
+
             </div>
         )
     }
