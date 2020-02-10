@@ -3,6 +3,7 @@ import axios from 'axios';
 import getToken from '../../Auth/getToken'
 import styled from 'styled-components';
 import NewComment from './AddComment';
+import GetCustomerbyID from '../Customer/GetCustomerbyId';
 // import { Auth } from 'aws-amplify';
 // import ReactLoading from 'react-loading'
 // import { Media, Form, FormGroup, FormControl, Button} from 'react-bootstrap';
@@ -139,6 +140,8 @@ class GetServicebyID extends Component {
                       .catch(e => console.log(e))            
                                                                                
         }
+
+   
    
     render() {
      const CommentsArray = this.state.Comments;
@@ -165,7 +168,7 @@ class GetServicebyID extends Component {
         <Styled>
            
            <IdNumber><p> Ticket Number: {this.state.ticket.ServiceID}</p></IdNumber>
-            <Customer> Customer : {this.state.ticket.CustomerID}</Customer>
+            <Customer> Customer : <GetCustomerbyID searchID ={this.state.ticket.CustomerID}/></Customer>
             <Wrapper>
                 
             <p> Title: {this.state.ticket.Title} </p>
