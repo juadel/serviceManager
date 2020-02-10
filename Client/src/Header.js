@@ -3,12 +3,9 @@ import {Button} from 'react-bootstrap';
 import Customers from  './Components/Customer/Customers'
 import GetServicebyID from './Components/Services/GetServicebyId';
 import Services from './Components/Services/Services';
-//import Sidebar from './Components/Sidebar';
 import {BrowserRouter, Route, Switch, withRouter} from 'react-router-dom';
 import {Nav, Navbar, Form, FormControl} from 'react-bootstrap';
-import Amplify from 'aws-amplify';
-import cognito from './Auth/Cognito';
-import { withAuthenticator, Authenticator, Greetings } from 'aws-amplify-react';
+import { Authenticator, Greetings } from 'aws-amplify-react';
 import './App.css';
 
 

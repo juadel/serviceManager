@@ -103,6 +103,7 @@ class GetServicebyID extends React.Component {
            searchText:"",
            ticket:[],
            Comments: [],
+           CustomerId: ""
            
        };
        
@@ -138,14 +139,22 @@ class GetServicebyID extends React.Component {
         await axios.get('https://clnvbo2s2h.execute-api.ca-central-1.amazonaws.com/dev/item/'+searchID+'?item=service', {headers: 
                     { 'Content-Type': 'application/json',
                       'Authorization': `Bearer ${token.state.jwtToken}`}}
-                      ).then(res => {this.setState({isLoading: false, ticket :res.data.ticket[0], Comments: res.data.ticket[0]['Comments']})})
-                      .catch(e => console.log(e))            
+                      ).then(res => {this.setState({ 
+                                        isLoading: false, ticket :res.data.ticket[0], 
+                                        Comments: res.data.ticket[0]['Comments'],
+                                        CustomerId:res.data.ticket[0]['CustomerID'] });
+                                        
+                                    })
+                      .catch(e => {console.log(e); alert("No ticket has been found")})   
+                            
                                                                                
         }
 
    
    
     render() {
+     console.log(this.state.CustomerId) 
+    
      const CommentsArray = this.state.Comments;
      const lstComments = CommentsArray.map((comment) =>  
             
@@ -170,7 +179,7 @@ class GetServicebyID extends React.Component {
         <Styled>
            
            <IdNumber><p> Ticket Number: {this.state.ticket.ServiceID}</p></IdNumber>
-            <Customer> Customer : <GetCustomerbyID searchID ={this.state.ticket.CustomerID}/></Customer>
+            <Customer> Customer : <GetCustomerbyID searchID={this.state.CustomerId}/></Customer>
             <Wrapper>
                 
             <p> Title: {this.state.ticket.Title} </p>
@@ -179,7 +188,7 @@ class GetServicebyID extends React.Component {
            </Wrapper>   
            <Comments>Ticket Comments: {lstComments}</Comments>
            <Attach>Ticket Files:</Attach>
-           <NewCommentpos><NewComment ServiceID ={this.state.ticket.ServiceID} /></NewCommentpos>
+           <NewCommentpos><NewComment ServiceID={this.state.ticket.ServiceID} /></NewCommentpos>
         </Styled>
           
         </div>        
