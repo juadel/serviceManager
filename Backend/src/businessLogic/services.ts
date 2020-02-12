@@ -6,7 +6,6 @@ import { Service } from "../dataLogic/serviceLogic";
 import { createCounter } from "./counterLogic";
 import { isActiveCounter } from "./counterLogic";
 import { increaseCounter} from "./counterLogic";
-import { brotliDecompressSync } from "zlib";
 
 
 
@@ -35,7 +34,7 @@ export async function createService( event: APIGatewayProxyEvent ): Promise<Serv
       dueDay.setDate(dueDay.getDate()+5);
     } else if (newService.PriorityLevel === "Level 1 (3 days)"){
       dueDay.setDate(dueDay.getDate()+3);
-    } else if (newService.PriorityLevel === "Level 2 (next days)"){
+    } else if (newService.PriorityLevel === "Level 2 (next day)"){
       dueDay.setDate(dueDay.getDate()+1);
     }
 
@@ -46,7 +45,6 @@ export async function createService( event: APIGatewayProxyEvent ): Promise<Serv
         ServiceID: serviceId,
         createdAt: today.toISOString(),
         dueDate: dueDay.toISOString(),
-        Status: "create",
         Comments: comments,
         attachmentUrl: attachmentUrl,
         ...newService

@@ -3,7 +3,7 @@ import axios from 'axios';
 import getToken from '../../Auth/getToken'
 import styled from 'styled-components';
 import NewComment from './AddComment';
-import GetCustomerbyID from '../Customer/GetCustomerbyId';
+
 // import { Auth } from 'aws-amplify';
 // import ReactLoading from 'react-loading'
 // import { Media, Form, FormGroup, FormControl, Button} from 'react-bootstrap';
@@ -92,7 +92,7 @@ const Customer = styled.div`
  `;
 
 
-class GetServicebyID extends React.Component {
+class GetServicebyID extends Component {
 
 
    
@@ -100,52 +100,74 @@ class GetServicebyID extends React.Component {
        super(props);
        this.state ={
            isLoading: true,
-           searchText:"",
+           
            ticket:[],
            Comments: [],
-           CustomerId: ""
+           CustomerId: "", CustomerName: "", SiteNumber:"", Address:"", City:"", Province:"",PostalCode:"", ContactName:"", Phone:"",
            
        };
        
        
    }
 
-   handleSearch = () => {
-    let searchText = this.props.location.state.searchText;
-    this.setState({
-      isLoading: false,
-      searchText: searchText
-    });
-    this.getService();
+   handleSearch() {
+    
+        let newSearchText = this.props.location.state.searchText;
+        console.log(newSearchText);
+        
+        this.getItem(newSearchText,"service");
+        console.log(this.state.searchText);
+        
   };
 
   componentDidMount() {
-    this.handleSearch();
+   
+    this.handleSearch()
   }
 
   componentDidUpdate(prevProps) {
     let prevSearch = prevProps.location.state.searchText;
     let newSearch = this.props.location.state.searchText;
     if (prevSearch !== newSearch) {
-      this.handleSearch();
-    }
+        
+        console.log(this.state.searchText)
+        this.handleSearch()
+        
+    } 
   }
-   async getService(){
+   async getItem(ID, type){
        
         const token = new getToken();
         await token.token()
         console.log(token.state)
-        const searchID= this.state.searchText;
-        await axios.get('https://clnvbo2s2h.execute-api.ca-central-1.amazonaws.com/dev/item/'+searchID+'?item=service', {headers: 
+        
+        await axios.get('https://clnvbo2s2h.execute-api.ca-central-1.amazonaws.com/dev/item/'+ID+'?item='+type, {headers: 
                     { 'Content-Type': 'application/json',
                       'Authorization': `Bearer ${token.state.jwtToken}`}}
-                      ).then(res => {this.setState({ 
+                      ).then(res => {
+                                        if (type==="service"){
+                                        this.setState({ 
                                         isLoading: false, ticket :res.data.ticket[0], 
                                         Comments: res.data.ticket[0]['Comments'],
                                         CustomerId:res.data.ticket[0]['CustomerID'] });
+                                        this.getItem(this.state.CustomerId,"customer")
+                                        } else {
+                                            this.setState({
+                                                CustomerName: res.data.customer[0]['Name'], 
+                                                SiteNumber: res.data.customer[0]['SiteNumber'],
+                                                Address: res.data.customer[0]['Address'],
+                                                City: res.data.customer[0]['City'],
+                                                Province: res.data.customer[0]['Province'],
+                                                PostalCode: res.data.customer[0]['PostalCode'], 
+                                                ContactName: res.data.customer[0]['ContactName'],
+                                                Phone: res.data.customer[0]['Phone'],
+                                            })
+
+                                        }
                                         
                                     })
-                      .catch(e => {console.log(e); alert("No ticket has been found")})   
+                      .catch(e => {console.log(e); alert("No Ticket or Customer has been found")})  
+        //window.location ="/results"; 
                             
                                                                                
         }
@@ -153,7 +175,7 @@ class GetServicebyID extends React.Component {
    
    
     render() {
-     console.log(this.state.CustomerId) 
+     //console.log(this.state.CustomerId) 
     
      const CommentsArray = this.state.Comments;
      const lstComments = CommentsArray.map((comment) =>  
@@ -170,11 +192,7 @@ class GetServicebyID extends React.Component {
             
         </CommentStyle>
         </div>
-     ); 
-     let id= null;
-     if (this.state.CustomerId){
-         id = <GetCustomerbyID searchID={this.state.CustomerId}/>
-     }
+        ); 
      
        
         return (
@@ -183,7 +201,15 @@ class GetServicebyID extends React.Component {
         <Styled>
            
            <IdNumber><p> Ticket Number: {this.state.ticket.ServiceID}</p></IdNumber>
-            <Customer> Customer {id}:</Customer>
+            <Customer> Customer: 
+            <div>
+               <p>{this.state.CustomerName}  / Site: {this.state.SiteNumber}</p>
+               <p>{this.state.Address},  {this.state.City}, {this.state.Province} </p>
+               <p>{this.state.PostalCode}</p>
+               <p> Contact: {this.state.ContactName}, / Phone : {this.state.Phone}</p>
+            </div>
+
+            </Customer>
             <Wrapper>
                 
             <p> Title: {this.state.ticket.Title} </p>

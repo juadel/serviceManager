@@ -7,5 +7,7 @@ export interface ServiceRequest {
     Description: string
     PriorityLevel: string
     CreatedBy: string
+    Status: string
+
     
   }

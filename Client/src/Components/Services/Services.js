@@ -35,6 +35,7 @@ const ServiceStyle = styled.div`
     right: 2px;                  
                   
     `;
+    //position: absolute;
 
 class Services extends Component{
 
@@ -42,8 +43,12 @@ class Services extends Component{
         super(props);
         this.state={
             chkNewCustomer: false,
-            Customer : {CustomerName: "", SiteNumber:"", Address:"", City:"", Province:"",PostalCode:"", ContactName:"", Phone:""},
-            Service : []
+            CustomerName: "", SiteNumber:"", Address:"", City:"", Province:"",PostalCode:"", ContactName:"", Phone:"", CustomerID:"",
+            Title: "", Description:"", Status:"", PriorityLevel:"", CreatedBy:"",
+            jwtToken:"",
+            CustomMessage:"",
+            user:""
+
 
         };
 
@@ -58,21 +63,79 @@ class Services extends Component{
 
     }
 
-    handleCustomerSubmit =() =>{
-        //console.log(this.state.Customer)
-
-
-    }
-    handleCustomerImput = event => {
+    handleCustomerSubmit =event =>{
+        //console.log(this.state.Customer);
+        const newCustomer = {
+            Name: this.state.CustomerName,
+            SiteNumber : this.state.SiteNumber,
+            Address: this.state.Address,
+            City: this.state.City,
+            Province: this.state.Province,
+            Phone: this.state.Phone,
+            PostalCode: this.state.PostalCode,
+            ContactName: this.state.ContactName
+           }
+        this.createItem(newCustomer,"customer");
+        event.preventDefault();
         
+    }
+
+    handleServiceSubmit = event =>{
+        const newService= {
+            CustomerID: this.state.CustomerID,
+            Title: this.state.Title, 
+            Description: this.state.Description,
+            Status: this.state.Status, 
+            PriorityLevel: this.state.PriorityLevel, 
+            CreatedBy: this.state.user
+        }
+        this.createItem(newService,"service");
+        event.preventDefault();
+    }
+
+    handleImput = event => {
+        this.handleAuth();
         const target = event.target;
         const value = target.value;
         const name = target.name;
         
-        this.setState({Customer:{[name] : value }});
-        console.log(this.state.Customer)
-        
+        this.setState({[name] : value });
     }
+    
+    
+    async handleAuth (){
+        const token = new getToken();
+        await token.token()
+        this.setState({
+            user: token.state.user, 
+            jwtToken: token.state.jwtToken
+        })  
+    } 
+    
+    async createItem(NewItem, type ){
+        
+        console.log(NewItem);
+        await axios.post('https://clnvbo2s2h.execute-api.ca-central-1.amazonaws.com/dev/item?item='+type, 
+                        NewItem,
+                        {headers: 
+                            { 'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${this.state.jwtToken}`}
+                        }
+                            ).then(res => {
+                                if (type==="customer"){
+                                this.setState({CustomerID:res.data.item.CustomerID, CustomMessage: "Customer has been Created."})
+                                ;console.log(res.data.item.CustomerID)
+                                }else {
+                                     this.setState({CustomMessage: "Service has been Created."})
+                                }
+                            })
+                            .catch(e => {alert("Customer not created",e); console.log(e)});
+        
+        //window.location ="/Services";
+    }
+
+        
+    
 
     render() {
         
@@ -87,17 +150,18 @@ class Services extends Component{
             <div>
                 <div>Create new Ticket</div>
                 <ServiceStyle>
-                <Form>
+                <Form onSubmit ={this.handleServiceSubmit}>
                 <Form.Row>
                     <Form.Group as={Col} controlId="formGridTtitle">
                     <Form.Label>Title</Form.Label>
-                    <Form.Control type="Title" />
+                    <Form.Control type="Title" name="Title" onChange = {this.handleImput}/>
                     </Form.Group>
                 </Form.Row>
                 <Form.Row>
                     <Form.Group as={Col} controlId="formGridPrioritty">
                     <Form.Label>Priority Level</Form.Label>
-                    <Form.Control as="select" >
+                    <Form.Control as="select" name="PriorityLevel" onChange = {this.handleImput}>
+                        <option>...Choose</option>
                         <option>Normal (5 days)</option>
                         <option>Level 1 (3 days)</option>
                         <option>Level 2 (next day)</option>
@@ -107,14 +171,15 @@ class Services extends Component{
 
                     <Form.Group as={Col} controlId="formGridStatus">
                     <Form.Label>Status</Form.Label>
-                    <Form.Control as="select">
+                    <Form.Control as="select" name="Status" onChange = {this.handleImput}>
+                        <option>...Choose</option>
                         <option>Create</option>
                     </Form.Control>
                     </Form.Group>
                 </Form.Row>
                 <Form.Group controlId="description">
                     <Form.Label>Description:</Form.Label>
-                    <Form.Control as="textarea" rows="10" placeholder="Enter a brief description for this ticket" />
+                    <Form.Control as="textarea" rows="10" placeholder="Enter a brief description for this ticket" name="Description" onChange = {this.handleImput}/>
                 </Form.Group>
 
                 <Button variant="primary" type="submit">
@@ -128,28 +193,28 @@ class Services extends Component{
                 <Form.Row>
                     <Form.Group as={Col} controlId="CustomerName" >
                     <Form.Label>Customer</Form.Label>
-                    <Form.Control type="text" placeholder="Select Customer" onChange = {this.handleCustomerImput} name="CustomerName"/>
+                    <Form.Control type="text" placeholder="Select Customer" onChange = {this.handleImput} name="CustomerName"/>
                     </Form.Group>
 
                     <Form.Group as={Col} controlId="SiteNumber">
                     <Form.Label>Site Number:</Form.Label>
-                    <Form.Control type="Site" placeholder="Site Number" onChange = {this.handleCustomerImput} name="SiteNumber"/>
+                    <Form.Control type="Site" placeholder="Site Number" onChange = {this.handleImput} name="SiteNumber"/>
                     </Form.Group>
                 </Form.Row>
 
                 <Form.Group controlId="Address">
                     <Form.Label>Address</Form.Label>
-                    <Form.Control placeholder="1234 Main St" onChange = {this.handleCustomerImput} name="Address" />
+                    <Form.Control placeholder="1234 Main St" onChange = {this.handleImput} name="Address" />
                 </Form.Group>
                 <Form.Row>
                     <Form.Group as={Col} controlId="City">
                     <Form.Label>City</Form.Label>
-                    <Form.Control onChange = {this.handleCustomerImput} name="City"/>
+                    <Form.Control onChange = {this.handleImput} name="City"/>
                     </Form.Group>
 
                     <Form.Group as={Col} controlId="Province">
                     <Form.Label>Province</Form.Label>
-                    <Form.Control as="select" onChange = {this.handleCustomerImput} name="Province">
+                    <Form.Control as="select" onChange = {this.handleImput} name="Province">
                         <option>Choose...</option>
                         <option>Alberta</option>
                         <option>British Columbia</option>
@@ -158,17 +223,17 @@ class Services extends Component{
 
                     <Form.Group as={Col} controlId="PostalCode">
                     <Form.Label>Postal Code</Form.Label>
-                    <Form.Control onChange = {this.handleCustomerImput} name="PostalCode"/>
+                    <Form.Control onChange = {this.handleImput} name="PostalCode"/>
                     </Form.Group>
                 </Form.Row>
                 <Form.Row>
                     <Form.Group as={Col} controlId="ContactName">
                         <Form.Label>Contact Name:</Form.Label>
-                        <Form.Control placeholder="Name:" onChange = {this.handleCustomerImput} name="ContactName"/> 
+                        <Form.Control placeholder="Name:" onChange = {this.handleImput} name="ContactName"/> 
                     </Form.Group>
                     <Form.Group as={Col} controlId="Phone">
                         <Form.Label>Phone:</Form.Label>
-                        <Form.Control placeholder="Phone Number" onChange = {this.handleCustomerImput} name="Phone"/> 
+                        <Form.Control placeholder="Phone Number" onChange = {this.handleImput} name="Phone"/> 
                     </Form.Group>
                 </Form.Row>
 
@@ -180,6 +245,8 @@ class Services extends Component{
                     {butText}
                 </Button>
                 </Form>
+                <div> {this.state.CustomerMessage}</div>
+                <div> {this.state.CustomerID}</div>
                 </CustomerStyle>
             </div>
         )
