@@ -204,9 +204,9 @@ class GetServicebyID extends Component {
             <Customer> Customer: 
             <div>
                <p>{this.state.CustomerName}  / Site: {this.state.SiteNumber}</p>
-               <p>{this.state.Address},  {this.state.City}, {this.state.Province} </p>
+               <p>{this.state.Address}  {this.state.City}, {this.state.Province} </p>
                <p>{this.state.PostalCode}</p>
-               <p> Contact: {this.state.ContactName}, / Phone : {this.state.Phone}</p>
+               <p> Contact: {this.state.ContactName}  Phone : {this.state.Phone}</p>
             </div>
 
             </Customer>
