@@ -5,5 +5,7 @@ export interface ServiceRequest {
     CustomerID: string
     Title: string
     Description: string
+    PriorityLevel: string
+    CreatedBy: string
     
   }

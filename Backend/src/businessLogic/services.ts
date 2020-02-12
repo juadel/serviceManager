@@ -29,15 +29,24 @@ export async function createService( event: APIGatewayProxyEvent ): Promise<Serv
   const attachmentUrl =[];
   const today = new Date();
   const dueDay= new Date();
-  dueDay.setDate(dueDay.getDate()+5);
+  
   const newService: ServiceRequest = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
+  if (newService.PriorityLevel === "Normal (5 days)"){
+      dueDay.setDate(dueDay.getDate()+5);
+    } else if (newService.PriorityLevel === "Level 1 (3 days)"){
+      dueDay.setDate(dueDay.getDate()+3);
+    } else if (newService.PriorityLevel === "Level 2 (next days)"){
+      dueDay.setDate(dueDay.getDate()+1);
+    }
+
+  
   const createdService = await serviceItem.createService(
       { 
         
         ServiceID: serviceId,
         createdAt: today.toISOString(),
         dueDate: dueDay.toISOString(),
-        Status: false,
+        Status: "create",
         Comments: comments,
         attachmentUrl: attachmentUrl,
         ...newService
