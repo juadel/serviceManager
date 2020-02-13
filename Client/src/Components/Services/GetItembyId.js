@@ -37,13 +37,13 @@ const IdNumber = styled.h1`
 const Wrapper = styled.div`
     font-size: 1em;
     position: absolute;
-    bottom: 700px;
+    bottom: 692px;
     left: 80px;
     `;
 const Customer = styled.div`
     text-align: left;
     position: absolute;
-    bottom: 550px;
+    bottom: 600px;
     right: 470px;
     word-wrap: break-word;
      
@@ -52,7 +52,7 @@ const Maps = styled.div`
     text-align: left;
     position: absolute;
     bottom: 550px;
-    right: 150px;
+    right: 140px;
      
     `;
  const Comments = styled.div`

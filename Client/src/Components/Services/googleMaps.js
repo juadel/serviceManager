@@ -7,9 +7,9 @@ class GMaps extends Component {
     constructor(props){
         super(props);
         this.state ={
-            key: 'AIzaSyDM1anm6wLXg3LsLg33sN2-RaK4soOJYRE',
+            key: "",
             coordinates:this.props.Coordinates,
-            zoom: 15
+            zoom: 11
         }
         
     }
