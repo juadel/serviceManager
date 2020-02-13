@@ -1,13 +1,20 @@
 import React, {Component} from 'react';
 import {Button} from 'react-bootstrap';
+import styled from 'styled-components';
 import Customers from  './Components/Customer/Customers'
-import GetServicebyID from './Components/Services/GetServicebyId';
+import GetItembyID from './Components/Services/GetItembyId';
 import Services from './Components/Services/Services';
 import {BrowserRouter, Route, Switch, withRouter} from 'react-router-dom';
 import {Nav, Navbar, Form, FormControl} from 'react-bootstrap';
 import { Authenticator, Greetings } from 'aws-amplify-react';
 import './App.css';
 
+
+const AuthStyle = styled.div`
+    width: 300px;
+    margin: 10px ;
+   `;
+  
 
 class Header extends React.Component{
 
@@ -45,6 +52,7 @@ class Header extends React.Component{
     return(
       
         <div>
+          
           <Navbar bg="light" variant="light">
               <Navbar.Brand>
                 <a href='http://www.juadel.com'>SERVICE MANAGER</a>
@@ -59,15 +67,18 @@ class Header extends React.Component{
             <Form inline  >
               <FormControl type="text" placeholder="Search" className="mr-sm-2" value={this.state.searchText} onChange={this.handleSearchInput}/>
               <Button className="btn-search" variant="outline-info" onClick={this.handleSearchSubmit} >Search</Button>
+              
             </Form>
+            
             </Navbar.Collapse>
-            <Authenticator hideDefault={true}><Greetings inGreeting={(username) => 'Hello ' + username} /></Authenticator>
+            <AuthStyle><Authenticator hideDefault={true}><Greetings inGreeting={(username) => 'Hello ' + username} /></Authenticator></AuthStyle>
           </Navbar>
+          
           <Switch>
             <Route path="/Dashboard" component= {Dashboard}/>
             <Route path="/Services" component= {Services}/>
             <Route path="/Customers" component= {Customers}/>
-            <Route path="/Results" component={GetServicebyID}/>
+            <Route path="/Results" component={GetItembyID}/>
             
           </Switch>
           

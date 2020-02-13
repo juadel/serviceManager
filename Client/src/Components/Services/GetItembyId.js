@@ -3,13 +3,16 @@ import axios from 'axios';
 import getToken from '../../Auth/getToken'
 import styled from 'styled-components';
 import NewComment from './AddComment';
+import {Card, Button, Nav, Navbar, Form, FormControl} from 'react-bootstrap';
+import GMaps from './googleMaps';
+import Geocode from 'react-geocode';
 
 // import { Auth } from 'aws-amplify';
 // import ReactLoading from 'react-loading'
 // import { Media, Form, FormGroup, FormControl, Button} from 'react-bootstrap';
 
 const CommentStyle = styled.div` 
-    display: block;            
+                
     width: 690px;
     height: 100px;
     margin: 16px ;
@@ -18,41 +21,39 @@ const CommentStyle = styled.div`
     padding: 10px;
     text-align: left;
     word-wrap: break-word;
-    overflow: auto;                    
+    overflow: auto;   
+    position: relative;                 
                   
     `;
-const Styled = styled.div`
-    width: 1500px;
-    height: 900px;
-    margin: 16px ;
-    border: 1px solid #252529;
-    box-shadow: 0 2px 3px #252529;
-    padding: 10px;
-    text-align: left;
-    position: relative;
-   `;
+
 const IdNumber = styled.h1`
     font-size: 1.2em;
     text-align: right;
     color: black;
+    position: relative;
+    bottom: 820px;
+    right: 50px;
     `;
-const Wrapper = styled.section`
-    font-size: 1.5em;
-    font-family: 'Roboto', 'sans-serif';
-    color: black;
+const Wrapper = styled.div`
+    font-size: 1em;
+    position: absolute;
+    bottom: 700px;
+    left: 80px;
     `;
 const Customer = styled.div`
-    width: 400px;
-    height: 200px;
-    margin: 16px ;
-    border: 1px solid #252529;
-    box-shadow: 0 2px 3px #ccc;
-    padding: 10px;
     text-align: left;
     position: absolute;
-    bottom: 645px;
-    right: 30px;
-    font-size: 1em;  
+    bottom: 550px;
+    right: 470px;
+    word-wrap: break-word;
+     
+    `;
+const Maps = styled.div`
+    text-align: left;
+    position: absolute;
+    bottom: 550px;
+    right: 150px;
+     
     `;
  const Comments = styled.div`
     width: 750px;
@@ -90,9 +91,10 @@ const Customer = styled.div`
 
     
  `;
+ 
 
 
-class GetServicebyID extends Component {
+class GetItembyID extends Component {
 
 
    
@@ -104,6 +106,9 @@ class GetServicebyID extends Component {
            ticket:[],
            Comments: [],
            CustomerId: "", CustomerName: "", SiteNumber:"", Address:"", City:"", Province:"",PostalCode:"", ContactName:"", Phone:"",
+           zoom : 8,
+           Addressfull: "",
+           coordinates: null
            
        };
        
@@ -135,6 +140,25 @@ class GetServicebyID extends Component {
         
     } 
   }
+  handleGeolocation() {
+        this.setState({Addressfull: this.state.Address +" "+ this.state.City +" "+ this.state.Province +" "+ this.state.PostalCode})
+        Geocode.setApiKey("AIzaSyDM1anm6wLXg3LsLg33sN2-RaK4soOJYRE");
+        const customerAddress = this.state.Addressfull;
+        Geocode.fromAddress(customerAddress).then(
+        response => {
+                const { lat, lng } = response.results[0].geometry.location;
+                console.log(lat, lng);
+                
+                this.setState({coordinates:{lat: lat, lng:lng}}); console.log(this.state.coordinates[0]);
+                }).catch(error => {console.error(error)}); 
+
+
+    }
+
+      
+ 
+  
+      
    async getItem(ID, type){
        
         const token = new getToken();
@@ -162,6 +186,8 @@ class GetServicebyID extends Component {
                                                 ContactName: res.data.customer[0]['ContactName'],
                                                 Phone: res.data.customer[0]['Phone'],
                                             })
+                                            this.handleGeolocation();
+     
 
                                         }
                                         
@@ -172,10 +198,20 @@ class GetServicebyID extends Component {
                                                                                
         }
 
-   
+    
    
     render() {
-     //console.log(this.state.CustomerId) 
+        let coordinatesToShow = null;
+        if (this.state.coordinates!==null) {
+                console.log("coordinates ok");
+                coordinatesToShow = (
+                 <div><GMaps  Coordinates={this.state.coordinates}/></div>)
+            } else {
+                console.log("No coordinates ");
+                coordinatesToShow = (<div><p>No coordinates has been recieved yet</p></div>)
+            }
+        
+        
     
      const CommentsArray = this.state.Comments;
      const lstComments = CommentsArray.map((comment) =>  
@@ -197,29 +233,49 @@ class GetServicebyID extends Component {
        
         return (
         <div>
-    
-        <Styled>
+            
+            
+        
            
            <IdNumber><p> Ticket Number: {this.state.ticket.ServiceID}</p></IdNumber>
-            <Customer> Customer: 
-            <div>
-               <p>{this.state.CustomerName}  / Site: {this.state.SiteNumber}</p>
-               <p>{this.state.Address}  {this.state.City}, {this.state.Province} </p>
-               <p>{this.state.PostalCode}</p>
-               <p> Contact: {this.state.ContactName}  Phone : {this.state.Phone}</p>
-            </div>
-
-            </Customer>
-            <Wrapper>
-                
-            <p> Title: {this.state.ticket.Title} </p>
-            <p> Description: {this.state.ticket.Description}</p>
+           
+           <Maps><Card style={{ width: '20rem'}}>
+               {coordinatesToShow}   
+            </Card></Maps>
+               
+            <Customer> 
             
+            <Card style={{ width: '30rem' }}>     
+                
+                <Card.Body>
+                    <Card.Title>{this.state.CustomerName} </Card.Title>
+                    <Card.Text>
+                    <p> Site Number: {this.state.SiteNumber}</p>
+                    <p>{this.state.Address}  {this.state.City}, {this.state.Province} , {this.state.PostalCode}</p>
+                    <p> Contact: {this.state.ContactName},   Phone : {this.state.Phone}</p>
+                    </Card.Text>
+                    <Button variant="primary">edit</Button>
+                </Card.Body>
+            </Card>
+            </Customer>
+            
+            <Wrapper>
+                <Card style={{ width: '50rem' }}>
+                <Card.Body>
+                    <Card.Title> {this.state.ticket.Title} </Card.Title>
+                    
+                    <Card.Text>
+                        <p>Description:</p>
+                    {this.state.ticket.Description}
+                    </Card.Text>
+                    
+                </Card.Body>
+                </Card>
            </Wrapper>   
            <Comments>Ticket Comments: {lstComments}</Comments>
            <Attach>Ticket Files:</Attach>
            <NewCommentpos><NewComment ServiceID={this.state.ticket.ServiceID} /></NewCommentpos>
-        </Styled>
+           
           
         </div>        
         )
@@ -229,4 +285,4 @@ class GetServicebyID extends Component {
 
     
    
-export default GetServicebyID;
+export default GetItembyID;
