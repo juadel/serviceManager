@@ -9,16 +9,28 @@ class GMaps extends Component {
         this.state ={
             key: process.env.REACT_APP_GM_KEY,
             coordinates:this.props.Coordinates,
-            zoom: 11
+            zoom: 11,
+            
         }
+        this.handleSearch(props);
         
     }
+    handleSearch(newSearch){
+        if (newSearch==true){
 
+           this.componentWillUnmount();
+        }
+    }
+    componentWillUnmount() {
+        console.log('Google maps will be unmount')
+        clearInterval(this.interval);
+    }
 
+    
 
     
     render (){
-        console.log(this.props.Coordinates)
+        this.handleSearch(this.props.newSearch)
         return(
             <div style={{ height: '29vh', width: '100%' }}> 
                 <GoogleMapReact

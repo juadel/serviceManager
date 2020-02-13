@@ -108,7 +108,8 @@ class GetItembyID extends Component {
            CustomerId: "", CustomerName: "", SiteNumber:"", Address:"", City:"", Province:"",PostalCode:"", ContactName:"", Phone:"",
            zoom : 8,
            Addressfull: "",
-           coordinates: null
+           coordinates: null,
+           newSearch: false,
            
        };
        
@@ -135,11 +136,37 @@ class GetItembyID extends Component {
     let newSearch = this.props.location.state.searchText;
     if (prevSearch !== newSearch) {
         
-        console.log(this.state.searchText)
-        this.handleSearch()
+        console.log(this.state.searchText);
+        this.handleSearch();
+        this.setState({newSearch: true});   
         
     } 
   }
+
+  handleMaprequest(){
+    
+    if (this.state.coordinates!==null) {
+        if (this.state.newSearch===true){
+            console.log("new search, reseting google maps")
+            this.setState({ coordinates: null, newSearch : false,})
+            
+            return (<div>
+                {}
+            </div>)
+        }else {
+            console.log("first search, Starting google maps")
+            return(
+                <div>
+                    <GMaps Coordinates={this.state.coordinates}/>
+                </div>
+            )
+        }
+    }else {
+            console.log("No coordinates ");
+            return(<div><p>No coordinates has been recieved yet</p></div>)
+        }
+}
+
   handleGeolocation() {
         this.setState({Addressfull: this.state.Address +" "+ this.state.City +" "+ this.state.Province +" "+ this.state.PostalCode})
         Geocode.setApiKey("AIzaSyDM1anm6wLXg3LsLg33sN2-RaK4soOJYRE");
@@ -149,7 +176,7 @@ class GetItembyID extends Component {
                 const { lat, lng } = response.results[0].geometry.location;
                 console.log(lat, lng);
                 
-                this.setState({coordinates:{lat: lat, lng:lng}}); console.log(this.state.coordinates[0]);
+                this.setState({coordinates:{lat: lat, lng:lng}}); 
                 }).catch(error => {console.error(error)}); 
 
 
@@ -201,15 +228,8 @@ class GetItembyID extends Component {
     
    
     render() {
-        let coordinatesToShow = null;
-        if (this.state.coordinates!==null) {
-                console.log("coordinates ok");
-                coordinatesToShow = (
-                 <div><GMaps  Coordinates={this.state.coordinates}/></div>)
-            } else {
-                console.log("No coordinates ");
-                coordinatesToShow = (<div><p>No coordinates has been recieved yet</p></div>)
-            }
+        
+    const showMap = this.handleMaprequest();
         
         
     
@@ -240,7 +260,7 @@ class GetItembyID extends Component {
            <IdNumber><p> Ticket Number: {this.state.ticket.ServiceID}</p></IdNumber>
            
            <Maps><Card style={{ width: '20rem'}}>
-               {coordinatesToShow}   
+               {showMap}
             </Card></Maps>
                
             <Customer> 
