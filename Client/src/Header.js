@@ -24,7 +24,8 @@ class Header extends React.Component{
     };
     
   handleRoute = route => () => {
-      this.props.history.push({ pathname: route });
+      this.props.history.push({ pathname: route })
+      
     };
   
   

@@ -7,7 +7,7 @@ class GMaps extends Component {
     constructor(props){
         super(props);
         this.state ={
-            key: "",
+            key: process.env.REACT_APP_GM_KEY,
             coordinates:this.props.Coordinates,
             zoom: 11
         }
