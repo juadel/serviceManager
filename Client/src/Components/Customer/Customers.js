@@ -5,7 +5,7 @@ class Customers extends Component{
         return (
             <div>
                 <h1>
-                    Customer
+                    Next Customer
                 </h1>
             </div>
         );
