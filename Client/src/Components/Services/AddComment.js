@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import getToken from '../../Auth/getToken';
+import {Form, Button} from 'react-bootstrap';
 
 
-class NewComments extends Component{
+class NewComment extends Component{
 
     constructor(props){
         super(props);
@@ -49,7 +50,9 @@ class NewComments extends Component{
         
         const userlog = this.state.user;
         console.log(this.state.user);
-        this.setState({newComment : {date: new Date(), By: userlog , text: event.target.value }});
+        const target = event.target;
+        const value = target.value;
+        this.setState({newComment : {date: new Date(), By: userlog , text: value }});
 
     }
     handleSubmit = event => {
@@ -66,17 +69,19 @@ class NewComments extends Component{
                 
            return (
            <div>
-            <form onSubmit={this.handleSubmit}>
-                    <label>
-                        <div>Add a Comment:</div>
-                        <textarea rows="5" cols="50" type="text" name="Comment" onChange={this.handleChange}/>
-                    </label>
-                    <div><input type = "Submit" value="Submit"/></div>
-            </form>
+            <Form onSubmit={this.handleSubmit}>
+                <Form.Group>
+                    <Form.Label>Add a Comment:</Form.Label>
+                    <Form.Control as="textarea" name="textarea" rows="5" cols="80" onChange = {this.handleChange}/>
+
+                </Form.Group>
+                 <Button variant="primary" type="submit">Submit</Button>
+            </Form>
+            </div>
                 
-           </div>        
+                   
            )
        }
 }
 
-export default NewComments;
+export default NewComment;

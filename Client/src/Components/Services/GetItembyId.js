@@ -3,34 +3,32 @@ import axios from 'axios';
 import getToken from '../../Auth/getToken'
 import styled from 'styled-components';
 import NewComment from './AddComment';
-import {Card, Button, Nav, Navbar, Form, FormControl} from 'react-bootstrap';
+import {Card, Button, Spinner, Nav, Navbar, Form, FormControl} from 'react-bootstrap';
 import GMaps from './googleMaps';
 import Geocode from 'react-geocode';
+import Archives from './Archives';
 
-// import { Auth } from 'aws-amplify';
-// import ReactLoading from 'react-loading'
-// import { Media, Form, FormGroup, FormControl, Button} from 'react-bootstrap';
+
 
 const CommentStyle = styled.div` 
                 
     width: 690px;
-    height: 100px;
+    
     margin: 16px ;
-    border: 1px solid #252525;
-    box-shadow: 0 2px 3px #ccc;
-    padding: 10px;
+    
+    
     text-align: left;
     word-wrap: break-word;
-    overflow: auto;   
-    position: relative;                 
+       
+    position: relative; 
+                    
                   
     `;
 
 const IdNumber = styled.h1`
     font-size: 1.2em;
     text-align: right;
-    color: black;
-    position: relative;
+    position: absolute;
     bottom: 820px;
     right: 50px;
     `;
@@ -38,7 +36,7 @@ const Wrapper = styled.div`
     font-size: 1em;
     position: absolute;
     bottom: 692px;
-    left: 80px;
+    left: 40px;
     `;
 const Customer = styled.div`
     text-align: left;
@@ -56,16 +54,16 @@ const Maps = styled.div`
      
     `;
  const Comments = styled.div`
-    width: 750px;
+    width: 880px;
     height: 400px;
     margin: 16px ;
-    border: 1px solid #252529;
-    box-shadow: 0 2px 3px #ccc;
+    word-wrap: break-word;
+    
     padding: 10px;
     text-align: left;
     position: absolute;
-    bottom: 200px;
-    right: 700px;
+    bottom: 250px;
+    right: 940px;
     font-size: 1em;
     overflow: auto;
  `;
@@ -74,19 +72,18 @@ const Maps = styled.div`
     width: 650px;
     height: 400px;
     margin: 16px ;
-    border: 1px solid #252529;
-    box-shadow: 0 2px 3px #ccc;
     padding: 10px;
     text-align: left;
     position: absolute;
-    bottom: 200px;
-    right: 20px;
+    bottom: 100px;
+    right: 200px;
+    overflow: auto;
  `;
 
  const NewCommentpos = styled.div`
     position: absolute;
     bottom: 25px;
-    right: 900px;
+    left: 50px;
     font-size: 14px;
 
     
@@ -151,7 +148,9 @@ class GetItembyID extends Component {
             this.setState({ coordinates: null, newSearch : false,})
             
             return (<div>
-                {}
+                <Spinner animation="border" role="status">
+                <span className="sr-only">Loading...</span>
+                </Spinner>
             </div>)
         }else {
             console.log("first search, Starting google maps")
@@ -163,13 +162,15 @@ class GetItembyID extends Component {
         }
     }else {
             console.log("No coordinates ");
-            return(<div><p>No coordinates has been recieved yet</p></div>)
+            return(<div><Spinner animation="border" role="status">
+            <span className="sr-only">Loading...</span>
+            </Spinner></div>)
         }
 }
 
   handleGeolocation() {
         this.setState({Addressfull: this.state.Address +" "+ this.state.City +" "+ this.state.Province +" "+ this.state.PostalCode})
-        Geocode.setApiKey("AIzaSyDM1anm6wLXg3LsLg33sN2-RaK4soOJYRE");
+        Geocode.setApiKey(process.env.REACT_APP_GM_KEY);
         const customerAddress = this.state.Addressfull;
         Geocode.fromAddress(customerAddress).then(
         response => {
@@ -238,14 +239,15 @@ class GetItembyID extends Component {
             
         <div key={CommentsArray.indexOf[comment]}> 
         <CommentStyle>
-            <div>
-                Date: {comment['date']}
-            </div>
-            <div>
-                By: {comment['By']}
-            </div>
-            <p> {comment['text']} </p>
-            
+            <Card style={{ width: '50rem' }}>
+            <Card.Body>
+            <Card.Title>Date: {comment['date']} </Card.Title>
+            <Card.Subtitle className="mb-2 text-muted">By: {comment['By']}</Card.Subtitle>
+                    <Card.Text>
+                        {comment['text']}
+                    </Card.Text>
+            </Card.Body>
+            </Card>
         </CommentStyle>
         </div>
         ); 
@@ -292,8 +294,13 @@ class GetItembyID extends Component {
                 </Card.Body>
                 </Card>
            </Wrapper>   
-           <Comments>Ticket Comments: {lstComments}</Comments>
-           <Attach>Ticket Files:</Attach>
+           <Comments>
+               <Card> 
+                   <Card.Header>Comments</Card.Header>
+               {lstComments}
+               </Card>
+               </Comments>
+           <Attach><Archives/></Attach>
            <NewCommentpos><NewComment ServiceID={this.state.ticket.ServiceID} /></NewCommentpos>
            
           
