@@ -1,0 +1,57 @@
+.App {
+  text-align: center;
+}
+
+.grid-container {
+  display: grid;
+
+  grid-template-columns: 20% 1fr;
+  grid-template-rows: 72px 1fr;
+
+  grid-template-areas:
+
+  "sidebar head head head"
+  "sidebar main main main"
+  "sidebar main main main"
+  "sidebar main main main";
+
+  /* grid-container height = 100% of viewport height */
+  height: 100vh;
+  @media screen and (max-width: 375px) {
+    .grid-container {
+      grid-template-columns: 1fr;
+      grid-template-rows: 72px 1fr;
+      grid-template-areas:
+      "head"
+      "main";
+    }
+  }
+}
+
+.grid-sidebar {
+  grid-area: sidebar;
+  background-color: rgb(50, 61, 133);
+}
+.header {
+  grid-area: head;
+  box-shadow: 0 1px 0 0 #21335a;
+  background-color: #252529
+}
+.content {
+  grid-area: main;
+  background-color: rgb(179, 179, 184);
+}
+
+.btn-search{
+  color: #eb7f1b;
+  
+  background-color: rgb(255, 255, 255);
+  
+  border-color: rgb(247, 134, 6);
+    
+}
+
+.btn-search:hover{
+  background-color: #eb7f1b;
+  border-color: rgb(255, 255, 255);
+}

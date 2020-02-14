@@ -15,6 +15,7 @@ export class Counter
     private docClient: DocumentClient = createDynamoDBClient(),
     private table = process.env.ATOMIC_TABLE,
     
+    
    
 ){}
 
@@ -28,10 +29,10 @@ async createCounter(counter: counterItem): Promise<counterItem>{
 
 }
 
-async updatecount(companyName : string){
+async updatecount(CompanyName : string){
     const updatedCount = await this.docClient.update({
         TableName: this.table,
-        Key: { companyName },
+        Key: { CompanyName },
         UpdateExpression: "ADD #ticket :val",
         ExpressionAttributeNames:{
             "#ticket":"ticket"
@@ -46,12 +47,12 @@ async updatecount(companyName : string){
 
 }
 
-async isActiveCounter(companyName: string){
+async isActiveCounter(CompanyName: string){
     var params= {
         TableName: this.table, 
         Key:
         {
-            companyName
+            CompanyName,
         }
     }
 

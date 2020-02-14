@@ -1,20 +1,17 @@
-
+import * as AWS from "aws-sdk";
 import { DocumentClient } from "aws-sdk/clients/dynamodb";
-const AWSXRay = require('aws-xray-sdk-core');
-const AWS = AWSXRay.captureAWS(require('aws-sdk'));
+import { ServiceItem } from "../models/service";
 
 
-import { ServiceItem } from "../models/service"
-import { commentRequest } from "../requests/commentRequest";
-//import { } from 
+
+
 
 export class Service
 { constructor(
     private docClient: DocumentClient = createDynamoDBClient(),
-    private S3 = createS3Bucket(),
     private serviceTable = process.env.SERVICE_TABLE,
     private bucket = process.env.BUCKET,
-    private urlExp = 300,
+    //private urlExp = 300,
     //private index = process.env.SUB_INDEX
 ){}
 
@@ -26,11 +23,11 @@ async createService(service: ServiceItem ) : Promise<ServiceItem>{
     return service
     }
     
-async addComment(ServiceID: string , comment: commentRequest){
-    const CustomerID = "30";
+async addComment(ServiceID: string , comment: string){
+    
     const commenttoadd =await this.docClient.update({
             TableName: this.serviceTable,
-            Key: { ServiceID, CustomerID },
+            Key: {ServiceID: ServiceID},
             UpdateExpression: 'set Comments = list_append(Comments, :newComment)',
             ExpressionAttributeValues:{
                 ':newComment':[comment],
@@ -40,25 +37,48 @@ async addComment(ServiceID: string , comment: commentRequest){
         return commenttoadd;
     }
  
-async signedUrl(table: string, id: string): Promise<string>{
-    const uploadUrl = this.S3.getSignedUrl("PutObject", {
-        Bucket: this.bucket,
-        Key: id,
-        Expires: this.urlExp 
-    });
+async serviceUrl(ServiceID:string, filename: string): Promise<string>{
+    const params ={Bucket: this.bucket, Key: filename, Expires: 60};
+    const S3 = new AWS.S3({signatureVersion: 'v4'});
+    const signedURL = S3.getSignedUrl('putObject', params);
+      
     await this.docClient.update({
-        TableName: table,
-        Key: {id},
-        UpdateExpression: "set attachmentUrl=:URL",
+        TableName: this.serviceTable,
+        Key: {ServiceID: ServiceID},
+        UpdateExpression: "set attachmentUrl= list_append(attachmentUrl, :URL)",
         ExpressionAttributeValues: {
-            ":URL": uploadUrl.split("?")[0]
+            ":URL": [signedURL.split("?")[0]]
         },
         ReturnValues: "UPDATED_NEW"
     }).promise();
-    return uploadUrl;
+       return signedURL;
+} 
 
+async serviceExist(ticketId: string): Promise<Boolean>{
+    const params = {
+        ExpressionAttributeValues: {':id':ticketId},
+        TableName: this.serviceTable,
+        KeyConditionExpression: 'ServiceID = :id'
+    };
+    let exist: Boolean = false;
+    const result = await this.docClient.query(params).promise();
+
+    if (result.Count > 0){
+        exist = true;
+    }
+    return exist;
+  } 
+
+async getServicebyID(serviceId: string) : Promise<ServiceItem[]> {
+    const params = {
+        ExpressionAttributeValues: {':id': serviceId},
+        TableName: this.serviceTable,
+        KeyConditionExpression: 'ServiceID = :id'
+     };
+    const result = await this.docClient.query(params).promise();
+    const service = result.Items;
+    return service as ServiceItem[];
  }
-
 }
 
 function createDynamoDBClient() {
@@ -70,10 +90,4 @@ function createDynamoDBClient() {
     });
   }
   return new AWS.DynamoDB.DocumentClient();
-}
-
-function createS3Bucket(){
-    return new AWS.S3({
-        signatureVersion: "v4"
-    });
 }

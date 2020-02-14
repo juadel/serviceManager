@@ -1,13 +1,14 @@
 export interface ServiceItem {
-    userId: string
     ServiceID: string
     CustomerID: string
     createdAt: string
     Title: string
     Description: string
     dueDate: string
-    Status: boolean
+    PriorityLevel: string,
+    Status: string
     Comments: Array<string>
-    attachmentUrl?: string
+    attachmentUrl: Array<string>
+    CreatedBy: string
   }
   
