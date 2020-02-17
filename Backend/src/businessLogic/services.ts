@@ -26,6 +26,7 @@ export async function createService( event: APIGatewayProxyEvent ): Promise<Serv
   const serviceId =count;
   const comments = [];
   const attachmentUrl =[];
+  const fileDescription = [];
   const today = new Date();
   const dueDay= new Date();
   
@@ -47,6 +48,7 @@ export async function createService( event: APIGatewayProxyEvent ): Promise<Serv
         dueDate: dueDay.toISOString(),
         Comments: comments,
         attachmentUrl: attachmentUrl,
+        fileDescription : fileDescription,
         ...newService
       }
     );
@@ -74,8 +76,11 @@ export async function serviceUrl(event: APIGatewayProxyEvent ): Promise<string> 
         const filename: string = event.queryStringParameters.filename;
         const id :string = event.pathParameters.id;
 
-        //const description : string = typeof event.body === "string" ? JSON.parse(event.body) : event.body; 
-        const generatedUrl= await serviceItem.serviceUrl(id, description, filename);
+        const descriptionBody = JSON.parse(event.body); 
+        let descriptionText :string = "";
+        if (descriptionBody.description) descriptionText = descriptionBody.description;
+        
+        const generatedUrl= await serviceItem.serviceUrl(id, descriptionText, filename);
         return generatedUrl
         }
      else{

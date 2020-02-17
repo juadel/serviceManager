@@ -48,7 +48,7 @@ async serviceUrl(ServiceID:string, description: string, filename: string): Promi
         UpdateExpression: "set attachmentUrl= list_append(attachmentUrl, :URL), fileDescription = list_append(fileDescription, :fileDesc)" ,
         ExpressionAttributeValues: {
             ":URL": [signedURL.split("?")[0]],
-            ":fileDesc" : description
+            ":fileDesc" : [description]
         },
         ReturnValues: "UPDATED_NEW"
     }).promise();

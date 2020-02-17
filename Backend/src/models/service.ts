@@ -9,6 +9,7 @@ export interface ServiceItem {
     Status: string
     Comments: Array<string>
     attachmentUrl: Array<string>
+    fileDescription: Array<string>
     CreatedBy: string
   }
   

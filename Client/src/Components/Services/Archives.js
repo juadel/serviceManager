@@ -93,10 +93,10 @@ class Archives extends Component{
         console.log(this.state.jwtToken);
         //REQUESTING SIGNED URL
         await axios.patch('https://clnvbo2s2h.execute-api.ca-central-1.amazonaws.com/dev/item/'+this.props.serviceID+'?item=service&filename='+this.state.filename, 
-                                 {description: this.state.FileDescription },
-                                 {params: {item: "service", filename: this.state.filename}}, 
-                                 {headers:{ 'Content-Type': 'application/json',
-                                            'Authorization': `Bearer ${this.state.jwtToken}`}}
+                                {description: this.state.FileDescription },
+                                {headers:{ 'Content-Type': 'application/json',
+                                            'Authorization': `Bearer ${this.state.jwtToken}`}},
+                                
                                             ).then(res => {
                                                 this.setState({UploadUrl: res.data.Url}); 
                                                 console.log(this.state.UploadUrl);
