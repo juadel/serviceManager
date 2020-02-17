@@ -37,7 +37,7 @@ async addComment(ServiceID: string , comment: string){
         return commenttoadd;
     }
  
-async serviceUrl(ServiceID:string, filename: string): Promise<string>{
+async serviceUrl(ServiceID:string, description: string, filename: string): Promise<string>{
     const params ={Bucket: this.bucket, Key: filename, Expires: 60};
     const S3 = new AWS.S3({signatureVersion: 'v4'});
     const signedURL = S3.getSignedUrl('putObject', params);
@@ -45,9 +45,10 @@ async serviceUrl(ServiceID:string, filename: string): Promise<string>{
     await this.docClient.update({
         TableName: this.serviceTable,
         Key: {ServiceID: ServiceID},
-        UpdateExpression: "set attachmentUrl= list_append(attachmentUrl, :URL)",
+        UpdateExpression: "set attachmentUrl= list_append(attachmentUrl, :URL), fileDescription = list_append(fileDescription, :fileDesc)" ,
         ExpressionAttributeValues: {
-            ":URL": [signedURL.split("?")[0]]
+            ":URL": [signedURL.split("?")[0]],
+            ":fileDesc" : description
         },
         ReturnValues: "UPDATED_NEW"
     }).promise();

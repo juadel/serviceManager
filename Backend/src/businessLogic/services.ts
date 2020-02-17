@@ -70,10 +70,12 @@ export async function serviceUrl(event: APIGatewayProxyEvent ): Promise<string> 
     if (event.queryStringParameters.filename !== undefined &&
         event.queryStringParameters.filename !== null &&
         event.queryStringParameters.filename !== "") {
-  
+        
         const filename: string = event.queryStringParameters.filename;
         const id :string = event.pathParameters.id;
-        const generatedUrl= await serviceItem.serviceUrl(id, filename);
+
+        //const description : string = typeof event.body === "string" ? JSON.parse(event.body) : event.body; 
+        const generatedUrl= await serviceItem.serviceUrl(id, description, filename);
         return generatedUrl
         }
      else{

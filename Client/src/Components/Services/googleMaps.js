@@ -16,7 +16,7 @@ class GMaps extends Component {
         
     }
     handleSearch(newSearch){
-        if (newSearch==true){
+        if (newSearch===true){
 
            this.componentWillUnmount();
         }
@@ -26,7 +26,6 @@ class GMaps extends Component {
         clearInterval(this.interval);
     }
 
-    
 
     
     render (){
@@ -37,7 +36,9 @@ class GMaps extends Component {
                 bootstrapURLKeys={{ key: this.state.key}}
                 defaultCenter= {this.props.Coordinates}
                 defaultZoom= {this.state.zoom}
-                ></GoogleMapReact>
+                
+                >
+              </GoogleMapReact>
             </div>
 
 

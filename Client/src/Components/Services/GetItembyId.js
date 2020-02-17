@@ -29,7 +29,7 @@ const IdNumber = styled.h1`
     font-size: 1.2em;
     text-align: right;
     position: absolute;
-    bottom: 820px;
+    bottom: 830px;
     right: 50px;
     `;
 const Wrapper = styled.div`
@@ -69,15 +69,15 @@ const Maps = styled.div`
  `;
 
  const Attach = styled.div`
-    width: 650px;
+    width: 700px;
     height: 400px;
     margin: 16px ;
     padding: 10px;
     text-align: left;
     position: absolute;
-    bottom: 100px;
+    bottom: 120px;
     right: 200px;
-    overflow: auto;
+    
  `;
 
  const NewCommentpos = styled.div`
@@ -102,7 +102,7 @@ class GetItembyID extends Component {
            
            ticket:[],
            Comments: [],
-           CustomerId: "", CustomerName: "", SiteNumber:"", Address:"", City:"", Province:"",PostalCode:"", ContactName:"", Phone:"",
+           CustomerId: "", CustomerName: "", SiteNumber:"", Address:"", City:"", Province:"",PostalCode:"", ContactName:"", Phone:"", 
            zoom : 8,
            Addressfull: "",
            coordinates: null,
@@ -116,10 +116,10 @@ class GetItembyID extends Component {
    handleSearch() {
     
         let newSearchText = this.props.location.state.searchText;
-        console.log(newSearchText);
+        //console.log(newSearchText);
         
         this.getItem(newSearchText,"service");
-        console.log(this.state.searchText);
+       // console.log(this.state.searchText);
         
   };
 
@@ -133,7 +133,7 @@ class GetItembyID extends Component {
     let newSearch = this.props.location.state.searchText;
     if (prevSearch !== newSearch) {
         
-        console.log(this.state.searchText);
+       // console.log(this.state.searchText);
         this.handleSearch();
         this.setState({newSearch: true});   
         
@@ -175,7 +175,7 @@ class GetItembyID extends Component {
         Geocode.fromAddress(customerAddress).then(
         response => {
                 const { lat, lng } = response.results[0].geometry.location;
-                console.log(lat, lng);
+                //console.log(lat, lng);
                 
                 this.setState({coordinates:{lat: lat, lng:lng}}); 
                 }).catch(error => {console.error(error)}); 
@@ -191,7 +191,7 @@ class GetItembyID extends Component {
        
         const token = new getToken();
         await token.token()
-        console.log(token.state)
+        //console.log(token.state)
         
         await axios.get('https://clnvbo2s2h.execute-api.ca-central-1.amazonaws.com/dev/item/'+ID+'?item='+type, {headers: 
                     { 'Content-Type': 'application/json',
@@ -202,6 +202,7 @@ class GetItembyID extends Component {
                                         isLoading: false, ticket :res.data.ticket[0], 
                                         Comments: res.data.ticket[0]['Comments'],
                                         CustomerId:res.data.ticket[0]['CustomerID'] });
+                                        
                                         this.getItem(this.state.CustomerId,"customer")
                                         } else {
                                             this.setState({
@@ -213,6 +214,7 @@ class GetItembyID extends Component {
                                                 PostalCode: res.data.customer[0]['PostalCode'], 
                                                 ContactName: res.data.customer[0]['ContactName'],
                                                 Phone: res.data.customer[0]['Phone'],
+                                                
                                             })
                                             this.handleGeolocation();
      
@@ -229,7 +231,7 @@ class GetItembyID extends Component {
     
    
     render() {
-        
+    
     const showMap = this.handleMaprequest();
         
         
@@ -259,7 +261,7 @@ class GetItembyID extends Component {
             
         
            
-           <IdNumber><p> Ticket Number: {this.state.ticket.ServiceID}</p></IdNumber>
+           <IdNumber> Ticket Number: {this.state.ticket.ServiceID}</IdNumber>
            
            <Maps><Card style={{ width: '20rem'}}>
                {showMap}
@@ -272,6 +274,7 @@ class GetItembyID extends Component {
                 <Card.Body>
                     <Card.Title>{this.state.CustomerName} </Card.Title>
                     <Card.Text>
+                    
                     <p> Site Number: {this.state.SiteNumber}</p>
                     <p>{this.state.Address}  {this.state.City}, {this.state.Province} , {this.state.PostalCode}</p>
                     <p> Contact: {this.state.ContactName},   Phone : {this.state.Phone}</p>
@@ -300,7 +303,7 @@ class GetItembyID extends Component {
                {lstComments}
                </Card>
                </Comments>
-           <Attach><Archives/></Attach>
+           <Attach><Archives url={this.state.ticket.attachmentUrl} descriptionArray={this.state.ticket.fileDescription} serviceID={this.state.ticket.ServiceID}/></Attach>
            <NewCommentpos><NewComment ServiceID={this.state.ticket.ServiceID} /></NewCommentpos>
            
           

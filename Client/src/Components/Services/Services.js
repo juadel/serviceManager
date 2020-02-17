@@ -44,7 +44,7 @@ class Services extends Component{
         this.state={
             chkNewCustomer: false,
             CustomerName: "", SiteNumber:"", Address:"", City:"", Province:"",PostalCode:"", ContactName:"", Phone:"", CustomerID:"",
-            Title: "", Description:"", Status:"", PriorityLevel:"", CreatedBy:"",
+            Title: "", Description:"", Status:"", PriorityLevel:"", CreatedBy:"", 
             jwtToken:"",
             CustomMessage:"",
             user:""
@@ -90,7 +90,7 @@ class Services extends Component{
             CreatedBy: this.state.user
         }
         this.createItem(newService,"service");
-        event.preventDefault();
+        
     }
 
     handleImput = event => {

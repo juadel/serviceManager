@@ -103,7 +103,7 @@ functions:
       
   
   AddUploadUrl:
-    # Query String Parameters : item = service or customer, filename ="string"
+    # Query String Parameters : item = service or customer, description="string", filename ="string"
     handler: src/lambda/http/addUploadUrl.handler
     events:
       - http:
