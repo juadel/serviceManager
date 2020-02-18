@@ -4,6 +4,7 @@ import {Nav, Navbar, Form, FormControl, Col} from 'react-bootstrap';
 import axios from 'axios';
 import getToken from '../../Auth/getToken'
 import styled from 'styled-components';
+import  apiEndpoint  from '../../Config/backendConfig';
 
 const ServiceStyle = styled.div` 
     display: block;            
@@ -14,8 +15,11 @@ const ServiceStyle = styled.div`
     box-shadow: 0 2px 3px #ccc;
     padding: 10px;
     text-align: left;
+    position: absolute;
     word-wrap: break-word;
-    overflow: auto;                    
+    overflow: auto;
+    top: 108px;
+    right: 2px;                    
                   
     `;
 
@@ -31,11 +35,10 @@ const ServiceStyle = styled.div`
     word-wrap: break-word;
     overflow: auto;  
     
-    top: 108px;
-    right: 2px;                  
+                      
                   
     `;
-    //position: absolute;
+    //
 
 class Services extends Component{
 
@@ -66,7 +69,7 @@ class Services extends Component{
     handleCustomerSubmit =event =>{
         //console.log(this.state.Customer);
         const newCustomer = {
-            Name: this.state.CustomerName,
+            CustomerName: this.state.CustomerName,
             SiteNumber : this.state.SiteNumber,
             Address: this.state.Address,
             City: this.state.City,
@@ -115,7 +118,7 @@ class Services extends Component{
     async createItem(NewItem, type ){
         
         console.log(NewItem);
-        await axios.post('https://clnvbo2s2h.execute-api.ca-central-1.amazonaws.com/dev/item?item='+type, 
+        await axios.post(apiEndpoint+'/item?item='+type, 
                         NewItem,
                         {headers: 
                             { 'Content-Type': 'application/json',
@@ -148,46 +151,6 @@ class Services extends Component{
         
         return (
             <div>
-                <div>Create new Ticket</div>
-                <ServiceStyle>
-                <Form onSubmit ={this.handleServiceSubmit}>
-                <Form.Row>
-                    <Form.Group as={Col} controlId="formGridTtitle">
-                    <Form.Label>Title</Form.Label>
-                    <Form.Control type="Title" name="Title" onChange = {this.handleImput}/>
-                    </Form.Group>
-                </Form.Row>
-                <Form.Row>
-                    <Form.Group as={Col} controlId="formGridPrioritty">
-                    <Form.Label>Priority Level</Form.Label>
-                    <Form.Control as="select" name="PriorityLevel" onChange = {this.handleImput}>
-                        <option>...Choose</option>
-                        <option>Normal (5 days)</option>
-                        <option>Level 1 (3 days)</option>
-                        <option>Level 2 (next day)</option>
-                        <option>Critical Level (5 hours)</option>
-                    </Form.Control> 
-                    </Form.Group>
-
-                    <Form.Group as={Col} controlId="formGridStatus">
-                    <Form.Label>Status</Form.Label>
-                    <Form.Control as="select" name="Status" onChange = {this.handleImput}>
-                        <option>...Choose</option>
-                        <option>Create</option>
-                    </Form.Control>
-                    </Form.Group>
-                </Form.Row>
-                <Form.Group controlId="description">
-                    <Form.Label>Description:</Form.Label>
-                    <Form.Control as="textarea" rows="10" placeholder="Enter a brief description for this ticket" name="Description" onChange = {this.handleImput}/>
-                </Form.Group>
-
-                <Button variant="primary" type="submit">
-                    Create
-                </Button>
-                </Form>
-                </ServiceStyle>
-
                 <CustomerStyle>
                 <Form onSubmit ={this.handleCustomerSubmit}>
                 <Form.Row>
@@ -248,6 +211,48 @@ class Services extends Component{
                 <div> {this.state.CustomerMessage}</div>
                 <div> {this.state.CustomerID}</div>
                 </CustomerStyle>
+                <div>Create new Ticket</div>
+                <ServiceStyle>
+                
+                <Form onSubmit ={this.handleServiceSubmit}>
+                <Form.Row>
+                    <Form.Group as={Col} controlId="formGridTtitle">
+                    <Form.Label>Title</Form.Label>
+                    <Form.Control type="Title" name="Title" onChange = {this.handleImput}/>
+                    </Form.Group>
+                </Form.Row>
+                <Form.Row>
+                    <Form.Group as={Col} controlId="formGridPrioritty">
+                    <Form.Label>Priority Level</Form.Label>
+                    <Form.Control as="select" name="PriorityLevel" onChange = {this.handleImput}>
+                        <option>...Choose</option>
+                        <option>Normal (5 days)</option>
+                        <option>Level 1 (3 days)</option>
+                        <option>Level 2 (next day)</option>
+                        <option>Critical Level (5 hours)</option>
+                    </Form.Control> 
+                    </Form.Group>
+
+                    <Form.Group as={Col} controlId="formGridStatus">
+                    <Form.Label>Status</Form.Label>
+                    <Form.Control as="select" name="Status" onChange = {this.handleImput}>
+                        <option>...Choose</option>
+                        <option>Create</option>
+                    </Form.Control>
+                    </Form.Group>
+                </Form.Row>
+                <Form.Group controlId="description">
+                    <Form.Label>Description:</Form.Label>
+                    <Form.Control as="textarea" rows="10" placeholder="Enter a brief description for this ticket" name="Description" onChange = {this.handleImput}/>
+                </Form.Group>
+
+                <Button variant="primary" type="submit">
+                    Create
+                </Button>
+                </Form>
+                </ServiceStyle>
+
+                
             </div>
         )
     }

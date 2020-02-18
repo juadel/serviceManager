@@ -7,6 +7,7 @@ import {Card, Button, Spinner, Nav, Navbar, Form, FormControl} from 'react-boots
 import GMaps from './googleMaps';
 import Geocode from 'react-geocode';
 import Archives from './Archives';
+import  apiEndpoint  from '../../Config/backendConfig';
 
 
 
@@ -193,7 +194,7 @@ class GetItembyID extends Component {
         await token.token()
         //console.log(token.state)
         
-        await axios.get('https://clnvbo2s2h.execute-api.ca-central-1.amazonaws.com/dev/item/'+ID+'?item='+type, {headers: 
+        await axios.get({apiEndpoint}+'/item/'+ID+'?item='+type, {headers: 
                     { 'Content-Type': 'application/json',
                       'Authorization': `Bearer ${token.state.jwtToken}`}}
                       ).then(res => {

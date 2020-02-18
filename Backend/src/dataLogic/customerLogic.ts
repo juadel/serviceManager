@@ -14,8 +14,8 @@ export class Customer
     private S3 = createS3Bucket(),
     private customerTable = process.env.CUSTOMER_TABLE,
     private bucket = process.env.BUCKET,
-    private urlExp = 300
-    //private index = process.env.SUB_INDEX
+    private urlExp = 300,
+    private index = process.env.SUB_INDEX
 ){}
 
 async createCustomer(customer: CustomerItem ) : Promise<CustomerItem>{
@@ -31,10 +31,10 @@ async updateCustomer(CustomerID : string, updatedCustomer:CustomerRequest){
     const updateCustomer = await this.docClient.update({
         TableName: this.customerTable,
         Key: { CustomerID: CustomerID },
-        ExpressionAttributeNames: {"#N": "Name","#S":"SiteNumber", "#A":"Address", "#C":"City", "#P":"PostalCode", "#Pr":"Province", "#Ph":"Phone", "#CN":"ContactName" },
+        ExpressionAttributeNames: {"#N": "CustomerName","#S":"SiteNumber", "#A":"Address", "#C":"City", "#P":"PostalCode", "#Pr":"Province", "#Ph":"Phone", "#CN":"ContactName" },
         UpdateExpression: 'set #N=:name, #S=:site, #A=:address, #C=:city, #P=:postal, #Pr=:province, #Ph=:phone, #CN =:contact',
         ExpressionAttributeValues:{
-            ':name':updatedCustomer.Name,
+            ':name':updatedCustomer.CustomerName,
             ':site' :updatedCustomer.SiteNumber,
             ':address': updatedCustomer.Address,
             ':city': updatedCustomer.City,
@@ -57,6 +57,22 @@ async getCustomerbyID(CustomerID: string):Promise<CustomerItem[]>{
     const customer= await this.docClient.query(params).promise();
     const cust = customer.Items;
     return cust as CustomerItem[];
+}
+
+async getCustomerbyName(CustomerName: string): Promise<CustomerItem[]>{
+
+    const params = {
+        TableName: this.customerTable,
+        IndexName: this.index,
+        KeyConditionExpression: "#CustomerName = :CustomerName",
+       // FilterExpression: "contains(CustomerName  :CustomerName", 
+        ExpressionAttributeValues: {":CustomerName": CustomerName}
+    }
+    const customer= await this.docClient.query(params).promise();
+    const cust = customer.Items;
+    return cust as CustomerItem[];
+
+
 }
 
 async customerExist(customerId: string) : Promise<Boolean>{

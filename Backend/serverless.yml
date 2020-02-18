@@ -131,7 +131,7 @@ functions:
         Action:
           - s3:PutObject
           - s3:GetObject
-        Resource: arn:aws:s3:::${self:provider.environment.BUCKET}/*
+        Resource: arn:aws:s3:::${self:provider.environment.BUCKET}/*      
 
   GetItembyID:
      # Query String Parameters : item = service or customer,
@@ -177,8 +177,26 @@ functions:
           - dynamodb:PutItem
           - dynamodb:UpdateItem
           - dynamodb:Query
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.SERVICE_TABLE} 
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.SERVICE_TABLE}
 
+  GetCustomerbyName:
+    handler: src/lambda/http/getCustomerbyName.handler
+    events:
+      - http:
+          method: get
+          path: customername/{name}
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ApiGatewayAuthorizer
+    iamRoleStatementsInherit: true
+    iamRoleStatementName: ${self:service.name}-GetCustomerByName-Role-${self:provider.stage}
+    iamRoleStatements:
+      - Effect: Allow
+        Action: 
+          - dynamodb:Query
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CUSTOMER_TABLE}/index/*
 
 resources:
   Resources:
@@ -225,7 +243,7 @@ resources:
         AttributeDefinitions:
           - AttributeName: CustomerID
             AttributeType: S 
-          - AttributeName: Name 
+          - AttributeName: CustomerName 
             AttributeType: S 
         KeySchema:
           - AttributeName: CustomerID
@@ -235,7 +253,7 @@ resources:
         GlobalSecondaryIndexes:
           - IndexName: ${self:provider.environment.SUB_INDEX}
             KeySchema:
-              - AttributeName: Name
+              - AttributeName: CustomerName
                 KeyType: HASH
             Projection:
               ProjectionType: ALL
@@ -260,10 +278,8 @@ resources:
         AliasAttributes:
           - preferred_username
           - email
-        
         AutoVerifiedAttributes:
-          - email
-          
+          - email  
         Policies:
           PasswordPolicy:
             MinimumLength: 8

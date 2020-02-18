@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import getToken from '../../Auth/getToken';
 import {Form, Button} from 'react-bootstrap';
+import  apiEndpoint  from '../../Config/backendConfig';
 
 
 class NewComment extends Component{
@@ -23,7 +24,7 @@ class NewComment extends Component{
 
     async addComment(ServiceID){
         
-        await axios.post('https://clnvbo2s2h.execute-api.ca-central-1.amazonaws.com/dev/service/'+ServiceID, {Comments: this.state.newComment },{headers: 
+        await axios.post({apiEndpoint}+'/service/'+ServiceID, {Comments: this.state.newComment },{headers: 
                         { 'Content-Type': 'application/json',
                         'Authorization': `Bearer ${this.state.jwtToken}`}}
                         ).then(res => {})

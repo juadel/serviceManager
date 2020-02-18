@@ -3,6 +3,7 @@ import {Card, Table, Accordion, Button, FormControl, Form, Col, ProgressBar} fro
 import Styled from 'styled-components';
 import axios from 'axios';
 import getToken from '../../Auth/getToken';
+import  apiEndpoint  from '../../Config/backendConfig';
 
 
 const TableStyle = Styled.div`
@@ -61,7 +62,7 @@ class Archives extends Component{
                             
                                 <tr>
                                     <td>{archivesArray.indexOf(file)+1}</td>
-                                    <td>{file.split(".com/")[1]}</td>
+                                    <td>< a href={file}>{file.split(".com/")[1]}</a></td>
                                     <td>{this.state.DescriptionArray[archivesArray.indexOf(file)]}</td>
                                 </tr>
                             
@@ -92,7 +93,7 @@ class Archives extends Component{
     async getSignedUrl(){
         console.log(this.state.jwtToken);
         //REQUESTING SIGNED URL
-        await axios.patch('https://clnvbo2s2h.execute-api.ca-central-1.amazonaws.com/dev/item/'+this.props.serviceID+'?item=service&filename='+this.state.filename, 
+        await axios.patch({apiEndpoint}+'/item/'+this.props.serviceID+'?item=service&filename='+this.state.filename, 
                                 {description: this.state.FileDescription },
                                 {headers:{ 'Content-Type': 'application/json',
                                             'Authorization': `Bearer ${this.state.jwtToken}`}},
