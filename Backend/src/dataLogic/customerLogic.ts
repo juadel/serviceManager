@@ -19,12 +19,15 @@ export class Customer
 ){}
 
 async createCustomer(customer: CustomerItem ) : Promise<CustomerItem>{
-    await this.docClient.put({
-        TableName: this.customerTable,
-        Item: customer
-    }).promise();
-    return customer
-    }
+    
+    
+        await this.docClient.put({
+            TableName: this.customerTable,
+            Item: customer
+        }).promise();
+        return customer
+    
+}
 
     //CLIENT MUST PROVIDE ALL Attributes, HAS to make sure to provide actual values on client when updating.
 async updateCustomer(CustomerID : string, updatedCustomer:CustomerRequest){
@@ -64,24 +67,34 @@ async getCustomerbyName(CustomerName: string): Promise<CustomerItem[]>{
     const params = {
         TableName: this.customerTable,
         IndexName: this.index,
-        KeyConditionExpression: "#CustomerName = :CustomerName",
-       // FilterExpression: "contains(CustomerName  :CustomerName", 
+        
+        ProjectionExpression: 'CustomerID, CustomerName, SiteNumber, City, Province, PostalCode, ContactName, Phone',
+        
+        FilterExpression: 'contains(CustomerName,  :CustomerName)', 
         ExpressionAttributeValues: {":CustomerName": CustomerName}
     }
-    const customer= await this.docClient.query(params).promise();
+    const customer= await this.docClient.scan(params).promise();
     const cust = customer.Items;
     return cust as CustomerItem[];
 
 
 }
 
-async customerExist(customerId: string) : Promise<Boolean>{
+async customerExist(customername: string, sitenumber: string) : Promise<Boolean>{
     const params = {
-        ExpressionAttributeValues: {":id" :customerId},
-        TableName: this.customerTable,
-        KeyConditionExpression: "CustomerID = :id"
-    };
+        TableName : this.customerTable,
+        IndexName: this.index,
+        KeyConditionExpression: "CustomerName = :CN AND SiteNumber = :SN",
+        ExpressionAttributeValues: {
+            ":CN": customername,
+            ":SN": sitenumber 
+        }
+
+
+    }
+        
     let exist: Boolean = false;
+    
     const result = await this.docClient.query(params).promise();
 
     if (result.Count > 0){

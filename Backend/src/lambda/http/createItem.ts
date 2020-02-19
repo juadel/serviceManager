@@ -2,6 +2,7 @@ import 'source-map-support/register';
 import { APIGatewayProxyEvent, APIGatewayProxyHandler, APIGatewayProxyResult } from 'aws-lambda';
 import { createService } from "../../businessLogic/services";
 import { createCustomer } from "../../businessLogic/customers";
+import { customerExist } from "../../businessLogic/customers"
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     if (event.queryStringParameters.item == "service"){
@@ -17,17 +18,29 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
             })
         };
     }else if(event.queryStringParameters.item == "customer"){
-              const item = await createCustomer(event);
-               return {
-                statusCode:200,
-                headers:{
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Credentials': true
-                 },
-                 body: JSON.stringify({msg:"Customer created successfully",
-                  item
-                 })
-             };
+              
+        let exist : Boolean = await customerExist(event);
+         if (!exist){
+            const item = await createCustomer(event);
+                return {
+                    statusCode:200,
+                    headers:{
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Credentials': true
+                    },
+                    body: JSON.stringify({msg:"Customer created successfully",
+                    item
+                    })
+                };
+            }else {
+                return{
+                    statusCode:400,
+                    headers:{
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Credentials': true
+                      },
+                body: JSON.stringify({msg:"Customer Already Exists"})
+            }}
     } else {
         
         return {

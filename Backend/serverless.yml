@@ -68,7 +68,14 @@ functions:
       - Effect: Allow
         Action: 
           - dynamodb:PutItem
+          - dynamodb:Query
+          - dynamodb:Scan
         Resource:  arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CUSTOMER_TABLE}
+      - Effect: Allow
+        Action: 
+          - dynamodb:Query
+          - dynamodb:Scan
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CUSTOMER_TABLE}/index/*
       - Effect: Allow
         Action: 
           - dynamodb:PutItem
@@ -196,7 +203,13 @@ functions:
       - Effect: Allow
         Action: 
           - dynamodb:Query
+          - dynamodb:Scan
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CUSTOMER_TABLE}/index/*
+      - Effect: Allow
+        Action: 
+          - dynamodb:Query
+          - dynamodb:Scan
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CUSTOMER_TABLE}
 
 resources:
   Resources:
@@ -230,10 +243,10 @@ resources:
         GlobalSecondaryIndexes:
           - IndexName: ${self:provider.environment.SUB_INDEX}
             KeySchema:
-              - AttributeName: CustomerID
-                KeyType: HASH
-              - AttributeName: createdAt
-                KeyType: RANGE
+            - AttributeName: CustomerID
+              KeyType: HASH
+            - AttributeName: createdAt
+              KeyType: RANGE
             Projection:
               ProjectionType: ALL 
 
@@ -244,19 +257,25 @@ resources:
           - AttributeName: CustomerID
             AttributeType: S 
           - AttributeName: CustomerName 
-            AttributeType: S 
+            AttributeType: S
+          - AttributeName: SiteNumber
+            AttributeType: S
         KeySchema:
           - AttributeName: CustomerID
             KeyType: HASH
+          - AttributeName: CustomerName
+            KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
         TableName: ${self:provider.environment.CUSTOMER_TABLE}
         GlobalSecondaryIndexes:
-          - IndexName: ${self:provider.environment.SUB_INDEX}
-            KeySchema:
-              - AttributeName: CustomerName
-                KeyType: HASH
-            Projection:
-              ProjectionType: ALL
+        - IndexName: ${self:provider.environment.SUB_INDEX}
+          KeySchema:
+          - AttributeName: CustomerName
+            KeyType: HASH
+          - AttributeName: SiteNumber
+            KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
 
     AtomicCounters:
       Type: AWS::DynamoDB::Table
