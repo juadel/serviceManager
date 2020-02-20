@@ -194,7 +194,7 @@ class GetItembyID extends Component {
         await token.token()
         //console.log(token.state)
         
-        await axios.get({apiEndpoint}+'/item/'+ID+'?item='+type, {headers: 
+        await axios.get(apiEndpoint+'/item/'+ID+'?item='+type, {headers: 
                     { 'Content-Type': 'application/json',
                       'Authorization': `Bearer ${token.state.jwtToken}`}}
                       ).then(res => {
