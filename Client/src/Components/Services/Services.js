@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
 import {Button, Card} from 'react-bootstrap';
 import {Nav, Navbar, Form, FormControl, Col, Table, Modal} from 'react-bootstrap';
+import {BrowserRouter, Route, Switch, withRouter, Redirect} from 'react-router-dom';
 import axios from 'axios';
 import getToken from '../../Auth/getToken'
 import styled from 'styled-components';
 import  apiEndpoint  from '../../Config/backendConfig';
+
 
 const ServiceStyle = styled.div` 
     display: block;            
@@ -19,20 +21,6 @@ const ServiceStyle = styled.div`
     word-wrap: break-word;
     overflow: auto;              
                   `;
-const SearchResult = styled.div`
-
-    display: block;            
-    width: 400px;
-    margin: 16px ;
-    border: 1px solid #DCDCDC;
-    box-shadow: 0 2px 3px #ccc;
-    padding: 10px;
-    text-align: left;
-    right : 100px;
-    word-wrap: break-word;
-    overflow: auto;
-    position: absolute;          
-    `;
 
     
 
@@ -138,12 +126,14 @@ class Services extends Component{
                                 this.setState({CustomerID:res.data.item.CustomerID, CustomMessage: "Customer has been Created."})
                                 ;console.log(res.data.item.CustomerID)
                                 }else {
-                                     this.setState({CustomMessage: "Service has been Created."})
+                                     this.setState({CustomMessage: "Service has been Created."});
+                                    //window.location ="/Results";
+                                    
                                 }
                             })
                             .catch(e => {alert("Customer not created, it might already exists",e); console.log(e)});
         
-        //window.location ="/Services";
+        
     }
 
     async searchCustomer(CustomerName){
@@ -159,26 +149,31 @@ class Services extends Component{
 
     }
     
-    showCustomerSearch(customerLst){
-        console.log(customerLst);
+    showCustomerSearch(){
         
+        let customerLst= this.state.customerSearchlst;
         const lstOfCustomers = customerLst.map((customer) =>
                 
-                <tr key={customerLst.indexOf[customer]}>    
-                    <td>{customerLst.indexOf(customer)+1}</td>
+                <tr className='clickable-row' onClick={() => this.chooseCustomer(customer)}>    
+                
+                    <td >{customerLst.indexOf(customer)+1}</td>
                     <td>{customer.CustomerName}</td>
                     <td>{customer.SiteNumber}</td>
                     <td>{customer.City}</td>
                     <td>{customer.Province}</td>
                     <td>{customer.ContactName}</td>
                     <td>{customer.Phone}</td>
+                
                 </tr>
                 )
         return lstOfCustomers;
     }
 
-    modalHandle(){
-        this.setState({customerSearchlst: null})
+    chooseCustomer(customer){
+        this.setState({CustomerName: customer.CustomerName, SiteNumber: customer.SiteNumber, Address: customer.SiteNumber, 
+                        City: customer.City, Province: customer.Province,PostalCode:customer.PostalCode, ContactName: customer.ContactName, 
+                        Phone: customer.Phone, CustomerID: customer.CustomerID, modalShow: false, customerSearchlst: null })
+
 
     }
     
@@ -197,7 +192,7 @@ class Services extends Component{
                         <Modal show={show} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
                             <Modal.Header closeButton>
                                 <Modal.Title id="contained-modal-title-vcenter">
-                                Modal heading
+                                Search Result
                                 </Modal.Title>
                             </Modal.Header>
                             <Modal.Body>
@@ -215,7 +210,7 @@ class Services extends Component{
                                                 </tr>
                                             </thead> 
                                             <tbody>
-                                                {this.showCustomerSearch(this.state.customerSearchlst)}
+                                                {this.showCustomerSearch()}
                                             </tbody>
                                         </Table>
 
@@ -238,17 +233,17 @@ class Services extends Component{
             ( <div>
                     <Form.Group controlId="Address">
                     <Form.Label>Address</Form.Label>
-                    <Form.Control placeholder="1234 Main St" onChange = {this.handleImput} name="Address" />
+                    <Form.Control placeholder={this.state.Address} onChange = {this.handleImput} name="Address" />
                 </Form.Group>
                 <Form.Row>
                     <Form.Group as={Col} controlId="City">
                     <Form.Label>City</Form.Label>
-                    <Form.Control onChange = {this.handleImput} name="City"/>
+                    <Form.Control onChange = {this.handleImput} name="City" placeholder={this.state.City}/>
                     </Form.Group>
 
                     <Form.Group as={Col} controlId="Province">
                     <Form.Label>Province</Form.Label>
-                    <Form.Control as="select" onChange = {this.handleImput} name="Province">
+                    <Form.Control as="select" onChange = {this.handleImput} name="Province" placeholder={this.state.Province}>
                         <option>Choose...</option>
                         <option>Alberta</option>
                         <option>British Columbia</option>
@@ -257,17 +252,17 @@ class Services extends Component{
 
                     <Form.Group as={Col} controlId="PostalCode">
                     <Form.Label>Postal Code</Form.Label>
-                    <Form.Control onChange = {this.handleImput} name="PostalCode"/>
+                    <Form.Control onChange = {this.handleImput} name="PostalCode" placeholder={this.state.PostalCode}/>
                     </Form.Group>
                 </Form.Row>
                 <Form.Row>
                     <Form.Group as={Col} controlId="ContactName">
                         <Form.Label>Contact Name:</Form.Label>
-                        <Form.Control placeholder="Name:" onChange = {this.handleImput} name="ContactName"/> 
+                        <Form.Control placeholder={this.state.ContactName}  onChange = {this.handleImput} name="ContactName"/> 
                     </Form.Group>
                     <Form.Group as={Col} controlId="Phone">
                         <Form.Label>Phone:</Form.Label>
-                        <Form.Control placeholder="Phone Number" onChange = {this.handleImput} name="Phone"/> 
+                        <Form.Control placeholder={this.state.Phone}  onChange = {this.handleImput} name="Phone"/> 
                     </Form.Group>
                 </Form.Row>
                 </div>
@@ -285,13 +280,13 @@ class Services extends Component{
                 <Form.Row>
                     <Form.Group as={Col} controlId="CustomerName" >
                     <Form.Label>Customer</Form.Label>
-                    <Form.Control type="text" placeholder="Select Customer" onChange = {this.handleImput} name="CustomerName"/>
+                    <Form.Control type="text" placeholder={this.state.CustomerName} onChange = {this.handleImput} name="CustomerName"/>
                     </Form.Group>
                     
 
                     <Form.Group as={Col} controlId="SiteNumber">
                     <Form.Label>Site Number:</Form.Label>
-                    <Form.Control type="Site" placeholder="Site Number" onChange = {this.handleImput} name="SiteNumber"/>
+                    <Form.Control type="Site" placeholder={this.state.SiteNumber} onChange = {this.handleImput} name="SiteNumber"/>
                     </Form.Group>
                 </Form.Row>
                 {formNewCust}
@@ -305,11 +300,11 @@ class Services extends Component{
                     {butText}
                 </Button>
                 </Form>
-                <div> {this.state.CustomerMessage}</div>
-                <div> {this.state.CustomerID}</div>
+                <div> {this.state.CustomMessage}</div>
+                {/* <div> Customer ID : {this.state.CustomerID}</div> */}
                 
-                <div>Create new Ticket</div>
                 
+                <div></div>
                 
                 <Form onSubmit ={this.handleServiceSubmit}>
                 <Form.Row>
