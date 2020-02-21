@@ -207,7 +207,7 @@ class GetItembyID extends Component {
                                         this.getItem(this.state.CustomerId,"customer")
                                         } else {
                                             this.setState({
-                                                CustomerName: res.data.customer[0]['Name'], 
+                                                CustomerName: res.data.customer[0]['CustomerName'], 
                                                 SiteNumber: res.data.customer[0]['SiteNumber'],
                                                 Address: res.data.customer[0]['Address'],
                                                 City: res.data.customer[0]['City'],

@@ -90,6 +90,7 @@ class Services extends Component{
             CreatedBy: this.state.user
         }
         this.createItem(newService,"service");
+        event.preventDefault();
         
     }
 
@@ -126,7 +127,13 @@ class Services extends Component{
                                 this.setState({CustomerID:res.data.item.CustomerID, CustomMessage: "Customer has been Created."})
                                 ;console.log(res.data.item.CustomerID)
                                 }else {
-                                     this.setState({CustomMessage: "Service has been Created."});
+                                    console.log(res.data.item.ServiceID);
+                                    this.setState({CustomMessage: "Service has been Created."});
+                                    this.props.history.push({
+                                        pathname: "/results",
+                                        state: {
+                                          searchText: res.data.item.ServiceID
+                                        }});
                                     //window.location ="/Results";
                                     
                                 }
