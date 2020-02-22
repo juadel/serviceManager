@@ -63,8 +63,8 @@ class Header extends React.Component{
             <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="mr-auto">
               <Nav.Link onClick={this.handleRoute("/Dashboard")}>Dashboard</Nav.Link>
-              <Nav.Link onClick={this.handleRoute("/Services")}>Services</Nav.Link>
-              <Nav.Link onClick={this.handleRoute("/Customers")}>Customers</Nav.Link>
+              <Nav.Link onClick={this.handleRoute("/Services")}>New Service</Nav.Link>
+              {/* <Nav.Link onClick={this.handleRoute("/Customers")}>Customers</Nav.Link> */}
             </Nav>
             <Form inline  >
               <FormControl type="text" placeholder="Search" className="mr-sm-2" value={this.state.searchText} onChange={this.handleSearchInput}/>
@@ -79,7 +79,7 @@ class Header extends React.Component{
           <Switch>
             <Route path="/Dashboard" component= {Dashboard}/>
             <Route path="/Services" component= {Services}/>
-            <Route path="/Customers" component= {Customers}/>
+            {/* <Route path="/Customers" component= {Customers}/> */}
             <Route path="/Results" component={GetItembyID}/>
             
           </Switch>
@@ -97,7 +97,7 @@ class Dashboard extends Component{
     render(){
       return(
         <div>
-          Dashboard
+          jυadel
         </div>
       )
     }

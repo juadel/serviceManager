@@ -205,6 +205,7 @@ class GetItembyID extends Component {
                 ContactName: this.state.ContactName,
                 CustomerID: this.state.CustomerId
             }
+            
             return(
                 <EditCustomer customer={customer}/>
             )
@@ -246,7 +247,8 @@ class GetItembyID extends Component {
                                         }
                                         
                                     })
-                      .catch(e => {console.log(e); alert("No Ticket or Customer has been found")})  
+                      .catch(e => {console.log(e); alert("No Ticket or Customer has been found");
+                                    window.location = "/Dashboard"})  
         //window.location ="/results"; 
                             
                                                                                

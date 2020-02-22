@@ -20,7 +20,7 @@ class App extends Component {
     <div>
       <BrowserRouter>
       <Header>
-      
+      <h1>Hello</h1>
       </Header>
       </BrowserRouter>
     </div>
