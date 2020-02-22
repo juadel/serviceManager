@@ -3,11 +3,13 @@ import axios from 'axios';
 import getToken from '../../Auth/getToken'
 import styled from 'styled-components';
 import NewComment from './AddComment';
-import {Card, Button, Spinner, Nav, Navbar, Form, FormControl} from 'react-bootstrap';
+import {Card, Button, Spinner, Nav, Navbar, Form, Modal} from 'react-bootstrap';
 import GMaps from './googleMaps';
 import Geocode from 'react-geocode';
 import Archives from './Archives';
 import  apiEndpoint  from '../../Config/backendConfig';
+import EditCustomer from '../../Components/Customer/EditCustomer';
+
 
 
 
@@ -108,6 +110,7 @@ class GetItembyID extends Component {
            Addressfull: "",
            coordinates: null,
            newSearch: false,
+           editCustomer: false
            
        };
        
@@ -183,10 +186,30 @@ class GetItembyID extends Component {
 
 
     }
+    
+    editButton = () => {
+        this.setState({editCustomer: true})
 
-      
- 
-  
+    }
+    handleCustomerEdit(){
+        let customer = null;
+        if (this.state.editCustomer){
+            customer = {
+                CustomerName: this.state.CustomerName,
+                SiteNumber : this.state.SiteNumber,
+                Address: this.state.Address,
+                City: this.state.City,
+                Province: this.state.Province,
+                Phone: this.state.Phone,
+                PostalCode: this.state.PostalCode,
+                ContactName: this.state.ContactName,
+                CustomerID: this.state.CustomerId
+            }
+            return(
+                <EditCustomer customer={customer}/>
+            )
+        }
+    }
       
    async getItem(ID, type){
        
@@ -234,6 +257,11 @@ class GetItembyID extends Component {
     render() {
     
     const showMap = this.handleMaprequest();
+    const customerEdit= this.handleCustomerEdit();
+        
+            
+        
+    
         
         
     
@@ -280,7 +308,7 @@ class GetItembyID extends Component {
                     <p>{this.state.Address}  {this.state.City}, {this.state.Province} , {this.state.PostalCode}</p>
                     <p> Contact: {this.state.ContactName},   Phone : {this.state.Phone}</p>
                     </Card.Text>
-                    <Button variant="primary">edit</Button>
+                    <Button variant="primary" onClick={this.editButton}>edit</Button>
                 </Card.Body>
             </Card>
             </Customer>
@@ -306,6 +334,7 @@ class GetItembyID extends Component {
                </Comments>
            <Attach><Archives url={this.state.ticket.attachmentUrl} descriptionArray={this.state.ticket.fileDescription} serviceID={this.state.ticket.ServiceID}/></Attach>
            <NewCommentpos><NewComment ServiceID={this.state.ticket.ServiceID} /></NewCommentpos>
+           {customerEdit}
            
           
         </div>        

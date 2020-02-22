@@ -93,7 +93,7 @@ class Archives extends Component{
     async getSignedUrl(){
         console.log(this.state.jwtToken);
         //REQUESTING SIGNED URL
-        await axios.patch({apiEndpoint}+'/item/'+this.props.serviceID+'?item=service&filename='+this.state.filename, 
+        await axios.patch(apiEndpoint+'/item/'+this.props.serviceID+'?item=service&filename='+this.state.filename, 
                                 {description: this.state.FileDescription },
                                 {headers:{ 'Content-Type': 'application/json',
                                             'Authorization': `Bearer ${this.state.jwtToken}`}},

@@ -19,6 +19,7 @@ const ServiceStyle = styled.div`
     text-align: left;
     position: absolute;
     word-wrap: break-word;
+    right: 500px;
     overflow: auto;              
                   `;
 

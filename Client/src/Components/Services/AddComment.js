@@ -24,7 +24,7 @@ class NewComment extends Component{
 
     async addComment(ServiceID){
         
-        await axios.post({apiEndpoint}+'/service/'+ServiceID, {Comments: this.state.newComment },{headers: 
+        await axios.post(apiEndpoint+'/service/'+ServiceID, {Comments: this.state.newComment },{headers: 
                         { 'Content-Type': 'application/json',
                         'Authorization': `Bearer ${this.state.jwtToken}`}}
                         ).then(res => {})
