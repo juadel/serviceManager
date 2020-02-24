@@ -5,7 +5,7 @@ import Customers from  './Components/Customer/Customers'
 import GetItembyID from './Components/Services/GetItembyId';
 import Services from './Components/Services/Services';
 import {BrowserRouter, Route, Switch, withRouter} from 'react-router-dom';
-import {Nav, Navbar, Form, FormControl} from 'react-bootstrap';
+import {Nav, Navbar, Form, FormControl, Row, Col} from 'react-bootstrap';
 import { Authenticator, Greetings } from 'aws-amplify-react';
 
 import './App.css';
@@ -54,10 +54,10 @@ class Header extends React.Component{
     return(
       
         <div>
-          
+          <Row><Col >
           <Navbar bg="light" variant="light">
               <Navbar.Brand>
-                <a href='http://www.juadel.com'>SERVICE MANAGER</a>
+                <a href='https://www.juadel.com'>SERVICE MANAGER</a>
               </Navbar.Brand> 
               <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
@@ -72,9 +72,13 @@ class Header extends React.Component{
               
             </Form>
             
+            
             </Navbar.Collapse>
+            <Col sm={3}>
             <AuthStyle><Authenticator hideDefault={true}><Greetings inGreeting={(username) => 'Hello ' + username} /></Authenticator></AuthStyle>
+            </Col>         
           </Navbar>
+            
           
           <Switch>
             <Route path="/Dashboard" component= {Dashboard}/>
@@ -83,7 +87,8 @@ class Header extends React.Component{
             <Route path="/Results" component={GetItembyID}/>
             
           </Switch>
-          
+          </Col>
+          </Row>
         </div>
       
     )

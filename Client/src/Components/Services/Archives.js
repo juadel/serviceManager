@@ -143,7 +143,7 @@ class Archives extends Component{
         return(<div>
             <div>
             
-                <Card> 
+                <Card style={{ width: '30rem' }}> 
                    <Card.Header>Archives</Card.Header>
                    <Card.Text><TableStyle>
                    <Table striped bordered hover>
@@ -166,7 +166,7 @@ class Archives extends Component{
             </div>
             <div>
                 <Accordion>
-                    <Card>
+                    <Card style={{ width: '30rem' }}>
                         <Card.Header>
                             <Accordion.Toggle as={Button} variant="link" eventKey="0">
                             <Button variant="primary" type="submit">Add a file</Button> 

@@ -3,7 +3,7 @@ import axios from 'axios';
 import getToken from '../../Auth/getToken'
 import styled from 'styled-components';
 import NewComment from './AddComment';
-import {Card, Button, Spinner, Nav, Navbar, Form, Modal} from 'react-bootstrap';
+import {Card, Button, Spinner, Nav, Navbar, Form, Modal, Container, Row, Col} from 'react-bootstrap';
 import GMaps from './googleMaps';
 import Geocode from 'react-geocode';
 import Archives from './Archives';
@@ -15,7 +15,7 @@ import EditCustomer from '../../Components/Customer/EditCustomer';
 
 const CommentStyle = styled.div` 
                 
-    width: 690px;
+    
     
     margin: 16px ;
     
@@ -30,63 +30,57 @@ const CommentStyle = styled.div`
 
 const IdNumber = styled.h1`
     font-size: 1.2em;
-    text-align: right;
-    position: absolute;
-    bottom: 830px;
-    right: 50px;
+    position: relative;
+    
+    
+   
     `;
 const Wrapper = styled.div`
     font-size: 1em;
-    position: absolute;
-    bottom: 692px;
-    left: 40px;
+    position: relative;
+   
     `;
 const Customer = styled.div`
     text-align: left;
-    position: absolute;
-    bottom: 600px;
-    right: 470px;
+    position: relative;
+    
+    
     word-wrap: break-word;
      
     `;
 const Maps = styled.div`
     text-align: left;
-    position: absolute;
-    bottom: 550px;
-    right: 140px;
+    position: relative;
+    
+   
      
     `;
  const Comments = styled.div`
-    width: 880px;
-    height: 400px;
+    
     margin: 16px ;
     word-wrap: break-word;
-    
+    position: relative;
     padding: 10px;
     text-align: left;
-    position: absolute;
-    bottom: 250px;
-    right: 940px;
+    
+   
     font-size: 1em;
     overflow: auto;
  `;
 
  const Attach = styled.div`
-    width: 700px;
-    height: 400px;
+    position: relative;
     margin: 16px ;
     padding: 10px;
     text-align: left;
-    position: absolute;
-    bottom: 120px;
-    right: 200px;
+    
+   
     
  `;
 
  const NewCommentpos = styled.div`
-    position: absolute;
-    bottom: 25px;
-    left: 50px;
+    position: relative;
+    
     font-size: 14px;
 
     
@@ -272,7 +266,7 @@ class GetItembyID extends Component {
             
         <div key={CommentsArray.indexOf[comment]}> 
         <CommentStyle>
-            <Card style={{ width: '50rem' }}>
+            <Card style={{ width: '30rem' }}>
             <Card.Body>
             <Card.Title>Date: {comment['date']} </Card.Title>
             <Card.Subtitle className="mb-2 text-muted">By: {comment['By']}</Card.Subtitle>
@@ -292,12 +286,25 @@ class GetItembyID extends Component {
             
         
            
-           <IdNumber> Ticket Number: {this.state.ticket.ServiceID}</IdNumber>
-           
-           <Maps><Card style={{ width: '20rem'}}>
-               {showMap}
-            </Card></Maps>
-               
+               <Row>
+           <Col><IdNumber> Ticket Number: {this.state.ticket.ServiceID}</IdNumber></Col></Row>
+           <Row>
+           <Col sm={4}>
+            <Wrapper>
+                <Card style={{ width: '50rem' }}>
+                <Card.Body>
+                    <Card.Title> {this.state.ticket.Title} </Card.Title>
+                    
+                    <Card.Text>
+                        <p>Description:</p>
+                    {this.state.ticket.Description}
+                    </Card.Text>
+                    
+                </Card.Body>
+                </Card>
+           </Wrapper>
+           </Col> 
+             <Col sm={4}>  
             <Customer> 
             
             <Card style={{ width: '30rem' }}>     
@@ -313,33 +320,32 @@ class GetItembyID extends Component {
                     <Button variant="primary" onClick={this.editButton}>edit</Button>
                 </Card.Body>
             </Card>
-            </Customer>
+            </Customer></Col>
             
-            <Wrapper>
-                <Card style={{ width: '50rem' }}>
-                <Card.Body>
-                    <Card.Title> {this.state.ticket.Title} </Card.Title>
-                    
-                    <Card.Text>
-                        <p>Description:</p>
-                    {this.state.ticket.Description}
-                    </Card.Text>
-                    
-                </Card.Body>
-                </Card>
-           </Wrapper>   
-           <Comments>
+            <Col sm={4}><Maps><Card style={{ width: '20rem'}}>
+               {showMap}
+            </Card></Maps></Col>
+            
+            
+           </Row>
+           <Row>
+           <Col sm={4}><Comments>
                <Card> 
                    <Card.Header>Comments</Card.Header>
                {lstComments}
                </Card>
                </Comments>
-           <Attach><Archives url={this.state.ticket.attachmentUrl} descriptionArray={this.state.ticket.fileDescription} serviceID={this.state.ticket.ServiceID}/></Attach>
-           <NewCommentpos><NewComment ServiceID={this.state.ticket.ServiceID} /></NewCommentpos>
-           {customerEdit}
+            </Col >
+            <Col sm={4}>
+               <NewCommentpos><NewComment ServiceID={this.state.ticket.ServiceID} /></NewCommentpos>
+                {customerEdit}
+           </Col>
+           <Col  sm={4}><Attach><Archives url={this.state.ticket.attachmentUrl} descriptionArray={this.state.ticket.fileDescription} serviceID={this.state.ticket.ServiceID}/></Attach></Col>
            
-          
-        </div>        
+           </Row> 
+           
+        </div> 
+               
         )
     }
 }
