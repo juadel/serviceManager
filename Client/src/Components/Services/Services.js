@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Button, Card} from 'react-bootstrap';
-import {Nav, Navbar, Form, FormControl, Col, Table, Modal} from 'react-bootstrap';
+import {Nav, Navbar, Form, FormControl, Col, Table, Modal, Container} from 'react-bootstrap';
 import {BrowserRouter, Route, Switch, withRouter, Redirect} from 'react-router-dom';
 import axios from 'axios';
 import getToken from '../../Auth/getToken'
@@ -10,16 +10,16 @@ import  apiEndpoint  from '../../Config/backendConfig';
 
 const ServiceStyle = styled.div` 
     display: block;            
-    width: 900px;
+    
     
     margin: 16px ;
     border: 1px solid #DCDCDC;
     box-shadow: 0 2px 3px #ccc;
     padding: 10px;
     text-align: left;
-    position: absolute;
+    position: relative;
     word-wrap: break-word;
-    right: 500px;
+    
     overflow: auto;              
                   `;
 
@@ -282,39 +282,43 @@ class Services extends Component{
         
 
         return (
-            <div>
+            <Container>
+                
                 <ServiceStyle>
+                <Col>
                 <Form onSubmit ={this.handleCustomerSubmit}>
-                <Form.Row>
-                    <Form.Group as={Col} controlId="CustomerName" >
-                    <Form.Label>Customer</Form.Label>
-                    <Form.Control type="text" placeholder={this.state.CustomerName} onChange = {this.handleImput} name="CustomerName"/>
-                    </Form.Group>
-                    
+                    <Form.Row>
+                        <Form.Group as={Col} controlId="CustomerName" >
+                        <Form.Label>Customer</Form.Label>
+                        <Form.Control type="text" placeholder={this.state.CustomerName} onChange = {this.handleImput} name="CustomerName"/>
+                        </Form.Group>
+                        
 
-                    <Form.Group as={Col} controlId="SiteNumber">
-                    <Form.Label>Site Number:</Form.Label>
-                    <Form.Control type="Site" placeholder={this.state.SiteNumber} onChange = {this.handleImput} name="SiteNumber"/>
-                    </Form.Group>
-                </Form.Row>
-                {formNewCust}
+                        <Form.Group as={Col} controlId="SiteNumber">
+                        <Form.Label>Site Number:</Form.Label>
+                        <Form.Control type="Site" placeholder={this.state.SiteNumber} onChange = {this.handleImput} name="SiteNumber"/>
+                        </Form.Group>
+                    </Form.Row>
+                    {formNewCust}
                 
 
-                <Form.Group id="formGridCheckbox">
-                    <Form.Check type="checkbox" label="New Customer" onClick= {this.handleChk} />
-                </Form.Group>
+                        <Form.Group id="formGridCheckbox">
+                            <Form.Check type="checkbox" label="New Customer" onClick= {this.handleChk} />
+                        </Form.Group>
 
-                <Button variant="primary" type="submit" >
-                    {butText}
-                </Button>
+                        <Button variant="primary" type="submit" >
+                            {butText}
+                        </Button>
+                        <div> {this.state.CustomMessage}</div>
                 </Form>
-                <div> {this.state.CustomMessage}</div>
-                {/* <div> Customer ID : {this.state.CustomerID}</div> */}
+                </Col>
+                </ServiceStyle>
                 
                 
-                <div></div>
-                
+                <ServiceStyle>
+                <Col>
                 <Form onSubmit ={this.handleServiceSubmit}>
+                
                 <Form.Row>
                     <Form.Group as={Col} controlId="formGridTtitle">
                     <Form.Label>Title</Form.Label>
@@ -350,10 +354,13 @@ class Services extends Component{
                     Create
                 </Button>
                 </Form>
+                </Col>
                 </ServiceStyle>
                 {this.ModalList()}
                 
-            </div>
+                </Container>
+                
+        
         )
     }
 
