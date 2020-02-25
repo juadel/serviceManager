@@ -31,6 +31,7 @@ const CommentStyle = styled.div`
 const IdNumber = styled.h1`
     font-size: 1.2em;
     position: relative;
+    left: 20px;
     
     
    
@@ -38,12 +39,14 @@ const IdNumber = styled.h1`
 const Wrapper = styled.div`
     font-size: 1em;
     position: relative;
+    left: 20px;
    
     `;
 const Customer = styled.div`
     text-align: left;
     position: relative;
     
+    left: 20px;
     
     word-wrap: break-word;
      
@@ -51,12 +54,13 @@ const Customer = styled.div`
 const Maps = styled.div`
     text-align: left;
     position: relative;
+    left: 20px;
     
    
      
     `;
  const Comments = styled.div`
-    
+    height: 400px;
     margin: 16px ;
     word-wrap: break-word;
     position: relative;
@@ -80,7 +84,7 @@ const Maps = styled.div`
 
  const NewCommentpos = styled.div`
     position: relative;
-    
+    top: 10px;
     font-size: 14px;
 
     
@@ -291,7 +295,7 @@ class GetItembyID extends Component {
            <Row>
            <Col sm={4}>
             <Wrapper>
-                <Card style={{ width: '50rem' }}>
+                <Card style={{ width: '30rem' }}>
                 <Card.Body>
                     <Card.Title> {this.state.ticket.Title} </Card.Title>
                     
