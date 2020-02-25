@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Card, Table, Accordion, Button, FormControl, Form, Col, ProgressBar} from 'react-bootstrap';
+import {Card, Table, Accordion, Button, FormControl, Form, Col, ProgressBar, Row} from 'react-bootstrap';
 import Styled from 'styled-components';
 import axios from 'axios';
 import getToken from '../../Auth/getToken';
@@ -141,8 +141,8 @@ class Archives extends Component{
 
         
         return(<div>
-            <div>
-            
+            <Row>
+                <Col>
                 <Card style={{ width: '30rem' }}> 
                    <Card.Header>Archives</Card.Header>
                    <Card.Text><TableStyle>
@@ -161,10 +161,9 @@ class Archives extends Component{
                     </Table> </TableStyle>
                     </Card.Text>
                 </Card>
-                
-                
-            </div>
-            <div>
+                </Col>
+                <Col >
+               
                 <Accordion>
                     <Card style={{ width: '30rem' }}>
                         <Card.Header>
@@ -198,7 +197,10 @@ class Archives extends Component{
                             </Accordion.Collapse>
                     </Card>
                 </Accordion>
-            </div></div>
+                
+                </Col>
+                </Row>
+                </div>
                     
                    
 

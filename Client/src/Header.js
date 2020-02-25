@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button} from 'react-bootstrap';
+import {Button, Container} from 'react-bootstrap';
 import styled from 'styled-components';
 import Customers from  './Components/Customer/Customers'
 import GetItembyID from './Components/Services/GetItembyId';
@@ -53,8 +53,8 @@ class Header extends React.Component{
   render(){
     return(
       
-        <div>
-          <Row><Col >
+        <Container>
+          <Col >
           <Navbar bg="light" variant="light">
               <Navbar.Brand>
                 <a href='https://www.juadel.com'>SERVICE MANAGER</a>
@@ -62,7 +62,7 @@ class Header extends React.Component{
               <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="mr-auto">
-              <Nav.Link onClick={this.handleRoute("/Dashboard")}>Dashboard</Nav.Link>
+              {/* <Nav.Link onClick={this.handleRoute("/Dashboard")}>Dashboard</Nav.Link> */}
               <Nav.Link onClick={this.handleRoute("/Services")}>New Service</Nav.Link>
               {/* <Nav.Link onClick={this.handleRoute("/Customers")}>Customers</Nav.Link> */}
             </Nav>
@@ -74,22 +74,22 @@ class Header extends React.Component{
             
             
             </Navbar.Collapse>
-            <Col sm={3}>
+            
             <AuthStyle><Authenticator hideDefault={true}><Greetings inGreeting={(username) => 'Hello ' + username} /></Authenticator></AuthStyle>
-            </Col>         
+                   
           </Navbar>
             
           
           <Switch>
-            <Route path="/Dashboard" component= {Dashboard}/>
+            {/* <Route path="/Dashboard" component= {Dashboard}/> */}
             <Route path="/Services" component= {Services}/>
             {/* <Route path="/Customers" component= {Customers}/> */}
             <Route path="/Results" component={GetItembyID}/>
             
           </Switch>
           </Col>
-          </Row>
-        </div>
+          </Container>
+       
       
     )
   

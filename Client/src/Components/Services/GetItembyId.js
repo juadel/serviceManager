@@ -15,7 +15,7 @@ import EditCustomer from '../../Components/Customer/EditCustomer';
 
 const CommentStyle = styled.div` 
                 
-    
+    overflow: auto;
     
     margin: 16px ;
     
@@ -31,7 +31,7 @@ const CommentStyle = styled.div`
 const IdNumber = styled.h1`
     font-size: 1.2em;
     position: relative;
-    left: 20px;
+    
     
     
    
@@ -39,44 +39,32 @@ const IdNumber = styled.h1`
 const Wrapper = styled.div`
     font-size: 1em;
     position: relative;
-    left: 20px;
+    
    
     `;
 const Customer = styled.div`
     text-align: left;
     position: relative;
-    
-    left: 20px;
-    
-    word-wrap: break-word;
-     
+    word-wrap: break-word; 
     `;
 const Maps = styled.div`
     text-align: left;
-    position: relative;
-    left: 20px;
-    
-   
-     
+    position: relative;     
     `;
  const Comments = styled.div`
-    height: 400px;
-    margin: 16px ;
-    word-wrap: break-word;
-    position: relative;
-    padding: 10px;
     text-align: left;
-    
-   
-    font-size: 1em;
+    position: relative; 
     overflow: auto;
+    height: 300px;
+    top: 10px;
  `;
 
  const Attach = styled.div`
     position: relative;
     margin: 16px ;
-    padding: 10px;
+    height: 300px;
     text-align: left;
+    top: 20px;
     
    
     
@@ -84,8 +72,11 @@ const Maps = styled.div`
 
  const NewCommentpos = styled.div`
     position: relative;
-    top: 10px;
+    top: 30px;
     font-size: 14px;
+    height: 300px;
+    width: 400px;
+    
 
     
  `;
@@ -270,7 +261,7 @@ class GetItembyID extends Component {
             
         <div key={CommentsArray.indexOf[comment]}> 
         <CommentStyle>
-            <Card style={{ width: '30rem' }}>
+            <Card style={{ width: '35rem' }}>
             <Card.Body>
             <Card.Title>Date: {comment['date']} </Card.Title>
             <Card.Subtitle className="mb-2 text-muted">By: {comment['By']}</Card.Subtitle>
@@ -287,31 +278,19 @@ class GetItembyID extends Component {
         return (
         <div>
             
-            
+            <Container>
         
            
-               <Row>
-           <Col><IdNumber> Ticket Number: {this.state.ticket.ServiceID}</IdNumber></Col></Row>
-           <Row>
-           <Col sm={4}>
-            <Wrapper>
-                <Card style={{ width: '30rem' }}>
-                <Card.Body>
-                    <Card.Title> {this.state.ticket.Title} </Card.Title>
-                    
-                    <Card.Text>
-                        <p>Description:</p>
-                    {this.state.ticket.Description}
-                    </Card.Text>
-                    
-                </Card.Body>
-                </Card>
-           </Wrapper>
-           </Col> 
-             <Col sm={4}>  
-            <Customer> 
+            <Row>
+                <Col>
+                    <IdNumber> Ticket Number: {this.state.ticket.ServiceID}</IdNumber>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                <Customer> 
             
-            <Card style={{ width: '30rem' }}>     
+                <Card style={{ width: '30rem' }}>     
                 
                 <Card.Body>
                     <Card.Title>{this.state.CustomerName} </Card.Title>
@@ -323,30 +302,53 @@ class GetItembyID extends Component {
                     </Card.Text>
                     <Button variant="primary" onClick={this.editButton}>edit</Button>
                 </Card.Body>
-            </Card>
-            </Customer></Col>
-            
-            <Col sm={4}><Maps><Card style={{ width: '20rem'}}>
-               {showMap}
-            </Card></Maps></Col>
-            
-            
+                </Card>
+                </Customer>
+                <Wrapper>
+                <Card style={{ width: '30rem' }}>
+                <Card.Body>
+                    <Card.Title> {this.state.ticket.Title} </Card.Title>
+                    
+                    <Card.Text>
+                        <p>Description:</p>
+                    {this.state.ticket.Description}
+                    </Card.Text>
+                    
+                </Card.Body>
+                </Card>
+                </Wrapper>
+                </Col>
+                <Col>
+                <Maps>
+                    <Card style={{ width: '30rem'}}>
+                    {showMap}
+                    </Card>
+                </Maps>
+                </Col>
            </Row>
            <Row>
-           <Col sm={4}><Comments>
-               <Card> 
+                <Col sm={7}>
+                <Comments>
+                <Card> 
                    <Card.Header>Comments</Card.Header>
-               {lstComments}
-               </Card>
-               </Comments>
-            </Col >
-            <Col sm={4}>
-               <NewCommentpos><NewComment ServiceID={this.state.ticket.ServiceID} /></NewCommentpos>
+                    {lstComments}
+                </Card>
+                </Comments>
+                </Col>
+                <Col >
+                <NewCommentpos><NewComment ServiceID={this.state.ticket.ServiceID} /></NewCommentpos>
                 {customerEdit}
-           </Col>
-           <Col  sm={4}><Attach><Archives url={this.state.ticket.attachmentUrl} descriptionArray={this.state.ticket.fileDescription} serviceID={this.state.ticket.ServiceID}/></Attach></Col>
+                
+                </Col>
+           </Row>
            
-           </Row> 
+            
+           <Attach>
+                <Archives url={this.state.ticket.attachmentUrl} descriptionArray={this.state.ticket.fileDescription} serviceID={this.state.ticket.ServiceID}/>
+            </Attach>
+            
+            
+            </Container>
            
         </div> 
                
