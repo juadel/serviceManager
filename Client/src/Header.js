@@ -50,7 +50,10 @@ class Header extends React.Component{
     });
   };
 
+ 
+
   render(){
+    
     return(
       
         <Container>
@@ -88,8 +91,9 @@ class Header extends React.Component{
             
           </Switch>
           </Col>
+          
           </Container>
-       
+          
       
     )
   
