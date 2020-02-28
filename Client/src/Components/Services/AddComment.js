@@ -3,6 +3,7 @@ import axios from 'axios';
 import getToken from '../../Auth/getToken';
 import {Form, Button} from 'react-bootstrap';
 import  apiEndpoint  from '../../Config/backendConfig';
+import {withRouter} from 'react-router-dom';
 
 
 class NewComment extends Component{
@@ -30,8 +31,14 @@ class NewComment extends Component{
                         ).then(res => {})
                         .catch(e => console.log(e));
         
-        console.log(this.state.user)
+        console.log(this.state.user);
         window.location ="/results";
+        // this.props.history.push({
+        //     pathname: "/results",
+        //     state: {
+        //     searchText: ServiceID,
+        //     }});
+        // window.location ="/results";
             
     }
     async handleAuth (){
@@ -85,4 +92,4 @@ class NewComment extends Component{
        }
 }
 
-export default NewComment;
+export default withRouter(NewComment);

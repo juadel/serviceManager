@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Card, Table, Accordion, Button, FormControl, Form, Col, ProgressBar, Row} from 'react-bootstrap';
 import Styled from 'styled-components';
+import {withRouter} from 'react-router-dom';
 import axios from 'axios';
 import getToken from '../../Auth/getToken';
 import  apiEndpoint  from '../../Config/backendConfig';
@@ -117,8 +118,16 @@ class Archives extends Component{
                                 }
                        }
                  } 
-            }).then(res => { window.location ="/results"})
+            }).then(res => {
+                console.log("File has been uploaded");
+                // this.props.history.push({
+                //             pathname: "/results",
+                //             state: {
+                //             searchText: this.props.serviceID}})
+                window.location ="/results";            
+            })
               .catch(e => console.log(e))
+        
     }
 
     async handleAuth (){
@@ -212,4 +221,4 @@ class Archives extends Component{
     }
 }
 
-export default Archives;
+export default withRouter(Archives);

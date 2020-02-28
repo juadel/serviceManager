@@ -99,7 +99,8 @@ class GetItembyID extends Component {
            Addressfull: "",
            coordinates: null,
            newSearch: false,
-           editCustomer: false
+           editCustomer: false,
+           reload: false,
            
        };
        
@@ -118,19 +119,26 @@ class GetItembyID extends Component {
 
   componentDidMount() {
    
-    this.handleSearch()
+    this.handleSearch();
   }
 
+  
+
   componentDidUpdate(prevProps) {
+    
     let prevSearch = prevProps.location.state.searchText;
-    let newSearch = this.props.location.state.searchText;
-    if (prevSearch !== newSearch) {
-        
-       // console.log(this.state.searchText);
-        this.handleSearch();
-        this.setState({newSearch: true});   
-        
-    } 
+    console.log("Prev Search: ",prevSearch)
+    let newSearchText = this.props.location.state.searchText;
+    console.log("new Search: ",newSearchText)
+    if (prevSearch !== newSearchText) {
+        this.setState({newSearch: true})
+        this.handleSearch();             
+    }
+    if (this.state.newSearch === true){
+        console.log("new search is true" )
+        this.handleSearch();  
+    }
+
   }
 
   handleMaprequest(){
@@ -153,7 +161,8 @@ class GetItembyID extends Component {
                 </div>
             )
         }
-    }else {
+    }
+    else {
             console.log("No coordinates ");
             return(<div><Spinner animation="border" role="status">
             <span className="sr-only">Loading...</span>
@@ -237,7 +246,7 @@ class GetItembyID extends Component {
                                         
                                     })
                       .catch(e => {console.log(e); alert("No Ticket or Customer has been found");
-                                    window.location = "/Dashboard"})  
+                                    window.location = "/Services"})  
         //window.location ="/results"; 
                             
                                                                                
