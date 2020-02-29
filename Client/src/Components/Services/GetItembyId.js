@@ -9,76 +9,50 @@ import Geocode from 'react-geocode';
 import Archives from './Archives';
 import  apiEndpoint  from '../../Config/backendConfig';
 import EditCustomer from '../../Components/Customer/EditCustomer';
+import '../../App.css';
 
 
 
-
-const CommentStyle = styled.div` 
-                
-    overflow: auto;
+const CommentStyle = styled.div`          
     
     margin: 16px ;
-    
-    
-    text-align: left;
-    word-wrap: break-word;
-       
-    position: relative; 
-                    
-                  
+    position: relative;                             
     `;
 
 const IdNumber = styled.h1`
     font-size: 1.2em;
     position: relative;
-    
-    
-    
-   
     `;
 const Wrapper = styled.div`
     font-size: 1em;
     position: relative;
-    
-   
     `;
 const Customer = styled.div`
     text-align: left;
     position: relative;
-    word-wrap: break-word; 
+     
     `;
 const Maps = styled.div`
     text-align: left;
     position: relative;     
     `;
  const Comments = styled.div`
-    text-align: left;
-    position: relative; 
     overflow: auto;
+    position: relative; 
     height: 300px;
-    top: 10px;
+    
  `;
 
  const Attach = styled.div`
     position: relative;
-    margin: 16px ;
     height: 300px;
     text-align: left;
     top: 20px;
-    
-   
-    
  `;
 
  const NewCommentpos = styled.div`
     position: relative;
-    top: 30px;
     font-size: 14px;
-    height: 300px;
-    width: 400px;
-    
-
-    
  `;
  
 
@@ -292,10 +266,10 @@ class GetItembyID extends Component {
            
             <Row>
                 <Col>
-                    <IdNumber> Ticket Number: {this.state.ticket.ServiceID}</IdNumber>
+                    <IdNumber className="hr"> <hr/>Ticket Number: {this.state.ticket.ServiceID}</IdNumber>
                 </Col>
             </Row>
-            <Row>
+            <Row >
                 <Col>
                 <Customer> 
             
@@ -315,18 +289,19 @@ class GetItembyID extends Component {
                 </Customer>
                 <Wrapper>
                 <Card style={{ width: '30rem' }}>
-                <Card.Body>
+                <Card.Body >
                     <Card.Title> {this.state.ticket.Title} </Card.Title>
                     
                     <Card.Text>
                         <p>Description:</p>
                     {this.state.ticket.Description}
                     </Card.Text>
-                    
+                     
                 </Card.Body>
                 </Card>
                 </Wrapper>
                 </Col>
+                
                 <Col>
                 <Maps>
                     <Card style={{ width: '30rem'}}>
@@ -336,7 +311,13 @@ class GetItembyID extends Component {
                 </Col>
            </Row>
            <Row>
-                <Col sm={7}>
+                <Col> 
+                <div > <hr/> </div>
+                </Col>
+            
+            </Row>
+           <Row>
+                <Col >
                 <Comments>
                 <Card> 
                    <Card.Header>Comments</Card.Header>
@@ -350,12 +331,22 @@ class GetItembyID extends Component {
                 
                 </Col>
            </Row>
-           
+           <Row>
+                <Col> 
+                <div > <hr/> </div>
+                </Col>
+            
+            </Row>
             
            <Attach>
                 <Archives url={this.state.ticket.attachmentUrl} descriptionArray={this.state.ticket.fileDescription} serviceID={this.state.ticket.ServiceID}/>
             </Attach>
+            <Row>
+                <Col> 
+                <div > <hr/> </div>
+                </Col>
             
+            </Row>
             
             </Container>
            

@@ -30,26 +30,43 @@ class Header extends React.Component{
     };
   
   
-  handleSearchSubmit = () => {
+  handleSearchSubmit = (event) => {
+      
       if (this.state.searchText) {
+        
         this.props.history.push({
           pathname: "/results",
           state: {
             searchText: this.state.searchText
           }
+          
         });
+        
       } else {
         alert("Please enter a Ticket Number");
       }
+      
     };
 
   
   handleSearchInput = event => {
-    this.setState({
-      searchText: event.target.value
-    });
-  };
+    console.log(event.charCode)
+    if( event.key ==="Enter"){
 
+      event.preventDefault();
+      console.log("Enter")
+      }
+    this.setState({searchText: event.target.value})
+    console.log(event.target.value)
+        
+  }
+  handleEnter = event =>{
+    if (event.key === "Enter")
+      event.preventDefault();
+      this.handleSearchSubmit();
+  }
+ 
+  
  
 
   render(){
@@ -69,9 +86,9 @@ class Header extends React.Component{
               <Nav.Link onClick={this.handleRoute("/Services")}>New Service</Nav.Link>
               {/* <Nav.Link onClick={this.handleRoute("/Customers")}>Customers</Nav.Link> */}
             </Nav>
-            <Form inline  >
-              <FormControl type="text" placeholder="Search" className="mr-sm-2" value={this.state.searchText} onChange={this.handleSearchInput}/>
-              <Button className="btn-search" variant="outline-info" onClick={this.handleSearchSubmit} >Search</Button>
+            <Form >
+              <FormControl type="text" placeholder="Search" className="mr-sm-2" value={this.state.searchText} onChange={this.handleSearchInput} onKeyPress={this.handleEnter}  />
+              <Button className="btn-search" variant="outline-info" onClick={this.handleSearchSubmit}>Search</Button>
               
             </Form>
             
