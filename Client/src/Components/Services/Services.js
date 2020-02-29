@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Button, Card} from 'react-bootstrap';
-import {Nav, Navbar, Form, FormControl, Col, Table, Modal, Container} from 'react-bootstrap';
+import {Nav, Navbar, Form, FormControl, Col, Table, Modal, Container, Row} from 'react-bootstrap';
 import {BrowserRouter, Route, Switch, withRouter, Redirect} from 'react-router-dom';
 import axios from 'axios';
 import getToken from '../../Auth/getToken'
@@ -283,8 +283,29 @@ class Services extends Component{
 
         return (
             <Container>
-                
+                <Row>
+                    <Col> 
+                    <div > <hr/> </div>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                    <Card>
+                        
+                        <Card.Body>
+                        <Card.Title>
+                            Wellcome 
+                         </Card.Title>
+                        <Card.Text>
+                            Service Manager is 
+                        </Card.Text>
+                            
+                        </Card.Body>
+                    </Card>
+                    </Col>
+                </Row>
                 <ServiceStyle>
+                
                 <Col>
                 <Form onSubmit ={this.handleCustomerSubmit}>
                     <Form.Row>
@@ -321,7 +342,7 @@ class Services extends Component{
                 
                 <Form.Row>
                     <Form.Group as={Col} controlId="formGridTtitle">
-                    <Form.Label>Title</Form.Label>
+                    <Form.Label>Ticket Title</Form.Label>
                     <Form.Control type="Title" name="Title" onChange = {this.handleImput}/>
                     </Form.Group>
                 </Form.Row>

@@ -220,7 +220,7 @@ class GetItembyID extends Component {
                                         
                                     })
                       .catch(e => {console.log(e); alert("No Ticket or Customer has been found");
-                                    window.location = "/Services"})  
+                                    window.location = "/service"})  
         //window.location ="/results"; 
                             
                                                                                
@@ -336,7 +336,7 @@ class GetItembyID extends Component {
                 <div > <hr/> </div>
                 </Col>
             
-            </Row>
+           </Row>
             
            <Attach>
                 <Archives url={this.state.ticket.attachmentUrl} descriptionArray={this.state.ticket.fileDescription} serviceID={this.state.ticket.ServiceID}/>

@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {Button, Container} from 'react-bootstrap';
 import styled from 'styled-components';
-import Customers from  './Components/Customer/Customers'
 import GetItembyID from './Components/Services/GetItembyId';
 import Services from './Components/Services/Services';
 import {BrowserRouter, Route, Switch, withRouter} from 'react-router-dom';
@@ -80,9 +79,9 @@ class Header extends React.Component{
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="mr-auto">
-              {/* <Nav.Link onClick={this.handleRoute("/Dashboard")}>Dashboard</Nav.Link> */}
-              <Nav.Link onClick={this.handleRoute("/Services")}>New Service</Nav.Link>
-              {/* <Nav.Link onClick={this.handleRoute("/Customers")}>Customers</Nav.Link> */}
+              
+              <Nav.Link onClick={this.handleRoute("/service")}>New Service</Nav.Link>
+              
             </Nav>
             </Navbar.Collapse>
             
@@ -94,14 +93,15 @@ class Header extends React.Component{
             
           
                  
-            <AuthStyle><Authenticator hideDefault={true}><Greetings inGreeting={(username) => 'Hello ' + username} /></Authenticator></AuthStyle>
+            <AuthStyle><Authenticator hideDefault="false"><Greetings /></Authenticator></AuthStyle>
             
           </Navbar>
           <Switch>
-            {/* <Route path="/Dashboard" component= {Dashboard}/> */}
-            <Route path="/Services" component= {Services}/>
-            {/* <Route path="/Customers" component= {Customers}/> */}
-            <Route path="/Results" component={GetItembyID}/>
+            
+            <Route path="/service" component= {Services}/>
+            
+            <Route path="/results" component={GetItembyID}/>
+            <Route path="/" component={Services}/>
          </Switch>
         </Container>
         </Row>
@@ -114,14 +114,5 @@ class Header extends React.Component{
 }
 export default withRouter(Header);
 
-class Dashboard extends Component{
-    render(){
-      return(
-        <div>
-          jυadel
-        </div>
-      )
-    }
-  }
-  
+
   
