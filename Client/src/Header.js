@@ -3,9 +3,9 @@ import {Button, Container} from 'react-bootstrap';
 import styled from 'styled-components';
 import GetItembyID from './Components/Services/GetItembyId';
 import Services from './Components/Services/Services';
-import {BrowserRouter, Route, Switch, withRouter} from 'react-router-dom';
+import {Route, Switch, withRouter} from 'react-router-dom';
 import {Nav, Navbar, Form, FormControl, Row, Col} from 'react-bootstrap';
-import { Authenticator, Greetings } from 'aws-amplify-react';
+import {Authenticator, Greetings } from 'aws-amplify-react';
 
 import './App.css';
 

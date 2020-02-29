@@ -4,7 +4,7 @@ import Styled from 'styled-components';
 import {withRouter} from 'react-router-dom';
 import axios from 'axios';
 import getToken from '../../Auth/getToken';
-import  apiEndpoint  from '../../Config/backendConfig';
+import apiEndpoint  from '../../Config/backendConfig';
 
 
 const TableStyle = Styled.div`

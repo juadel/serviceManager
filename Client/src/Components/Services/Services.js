@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
 import {Button, Card} from 'react-bootstrap';
-import {Nav, Navbar, Form, FormControl, Col, Table, Modal, Container, Row} from 'react-bootstrap';
-import {BrowserRouter, Route, Switch, withRouter, Redirect} from 'react-router-dom';
+import {Form, Col, Table, Modal, Container, Row} from 'react-bootstrap';
 import axios from 'axios';
 import getToken from '../../Auth/getToken'
 import styled from 'styled-components';
-import  apiEndpoint  from '../../Config/backendConfig';
+import apiEndpoint  from '../../Config/backendConfig';
 
 
 const ServiceStyle = styled.div` 

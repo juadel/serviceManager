@@ -2,8 +2,7 @@ import React, {Component} from 'react';
 import Amplify from 'aws-amplify';
 import cognito from './Auth/Cognito';
 import {BrowserRouter} from 'react-router-dom';
-import {Card} from 'react-bootstrap';
-import { withAuthenticator, Authenticator, Greetings } from 'aws-amplify-react';
+import { withAuthenticator } from 'aws-amplify-react';
 import Header from './Header';
 
 import './App.css';

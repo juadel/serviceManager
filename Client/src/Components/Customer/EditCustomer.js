@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import getToken from "../../Auth/getToken";
 import {Nav, Navbar, Form, FormControl, Col, Table, Modal, Button} from 'react-bootstrap';
 import axios from 'axios';
-import  apiEndpoint  from '../../Config/backendConfig';
+import apiEndpoint  from '../../Config/backendConfig';
 
 class EditCustomer extends Component{
 
