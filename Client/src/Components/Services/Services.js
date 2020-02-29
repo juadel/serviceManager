@@ -294,10 +294,12 @@ class Services extends Component{
                         
                         <Card.Body>
                         <Card.Title>
-                            Wellcome 
+                            Welcome 
                          </Card.Title>
                         <Card.Text>
-                            Service Manager is 
+                            <li>Create a customer or search for an existing customer</li>
+                            <li>Create a new service ticket</li>
+                            
                         </Card.Text>
                             
                         </Card.Body>

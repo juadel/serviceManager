@@ -24,7 +24,7 @@ class Archives extends Component{
          file: null,
          filename: '',
          UploadUrl: '',
-         FileDescription:'',
+         FileDescription:null,
          user:'',
          jwtToken:'',
          filesOn: [],
@@ -86,8 +86,11 @@ class Archives extends Component{
 
     }
     handleFilesSubmit = event =>{
+        if (this.state.FileDescription === null){
+            alert("Please set a file's description")
+        }else{
         this.getSignedUrl();
-       
+        }
         event.preventDefault();
     }
 
