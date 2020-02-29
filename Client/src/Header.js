@@ -50,20 +50,17 @@ class Header extends React.Component{
 
   
   handleSearchInput = event => {
-    console.log(event.charCode)
-    if( event.key ==="Enter"){
 
-      event.preventDefault();
-      console.log("Enter")
-      }
     this.setState({searchText: event.target.value})
     console.log(event.target.value)
         
   }
   handleEnter = event =>{
-    if (event.key === "Enter")
+    console.log(event.key)
+    if (event.key === "Enter"){
       event.preventDefault();
       this.handleSearchSubmit();
+    }
   }
  
   
@@ -72,44 +69,42 @@ class Header extends React.Component{
   render(){
     
     return(
-      
+      <Row>
         <Container>
-          <Col >
+          
           <Navbar bg="light" variant="light">
-              <Navbar.Brand>
-                <a href='https://www.juadel.com'>SERVICE MANAGER</a>
-              </Navbar.Brand> 
-              <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          
+            <Navbar.Brand>
+              <a href='https://www.juadel.com'>SERVICE MANAGER</a>
+            </Navbar.Brand> 
+            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="mr-auto">
               {/* <Nav.Link onClick={this.handleRoute("/Dashboard")}>Dashboard</Nav.Link> */}
               <Nav.Link onClick={this.handleRoute("/Services")}>New Service</Nav.Link>
               {/* <Nav.Link onClick={this.handleRoute("/Customers")}>Customers</Nav.Link> */}
             </Nav>
-            <Form >
-              <FormControl type="text" placeholder="Search" className="mr-sm-2" value={this.state.searchText} onChange={this.handleSearchInput} onKeyPress={this.handleEnter}  />
-              <Button className="btn-search" variant="outline-info" onClick={this.handleSearchSubmit}>Search</Button>
-              
-            </Form>
-            
-            
             </Navbar.Collapse>
             
-            <AuthStyle><Authenticator hideDefault={true}><Greetings inGreeting={(username) => 'Hello ' + username} /></Authenticator></AuthStyle>
-                   
-          </Navbar>
+            
+            <Form inline>
+              <FormControl type="text" placeholder="Ticket Number" className="mr-sm-2" value={this.state.searchText} onChange={this.handleSearchInput} onKeyPress={this.handleEnter}  />
+              <Button className="btn-search" variant="outline-info" onClick={this.handleSearchSubmit}>Search</Button> 
+            </Form>
             
           
+                 
+            <AuthStyle><Authenticator hideDefault={true}><Greetings inGreeting={(username) => 'Hello ' + username} /></Authenticator></AuthStyle>
+            
+          </Navbar>
           <Switch>
             {/* <Route path="/Dashboard" component= {Dashboard}/> */}
             <Route path="/Services" component= {Services}/>
             {/* <Route path="/Customers" component= {Customers}/> */}
             <Route path="/Results" component={GetItembyID}/>
-            
-          </Switch>
-          </Col>
-          
-          </Container>
+         </Switch>
+        </Container>
+        </Row>
           
       
     )
