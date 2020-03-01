@@ -220,7 +220,7 @@ class GetItembyID extends Component {
                                         
                                     })
                       .catch(e => {console.log(e); alert("No Ticket or Customer has been found");
-                                    window.location = "/service"})  
+                                    window.location = "/"})  
         //window.location ="/results"; 
                             
                                                                                
