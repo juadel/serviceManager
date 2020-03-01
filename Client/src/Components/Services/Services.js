@@ -197,7 +197,7 @@ class Services extends Component{
             console.log("dentro del if")
              return( 
                         <Modal show={show} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
-                            <Modal.Header closeButton>
+                            <Modal.Header >
                                 <Modal.Title id="contained-modal-title-vcenter">
                                 Search Result
                                 </Modal.Title>
