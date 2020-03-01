@@ -249,16 +249,73 @@ class Services extends Component{
                     </Form.Group>
 
                     <Form.Group as={Col} controlId="Province">
-                    <Form.Label>Province</Form.Label>
-                    <Form.Control as="select" onChange = {this.handleImput} name="Province" placeholder={this.state.Province}>
+                    <Form.Label>Province/State</Form.Label>
+                        <Form.Control as="select" onChange = {this.handleImput} name="Province" placeholder={this.state.Province}>
                         <option>Choose...</option>
                         <option>Alberta</option>
                         <option>British Columbia</option>
-                    </Form.Control>
+                        <option>Manitoba</option>
+                        <option>New Brunswick</option>
+                        <option>Newfoundland and Labrador</option>
+                        <option>Nova Scotia</option>
+                        <option>Ontario</option>
+                        <option>Prince Edward island</option>
+                        <option>Quebec</option>
+                        <option>Alabama</option>
+                        <option>Alska</option>
+                        <option>Arizona</option>
+                        <option>Arkansas</option>
+                        <option>California</option>
+                        <option>Colorado</option>
+                        <option>Connecticut</option>
+                        <option>Delaware</option>
+                        <option>Florida</option>
+                        <option>Georgia</option>
+                        <option>Hawaii</option>
+                        <option>Idaho</option>
+                        <option>Illinois</option>
+                        <option>Indiana</option>
+                        <option>Iowa</option>
+                        <option>Kansas</option>
+                        <option>Kentucky</option>
+                        <option>Louisiana</option>
+                        <option>Maine</option>
+                        <option>Maryland</option>
+                        <option>Massachusetts</option>
+                        <option>Michigan</option>
+                        <option>Minnesota</option>
+                        <option>Mississippi</option>
+                        <option>Missouri</option>
+                        <option>Montana</option>
+                        <option>Nebraska</option>
+                        <option>Nevada</option>
+                        <option>New Hampshire</option>
+                        <option>New Jersey</option>
+                        <option>New Mexico</option>
+                        <option>New York</option>
+                        <option>North Carolina</option>
+                        <option>North Dakota</option>
+                        <option>Ohio</option>
+                        <option>Oklahoma</option>
+                        <option>Oregon</option>
+                        <option>Pennsylvania</option>
+                        <option>Rhode Island</option>
+                        <option>South Carolina</option>
+                        <option>South Dakota</option>
+                        <option>Tennessee</option>
+                        <option>Texas</option>
+                        <option>Utah</option>
+                        <option>Vermont</option>
+                        <option>Virginia</option>
+                        <option>Washington</option>
+                        <option>West Virginia</option>
+                        <option>Wisconsin</option>
+                        <option>Wyomingk</option>
+                        </Form.Control>
                     </Form.Group>
 
                     <Form.Group as={Col} controlId="PostalCode">
-                    <Form.Label>Postal Code</Form.Label>
+                    <Form.Label>Postal Code / Zip Code</Form.Label>
                     <Form.Control onChange = {this.handleImput} name="PostalCode" placeholder={this.state.PostalCode}/>
                     </Form.Group>
                 </Form.Row>
