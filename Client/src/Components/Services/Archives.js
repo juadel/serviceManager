@@ -128,7 +128,8 @@ class Archives extends Component{
                 //             pathname:"/results",
                 //             state: {
                 //             searchText: this.props.serviceID}})
-                window.location.href ="/results";            
+                // window.location.href ="/results";   
+                window.location.reload();         
             })
               .catch(e => console.log(e))
         

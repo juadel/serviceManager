@@ -112,7 +112,7 @@ class GetItembyID extends Component {
         console.log("new search is true" )
         this.handleSearch();  
     }
-
+    
   }
 
   handleMaprequest(){
@@ -217,7 +217,7 @@ class GetItembyID extends Component {
                                     })
                       .catch(e => {console.log(e); alert("No Ticket or Customer has been found");
                                     window.location = "/"})  
-        //window.location ="/results"; 
+        
                             
                                                                                
         }

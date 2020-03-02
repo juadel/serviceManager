@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Amplify from 'aws-amplify';
 import cognito from './Auth/Cognito';
-import {BrowserRouter} from 'react-router-dom';
+import {BrowserRouter, Route} from 'react-router-dom';
 import { withAuthenticator } from 'aws-amplify-react';
 import Header from './Header';
 
