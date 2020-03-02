@@ -38,7 +38,7 @@ class NewComment extends Component{
                         .catch(e => console.log(e));
         
         //console.log(this.state.user);
-        window.location ="/results";
+        window.location.href ="/results";
         
         // window.location ="/results";
             
