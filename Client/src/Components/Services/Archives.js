@@ -123,8 +123,9 @@ class Archives extends Component{
                  } 
             }).then(res => {
                 console.log("File has been uploaded");
+                // console.log(this.props.serviceID)
                 // this.props.history.push({
-                //             pathname: "/results",
+                //             pathname:"/results",
                 //             state: {
                 //             searchText: this.props.serviceID}})
                 window.location ="/results";            
@@ -224,4 +225,4 @@ class Archives extends Component{
     }
 }
 
-export default withRouter(Archives);
+export default Archives;

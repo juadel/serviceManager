@@ -9,8 +9,6 @@ import apiEndpoint  from '../../Config/backendConfig';
 
 const ServiceStyle = styled.div` 
     display: block;            
-    
-    
     margin: 16px ;
     border: 1px solid #DCDCDC;
     box-shadow: 0 2px 3px #ccc;
@@ -18,7 +16,6 @@ const ServiceStyle = styled.div`
     text-align: left;
     position: relative;
     word-wrap: break-word;
-    
     overflow: auto;              
                   `;
 
@@ -37,19 +34,16 @@ class Services extends Component{
             user:"",
             customerSearchlst: null,
             modalShow: false
-
-
         };
 
     }
 
     handleChk = () =>{
-       if (this.state.chkNewCustomer===false){
+       if (this.state.chkNewCustomer === false){
         this.setState({chkNewCustomer : true});
        } else{
         this.setState({chkNewCustomer : false});
        }
-
     }
 
     handleCustomerSubmit =event =>{
@@ -72,10 +66,6 @@ class Services extends Component{
         } else {
             this.searchCustomer(this.state.CustomerName);
             event.preventDefault();
-
-
-
-
         }
         
     }
@@ -99,7 +89,6 @@ class Services extends Component{
         const target = event.target;
         const value = target.value;
         const name = target.name;
-        
         this.setState({[name] : value });
     }
     
@@ -211,7 +200,7 @@ class Services extends Component{
                                                 <th>Customer Name</th>
                                                 <th>Site Number</th>
                                                 <th>City</th>
-                                                <th>Province</th>
+                                                <th>Province/State</th>
                                                 <th>Contact Name</th>
                                                 <th>Phone</th>
                                                 </tr>

@@ -187,8 +187,7 @@ class GetItembyID extends Component {
    async getItem(ID, type){
        
         const token = new getToken();
-        await token.token()
-        //console.log(token.state)
+        await token.token();
         
         await axios.get(apiEndpoint+'/item/'+ID+'?item='+type, {headers: 
                     { 'Content-Type': 'application/json',
@@ -210,12 +209,9 @@ class GetItembyID extends Component {
                                                 Province: res.data.customer[0]['Province'],
                                                 PostalCode: res.data.customer[0]['PostalCode'], 
                                                 ContactName: res.data.customer[0]['ContactName'],
-                                                Phone: res.data.customer[0]['Phone'],
-                                                
+                                                Phone: res.data.customer[0]['Phone']
                                             })
                                             this.handleGeolocation();
-     
-
                                         }
                                         
                                     })
@@ -232,15 +228,8 @@ class GetItembyID extends Component {
     
     const showMap = this.handleMaprequest();
     const customerEdit= this.handleCustomerEdit();
-        
-            
-        
-    
-        
-        
-    
-     const CommentsArray = this.state.Comments;
-     const lstComments = CommentsArray.map((comment) =>  
+    const CommentsArray = this.state.Comments;
+    const lstComments = CommentsArray.map((comment) =>  
             
         <div key={CommentsArray.indexOf[comment]}> 
         <CommentStyle>
@@ -260,10 +249,7 @@ class GetItembyID extends Component {
        
         return (
         <div>
-            
             <Container>
-        
-           
             <Row>
                 <Col>
                     <IdNumber className="hr"> <hr/>Ticket Number: {this.state.ticket.ServiceID}</IdNumber>
@@ -272,13 +258,10 @@ class GetItembyID extends Component {
             <Row >
                 <Col>
                 <Customer> 
-            
                 <Card style={{ width: '30rem' }}>     
-                
                 <Card.Body>
                     <Card.Title>{this.state.CustomerName} </Card.Title>
                     <Card.Text>
-                    
                     <p> Site Number: {this.state.SiteNumber}</p>
                     <p>{this.state.Address}  {this.state.City}, {this.state.Province} , {this.state.PostalCode}</p>
                     <p> Contact: {this.state.ContactName},   Phone : {this.state.Phone}</p>
@@ -291,17 +274,14 @@ class GetItembyID extends Component {
                 <Card style={{ width: '30rem' }}>
                 <Card.Body >
                     <Card.Title> {this.state.ticket.Title} </Card.Title>
-                    
                     <Card.Text>
                         <p>Description:</p>
                     {this.state.ticket.Description}
                     </Card.Text>
-                     
                 </Card.Body>
                 </Card>
                 </Wrapper>
                 </Col>
-                
                 <Col>
                 <Maps>
                     <Card style={{ width: '30rem'}}>
@@ -312,9 +292,8 @@ class GetItembyID extends Component {
            </Row>
            <Row>
                 <Col> 
-                <div > <hr/> </div>
-                </Col>
-            
+                    <div > <hr/> </div>
+                </Col> 
             </Row>
            <Row>
                 <Col >
@@ -328,35 +307,25 @@ class GetItembyID extends Component {
                 <Col >
                 <NewCommentpos><NewComment ServiceID={this.state.ticket.ServiceID} /></NewCommentpos>
                 {customerEdit}
-                
                 </Col>
            </Row>
            <Row>
                 <Col> 
-                <div > <hr/> </div>
+                    <div > <hr/> </div>
                 </Col>
-            
-           </Row>
-            
+           </Row> 
            <Attach>
                 <Archives url={this.state.ticket.attachmentUrl} descriptionArray={this.state.ticket.fileDescription} serviceID={this.state.ticket.ServiceID}/>
             </Attach>
             <Row>
                 <Col> 
-                <div > <hr/> </div>
+                    <div > <hr/> </div>
                 </Col>
-            
             </Row>
-            
-            </Container>
-           
-        </div> 
-               
+            </Container> 
+        </div>    
         )
     }
 }
-   
-
-    
    
 export default GetItembyID;

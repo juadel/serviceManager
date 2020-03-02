@@ -28,16 +28,18 @@ class NewComment extends Component{
         await axios.post(apiEndpoint+'/service/'+ServiceID, {Comments: this.state.newComment },{headers: 
                         { 'Content-Type': 'application/json',
                         'Authorization': `Bearer ${this.state.jwtToken}`}}
-                        ).then(res => {})
+                        ).then( 
+                                // this.props.history.push({
+                                // pathname: "/results",
+                                // state: {
+                                // searchText: ServiceID,
+                                // }})
+                            )
                         .catch(e => console.log(e));
         
-        console.log(this.state.user);
+        //console.log(this.state.user);
         window.location ="/results";
-        // this.props.history.push({
-        //     pathname: "/results",
-        //     state: {
-        //     searchText: ServiceID,
-        //     }});
+        
         // window.location ="/results";
             
     }
@@ -55,26 +57,19 @@ class NewComment extends Component{
 
     handleChange = event => {
         this.handleAuth();
-        
         const userlog = this.state.user;
-        console.log(this.state.user);
+        //console.log(this.state.user);
         const target = event.target;
         const value = target.value;
         this.setState({newComment : {date: new Date(), By: userlog , text: value }});
 
     }
     handleSubmit = event => {
-        
         event.preventDefault();
         this.addComment(this.props.ServiceID);
-        
-        
-
     }
 
-    render() {
-        
-                
+    render() {    
            return (
            <div>
             <Form onSubmit={this.handleSubmit}>
@@ -85,11 +80,9 @@ class NewComment extends Component{
                 </Form.Group>
                  <Button variant="primary" type="submit">Submit</Button>
             </Form>
-            </div>
-                
-                   
+            </div>       
            )
        }
 }
 
-export default withRouter(NewComment);
+export default NewComment;
