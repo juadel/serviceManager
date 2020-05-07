@@ -32,9 +32,9 @@ provider:
     ATOMIC_TABLE: Atomic-${self:service.name}-${self:service.org}-${self:provider.stage}
     ATOMIC_ID: AtomicID-${self:service.org}-${self:provider.stage}
     SUB_INDEX: Index-${self:service.org}-${self:provider.stage}
-    USER_POOL: Users-${self:service.org}-${self:provider.stage}
+    USER_POOL: UsersPool-${self:service.org}-${self:provider.stage}
     REGION: ${self:provider.region}
-    BUCKET: ${self:service.name}-${self:service.org}-${self:provider.stage}
+    BUCKET: ${self:service.name}-${self:provider.stage}
     EXPIRES: 300
 
 
@@ -281,17 +281,17 @@ resources:
         AttributeDefinitions:
           - AttributeName: CustomerID
             AttributeType: S 
-          # - AttributeName: CustomerName 
-          #   AttributeType: S
-          # - AttributeName: SiteNumber
-          #   AttributeType: S
+          - AttributeName: CustomerName 
+            AttributeType: S
+          - AttributeName: SiteNumber
+            AttributeType: S
         KeySchema:
           - AttributeName: CustomerID
             KeyType: HASH
-          - AttributeName: CustomerName
-            KeyType: RANGE
-          - AttributeName: SiteNumber
-            KeyType: RANGE
+          # - AttributeName: CustomerName
+          #   KeyType: RANGE
+          # - AttributeName: SiteNumber
+          #   KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
         TableName: ${self:provider.environment.CUSTOMER_TABLE}
         GlobalSecondaryIndexes:
