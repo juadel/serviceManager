@@ -28,7 +28,7 @@ class Services extends Component{
         this.state={
             chkNewCustomer: false,
             CustomerName: "", SiteNumber:"", Address:"", City:"", Province:"",PostalCode:"", ContactName:"", Phone:"", CustomerID:"",
-            Title: "", Description:"", Status:"", PriorityLevel:"", CreatedBy:"", 
+            Title: "", Description:"", SStatus:"", PriorityLevel:"", CreatedBy:"", 
             jwtToken:"",
             CustomMessage:"",
             user:"",
@@ -75,7 +75,7 @@ class Services extends Component{
             CustomerID: this.state.CustomerID,
             Title: this.state.Title, 
             Description: this.state.Description,
-            Status: this.state.Status, 
+            SStatus: this.state.SStatus, 
             PriorityLevel: this.state.PriorityLevel, 
             CreatedBy: this.state.user
         }
@@ -127,7 +127,7 @@ class Services extends Component{
                                     
                                 }
                             })
-                            .catch(e => {alert("Customer not created, it might already exists",e); console.log(e)});
+                            .catch(e => {alert("Item not created, it might already exists",e); console.log(e)});
         
         
     }
@@ -407,9 +407,12 @@ class Services extends Component{
 
                     <Form.Group as={Col} controlId="formGridStatus">
                     <Form.Label>Status</Form.Label>
-                    <Form.Control as="select" name="Status" onChange = {this.handleImput}>
+                    <Form.Control as="select" name="SStatus" onChange = {this.handleImput}>
                         <option>...Choose</option>
-                        <option>Create</option>
+                        <option>Open</option>
+                        <option>Stand By</option>
+                        <option>On going</option>
+                        <option>Closed</option>
                     </Form.Control>
                     </Form.Group>
                 </Form.Row>

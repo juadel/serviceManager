@@ -102,3 +102,17 @@ export async function getServicebyID(event: APIGatewayProxyEvent) : Promise<Serv
   return queryService as ServiceItem[];
 
 }
+
+export async function getServicesByStatus(event: APIGatewayProxyEvent) : Promise<ServiceItem[]>{
+  const status :string = event.pathParameters.status; 
+  const query_services =  await serviceItem.getServicesByStatus(status);
+  return query_services;
+
+}
+
+export async function getDueServices() : Promise<ServiceItem[]>{
+  const todays_date = new Date();
+  const query_due_services = await serviceItem.getDueServices(todays_date);
+  return query_due_services;
+
+}

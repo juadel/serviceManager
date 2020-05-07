@@ -6,6 +6,7 @@ import { ServiceItem } from "../models/service";
 
 
 
+
 export class Service
 { constructor(
     private docClient: DocumentClient = createDynamoDBClient(),
@@ -80,8 +81,35 @@ async getServicebyID(serviceId: string) : Promise<ServiceItem[]> {
     const service = result.Items;
     return service as ServiceItem[];
  }
+
+
+async getServicesByStatus(status: string) : Promise<ServiceItem[]>{
+    const params = {
+        ExpressionAttributeValues: {':Service_status': status},
+        TableName: this.serviceTable,
+        FilterExpression: 'contains(SStatus, :Service_status)'
+    };
+    
+    
+    const result = await this.docClient.scan(params).promise();
+    const services = result.Items;
+    return services as ServiceItem[];
+
 }
 
+async getDueServices(today: Date) : Promise<ServiceItem[]>{
+    const params = {
+        ExpressionAttributeValues: {':today': today},
+        TableName: this.serviceTable,
+        FilterExpression: 'dueDate < :today'
+    }
+    const result = await this.docClient.scan(params).promise();
+    const services = result.Items;
+    return services as ServiceItem[];
+
+}
+
+}
 function createDynamoDBClient() {
     if (process.env.IS_OFFLINE) {
       console.log("Creating a local DynamoDB instance");

@@ -190,6 +190,26 @@ functions:
           - dynamodb:UpdateItem
           - dynamodb:Query
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.SERVICE_TABLE}
+  
+  GetServicesByStatus:
+    handler: src/lambda/http/getServicesByStatus.handler
+    events:
+      - http:
+          method: get
+          path: status/{status}
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ApiGatewayAuthorizer
+    iamRoleStatementsInherit: true
+    iamRoleStatementsName: ${self:service.name}-GetServicesByStatus-Role-${self:provider.stage}
+    iamRoleStatements:
+      - Effect: Allow
+        Action: 
+          - dynamodb:Query
+          - dynamodb:Scan
+        Resource:  arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.SERVICE_TABLE}
 
   GetCustomerbyName:
     handler: src/lambda/http/getCustomerbyName.handler
