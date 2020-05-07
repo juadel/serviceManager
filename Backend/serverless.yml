@@ -256,21 +256,21 @@ resources:
             AttributeType: S
           - AttributeName: CustomerID
             AttributeType: S
-          - AttributeName: createdAt
+          - AttributeName: dueDate
             AttributeType: S  
         KeySchema:
           - AttributeName: ServiceID
             KeyType: HASH
-          # - AttributeName: CustomerID
-          #   KeyType: RANGE
+          - AttributeName: CustomerID
+            KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
         TableName: ${self:provider.environment.SERVICE_TABLE}
         GlobalSecondaryIndexes:
           - IndexName: ${self:provider.environment.SUB_INDEX}
             KeySchema:
-            - AttributeName: CustomerID
+            - AttributeName: ServiceID
               KeyType: HASH
-            - AttributeName: createdAt
+            - AttributeName: dueDate
               KeyType: RANGE
             Projection:
               ProjectionType: ALL 
@@ -281,15 +281,17 @@ resources:
         AttributeDefinitions:
           - AttributeName: CustomerID
             AttributeType: S 
-          - AttributeName: CustomerName 
-            AttributeType: S
-          - AttributeName: SiteNumber
-            AttributeType: S
+          # - AttributeName: CustomerName 
+          #   AttributeType: S
+          # - AttributeName: SiteNumber
+          #   AttributeType: S
         KeySchema:
           - AttributeName: CustomerID
             KeyType: HASH
-          # - AttributeName: CustomerName
-          #   KeyType: RANGE
+          - AttributeName: CustomerName
+            KeyType: RANGE
+          - AttributeName: SiteNumber
+            KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
         TableName: ${self:provider.environment.CUSTOMER_TABLE}
         GlobalSecondaryIndexes:
