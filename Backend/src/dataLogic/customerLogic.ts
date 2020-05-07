@@ -73,7 +73,7 @@ async getCustomerbyName(CustomerName: string): Promise<CustomerItem[]>{
         FilterExpression: 'contains(CustomerName,  :CustomerName)', 
         ExpressionAttributeValues: {":CustomerName": CustomerName}
     }
-    const customer= await this.docClient.query(params).promise();
+    const customer= await this.docClient.scan(params).promise();
     const cust = customer.Items;
     return cust as CustomerItem[];
 
