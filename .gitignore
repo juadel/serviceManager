@@ -1,4 +1,4 @@
 node_modules
 # misc 
 .DS_Store 
-.env   
+Client/.env   
