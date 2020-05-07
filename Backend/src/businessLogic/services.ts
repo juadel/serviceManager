@@ -26,6 +26,7 @@ export async function createService( event: APIGatewayProxyEvent ): Promise<Serv
   const serviceId =count;
   const comments = [];
   const attachmentUrl =[];
+  const fileDescription = [];
   const today = new Date();
   const dueDay= new Date();
   
@@ -47,6 +48,7 @@ export async function createService( event: APIGatewayProxyEvent ): Promise<Serv
         dueDate: dueDay.toISOString(),
         Comments: comments,
         attachmentUrl: attachmentUrl,
+        fileDescription : fileDescription,
         ...newService
       }
     );
@@ -70,10 +72,15 @@ export async function serviceUrl(event: APIGatewayProxyEvent ): Promise<string> 
     if (event.queryStringParameters.filename !== undefined &&
         event.queryStringParameters.filename !== null &&
         event.queryStringParameters.filename !== "") {
-  
+        
         const filename: string = event.queryStringParameters.filename;
         const id :string = event.pathParameters.id;
-        const generatedUrl= await serviceItem.serviceUrl(id, filename);
+
+        const descriptionBody = JSON.parse(event.body); 
+        let descriptionText :string = "";
+        if (descriptionBody.description) descriptionText = descriptionBody.description;
+        
+        const generatedUrl= await serviceItem.serviceUrl(id, descriptionText, filename);
         return generatedUrl
         }
      else{
@@ -93,5 +100,19 @@ export async function getServicebyID(event: APIGatewayProxyEvent) : Promise<Serv
   const id : string = event.pathParameters.id;
   const queryService = await serviceItem.getServicebyID(id);
   return queryService as ServiceItem[];
+
+}
+
+export async function getServicesByStatus(event: APIGatewayProxyEvent) : Promise<ServiceItem[]>{
+  const status :string = event.pathParameters.status; 
+  const query_services =  await serviceItem.getServicesByStatus(status);
+  return query_services;
+
+}
+
+export async function getDueServices() : Promise<ServiceItem[]>{
+  const todays_date = new Date();
+  const query_due_services = await serviceItem.getDueServices(todays_date);
+  return query_due_services;
 
 }

@@ -41,9 +41,17 @@ export async function getCustomerbyID(event: APIGatewayProxyEvent):Promise<Custo
   return queryCustomer as CustomerItem[];  
 }
 
+export async function getCustomerbyName(event: APIGatewayProxyEvent):Promise<CustomerItem[]>{
+  const CustomerName = event.pathParameters.name;
+  const queryCustomer = await customerItem.getCustomerbyName(CustomerName);
+  return queryCustomer as CustomerItem[];
+}
+
 export async function customerExist(event: APIGatewayProxyEvent): Promise<Boolean>{
-  const customerId: string = event.pathParameters.id;
-  const exist: Boolean = await customerItem.customerExist(customerId);
+  const Body = JSON.parse(event.body);
+  const CustomerName = Body.CustomerName;
+  const SiteNumber = Body.SiteNumber;
+  const exist: Boolean = await customerItem.customerExist(CustomerName, SiteNumber);
   return exist;
 
 }

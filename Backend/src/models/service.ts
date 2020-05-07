@@ -5,10 +5,11 @@ export interface ServiceItem {
     Title: string
     Description: string
     dueDate: string
-    PriorityLevel: string,
-    Status: string
+    PriorityLevel: string
+    SStatus: string
     Comments: Array<string>
     attachmentUrl: Array<string>
+    fileDescription: Array<string>
     CreatedBy: string
   }
   

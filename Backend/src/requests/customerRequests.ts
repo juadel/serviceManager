@@ -1,5 +1,5 @@
 export interface CustomerRequest {
-    Name: string
+    CustomerName: string
     SiteNumber: string
     Address: string
     City: string

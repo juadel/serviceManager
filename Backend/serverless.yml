@@ -32,9 +32,9 @@ provider:
     ATOMIC_TABLE: Atomic-${self:service.name}-${self:service.org}-${self:provider.stage}
     ATOMIC_ID: AtomicID-${self:service.org}-${self:provider.stage}
     SUB_INDEX: Index-${self:service.org}-${self:provider.stage}
-    USER_POOL: Users-${self:service.org}-${self:provider.stage}
+    USER_POOL: UsersPool-${self:service.org}-${self:provider.stage}
     REGION: ${self:provider.region}
-    BUCKET: ${self:service.name}-${self:service.org}-${self:provider.stage}
+    BUCKET: ${self:service.name}-${self:provider.stage}
     EXPIRES: 300
 
 
@@ -68,7 +68,14 @@ functions:
       - Effect: Allow
         Action: 
           - dynamodb:PutItem
+          - dynamodb:Query
+          - dynamodb:Scan
         Resource:  arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CUSTOMER_TABLE}
+      - Effect: Allow
+        Action: 
+          - dynamodb:Query
+          - dynamodb:Scan
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CUSTOMER_TABLE}/index/*
       - Effect: Allow
         Action: 
           - dynamodb:PutItem
@@ -100,10 +107,15 @@ functions:
           - dynamodb:UpdateItem
           - dynamodb:Query
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CUSTOMER_TABLE}
+      - Effect: Allow
+        Action: 
+          - dynamodb:Query
+          - dynamodb:Scan
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CUSTOMER_TABLE}/index/*
       
   
   AddUploadUrl:
-    # Query String Parameters : item = service or customer, filename ="string"
+    # Query String Parameters : item = service or customer, description="string", filename ="string"
     handler: src/lambda/http/addUploadUrl.handler
     events:
       - http:
@@ -131,7 +143,7 @@ functions:
         Action:
           - s3:PutObject
           - s3:GetObject
-        Resource: arn:aws:s3:::${self:provider.environment.BUCKET}/*
+        Resource: arn:aws:s3:::${self:provider.environment.BUCKET}/*      
 
   GetItembyID:
      # Query String Parameters : item = service or customer,
@@ -177,8 +189,52 @@ functions:
           - dynamodb:PutItem
           - dynamodb:UpdateItem
           - dynamodb:Query
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.SERVICE_TABLE} 
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.SERVICE_TABLE}
+  
+  GetServicesByStatus:
+    handler: src/lambda/http/getServicesByStatus.handler
+    events:
+      - http:
+          method: get
+          path: status/{status}
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ApiGatewayAuthorizer
+    iamRoleStatementsInherit: true
+    iamRoleStatementsName: ${self:service.name}-GetServicesByStatus-Role-${self:provider.stage}
+    iamRoleStatements:
+      - Effect: Allow
+        Action: 
+          - dynamodb:Query
+          - dynamodb:Scan
+        Resource:  arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.SERVICE_TABLE}
 
+  GetCustomerbyName:
+    handler: src/lambda/http/getCustomerbyName.handler
+    events:
+      - http:
+          method: get
+          path: customername/{name}
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ApiGatewayAuthorizer
+    iamRoleStatementsInherit: true
+    iamRoleStatementName: ${self:service.name}-GetCustomerByName-Role-${self:provider.stage}
+    iamRoleStatements:
+      - Effect: Allow
+        Action: 
+          - dynamodb:Query
+          - dynamodb:Scan
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CUSTOMER_TABLE}/index/*
+      - Effect: Allow
+        Action: 
+          - dynamodb:Query
+          - dynamodb:Scan
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CUSTOMER_TABLE}
 
 resources:
   Resources:
@@ -200,22 +256,22 @@ resources:
             AttributeType: S
           - AttributeName: CustomerID
             AttributeType: S
-          - AttributeName: createdAt
+          - AttributeName: dueDate
             AttributeType: S  
         KeySchema:
           - AttributeName: ServiceID
             KeyType: HASH
-          # - AttributeName: CustomerID
-          #   KeyType: RANGE
+          - AttributeName: CustomerID
+            KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
         TableName: ${self:provider.environment.SERVICE_TABLE}
         GlobalSecondaryIndexes:
           - IndexName: ${self:provider.environment.SUB_INDEX}
             KeySchema:
-              - AttributeName: CustomerID
-                KeyType: HASH
-              - AttributeName: createdAt
-                KeyType: RANGE
+            - AttributeName: ServiceID
+              KeyType: HASH
+            - AttributeName: dueDate
+              KeyType: RANGE
             Projection:
               ProjectionType: ALL 
 
@@ -225,20 +281,28 @@ resources:
         AttributeDefinitions:
           - AttributeName: CustomerID
             AttributeType: S 
-          - AttributeName: Name 
-            AttributeType: S 
+          - AttributeName: CustomerName 
+            AttributeType: S
+          - AttributeName: SiteNumber
+            AttributeType: S
         KeySchema:
           - AttributeName: CustomerID
             KeyType: HASH
+          # - AttributeName: CustomerName
+          #   KeyType: RANGE
+          # - AttributeName: SiteNumber
+          #   KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
         TableName: ${self:provider.environment.CUSTOMER_TABLE}
         GlobalSecondaryIndexes:
-          - IndexName: ${self:provider.environment.SUB_INDEX}
-            KeySchema:
-              - AttributeName: Name
-                KeyType: HASH
-            Projection:
-              ProjectionType: ALL
+        - IndexName: ${self:provider.environment.SUB_INDEX}
+          KeySchema:
+          - AttributeName: CustomerName
+            KeyType: HASH
+          - AttributeName: SiteNumber
+            KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
 
     AtomicCounters:
       Type: AWS::DynamoDB::Table
@@ -260,10 +324,8 @@ resources:
         AliasAttributes:
           - preferred_username
           - email
-        
         AutoVerifiedAttributes:
-          - email
-          
+          - email  
         Policies:
           PasswordPolicy:
             MinimumLength: 8
