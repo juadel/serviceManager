@@ -4,10 +4,10 @@ const Cognito = {
       region: "ca-central-1",
   
       // Amazon Cognito User Pool ID
-      userPoolId: "ca-central-1_jiW4pkCsd",
+      userPoolId: "ca-central-1_Pe406upbB",
   
       // Amazon Cognito Web Client ID (26-char alphanumeric string)
-      userPoolWebClientId: "7rt2rl6jr0uj8vdmamf72njtpl"
+      userPoolWebClientId: "2aj43euh37vl4fcn5sr1d0ieio"
     }
   };
   

@@ -31,14 +31,20 @@ async createCustomer(customer: CustomerItem ) : Promise<CustomerItem>{
 
     //CLIENT MUST PROVIDE ALL Attributes, HAS to make sure to provide actual values on client when updating.
 async updateCustomer(CustomerID : string, updatedCustomer:CustomerRequest){
+    
+    const customerinfo = await this.getCustomerbyID(CustomerID)
+    const customerSite = customerinfo[0].SiteNumber;
+    const customerName = customerinfo[0].CustomerName;
+    console.log(customerSite, customerName);
+
     const updateCustomer = await this.docClient.update({
         TableName: this.customerTable,
-        Key: { CustomerID: CustomerID },
-        ExpressionAttributeNames: {"#N": "CustomerName","#S":"SiteNumber", "#A":"Address", "#C":"City", "#P":"PostalCode", "#Pr":"Province", "#Ph":"Phone", "#CN":"ContactName" },
-        UpdateExpression: 'set #N=:name, #S=:site, #A=:address, #C=:city, #P=:postal, #Pr=:province, #Ph=:phone, #CN =:contact',
+        Key: { "CustomerName": customerName, "SiteNumber": customerSite },
+        ExpressionAttributeNames: {"#A":"Address", "#C":"City", "#P":"PostalCode", "#Pr":"Province", "#Ph":"Phone", "#CN":"ContactName" },
+        UpdateExpression: 'set #A=:address, #C=:city, #P=:postal, #Pr=:province, #Ph=:phone, #CN =:contact',
         ExpressionAttributeValues:{
-            ':name':updatedCustomer.CustomerName,
-            ':site' :updatedCustomer.SiteNumber,
+            // ':name':updatedCustomer.CustomerName,
+            // ':site' :updatedCustomer.SiteNumber,
             ':address': updatedCustomer.Address,
             ':city': updatedCustomer.City,
             ':postal': updatedCustomer.PostalCode ,
@@ -54,6 +60,7 @@ async updateCustomer(CustomerID : string, updatedCustomer:CustomerRequest){
 async getCustomerbyID(CustomerID: string):Promise<CustomerItem[]>{
     const params ={
         TableName: this.customerTable,
+        IndexName: this.index,
         KeyConditionExpression: "CustomerID = :CustomerID",
         ExpressionAttributeValues: {":CustomerID": CustomerID}
     }
@@ -66,14 +73,15 @@ async getCustomerbyName(CustomerName: string): Promise<CustomerItem[]>{
 
     const params = {
         TableName: this.customerTable,
-        IndexName: this.index,
+        //IndexName: this.index,
         
         ProjectionExpression: 'CustomerID, CustomerName, SiteNumber, City, Province, PostalCode, ContactName, Phone',
-        
-        FilterExpression: 'contains(CustomerName,  :CustomerName)', 
-        ExpressionAttributeValues: {":CustomerName": CustomerName}
+        KeyConditionExpression: '#CustomerName = :CustomerName',
+        //FilterExpression: 'begins_with(#CustomerName,  :CustomerName)', 
+        ExpressionAttributeValues: {":CustomerName": CustomerName},
+        ExpressionAttributeNames: { "#CustomerName": "CustomerName"}
     }
-    const customer= await this.docClient.scan(params).promise();
+    const customer= await this.docClient.query(params).promise();
     const cust = customer.Items;
     return cust as CustomerItem[];
 
@@ -83,7 +91,7 @@ async getCustomerbyName(CustomerName: string): Promise<CustomerItem[]>{
 async customerExist(customername: string, sitenumber: string) : Promise<Boolean>{
     const params = {
         TableName : this.customerTable,
-        IndexName: this.index,
+        //IndexName: this.index,
         KeyConditionExpression: "CustomerName = :CN AND SiteNumber = :SN",
         ExpressionAttributeValues: {
             ":CN": customername,

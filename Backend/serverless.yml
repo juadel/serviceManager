@@ -1,5 +1,5 @@
 service:
-  name: service-manager
+  name: service-manager-dev
   org: companyxz
 
 # app and org for use with dashboard.serverless.com
@@ -20,7 +20,7 @@ plugins:
 provider:
   name: aws
   runtime: nodejs12.x
-  stage: ${opt:stage, 'dev'}
+  stage: ${opt:stage, 'dev2'}
   region: ${opt:region, 'ca-central-1'}
   apiGateway:
     minimumCompressionSize: 1024 # Enable gzip compression for responses > 1 KB
@@ -163,7 +163,7 @@ functions:
       - Effect: Allow
         Action: 
           - dynamodb:Query
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CUSTOMER_TABLE}
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CUSTOMER_TABLE}/index/*
       - Effect: Allow
         Action: 
           - dynamodb:Query
@@ -254,27 +254,20 @@ resources:
         AttributeDefinitions:
           - AttributeName: ServiceID
             AttributeType: S
-          - AttributeName: CustomerID
-            AttributeType: S
-          - AttributeName: dueDate
-            AttributeType: S  
+          # - AttributeName: CustomerID
+          #   AttributeType: S
+          # - AttributeName: dueDate
+          #   AttributeType: S  
+          # - AttributeName: SStatus
+          #   AttributeType: S  
+          # - AttributeName: PriorityLevel
+          #   AttributeType: S
         KeySchema:
           - AttributeName: ServiceID
             KeyType: HASH
-          - AttributeName: CustomerID
-            KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
         TableName: ${self:provider.environment.SERVICE_TABLE}
-        GlobalSecondaryIndexes:
-          - IndexName: ${self:provider.environment.SUB_INDEX}
-            KeySchema:
-            - AttributeName: ServiceID
-              KeyType: HASH
-            - AttributeName: dueDate
-              KeyType: RANGE
-            Projection:
-              ProjectionType: ALL 
-
+     
     Customertable:
       Type: AWS::DynamoDB::Table
       Properties:
@@ -286,20 +279,19 @@ resources:
           - AttributeName: SiteNumber
             AttributeType: S
         KeySchema:
-          - AttributeName: CustomerID
+          - AttributeName: CustomerName
             KeyType: HASH
-          # - AttributeName: CustomerName
-          #   KeyType: RANGE
-          # - AttributeName: SiteNumber
-          #   KeyType: RANGE
+          - AttributeName: SiteNumber
+            KeyType: RANGE
+          
         BillingMode: PAY_PER_REQUEST
         TableName: ${self:provider.environment.CUSTOMER_TABLE}
         GlobalSecondaryIndexes:
         - IndexName: ${self:provider.environment.SUB_INDEX}
           KeySchema:
-          - AttributeName: CustomerName
+          - AttributeName: CustomerID
             KeyType: HASH
-          - AttributeName: SiteNumber
+          - AttributeName: CustomerName
             KeyType: RANGE
           Projection:
             ProjectionType: ALL
