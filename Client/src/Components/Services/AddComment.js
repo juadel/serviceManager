@@ -23,7 +23,7 @@ class NewComment extends Component{
         this.handleAuth = this.handleAuth.bind(this);
     }
 
-    async addComment(ServiceID){
+    async addComment(ServiceID, CustomerID){
         
         await axios.post(apiEndpoint+'/service/'+ServiceID, {Comments: this.state.newComment },{headers: 
                         { 'Content-Type': 'application/json',

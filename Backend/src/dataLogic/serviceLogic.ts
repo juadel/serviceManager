@@ -25,10 +25,11 @@ async createService(service: ServiceItem ) : Promise<ServiceItem>{
     }
     
 async addComment(ServiceID: string , comment: string){
-    
+    const CustomerID :string  = await this.getCustomerId(ServiceID)
+
     const commenttoadd =await this.docClient.update({
             TableName: this.serviceTable,
-            Key: {ServiceID: ServiceID},
+            Key: {ServiceID: ServiceID, CustomerID : CustomerID},
             UpdateExpression: 'set Comments = list_append(Comments, :newComment)',
             ExpressionAttributeValues:{
                 ':newComment':[comment],
@@ -42,10 +43,10 @@ async serviceUrl(ServiceID:string, description: string, filename: string): Promi
     const params ={Bucket: this.bucket, Key: filename, Expires: 60};
     const S3 = new AWS.S3({signatureVersion: 'v4'});
     const signedURL = S3.getSignedUrl('putObject', params);
-      
+    const CustomerID = await this.getCustomerId(ServiceID)  
     await this.docClient.update({
         TableName: this.serviceTable,
-        Key: {ServiceID: ServiceID},
+        Key: {ServiceID: ServiceID, CustomerID: CustomerID},
         UpdateExpression: "set attachmentUrl= list_append(attachmentUrl, :URL), fileDescription = list_append(fileDescription, :fileDesc)" ,
         ExpressionAttributeValues: {
             ":URL": [signedURL.split("?")[0]],
@@ -109,7 +110,21 @@ async getDueServices(today: Date) : Promise<ServiceItem[]>{
 
 }
 
+async getCustomerId(ticketId: string): Promise<string>{
+    const params = {
+        ExpressionAttributeValues: {':id':ticketId},
+        TableName: this.serviceTable,
+        KeyConditionExpression: 'ServiceID = :id'
+    };
+    const result = await this.docClient.query(params).promise();
+
+    return result.Items[0]["CustomerID"];
+  } 
+
 }
+
+
+
 function createDynamoDBClient() {
     if (process.env.IS_OFFLINE) {
       console.log("Creating a local DynamoDB instance");
